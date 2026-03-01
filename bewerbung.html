@@ -16,7 +16,6 @@ body{
     flex-direction:column;
 }
 
-/* HEADER */
 .header{
     position:fixed;
     top:0;
@@ -33,7 +32,6 @@ body{
 }
 .header img{ height:50px; }
 
-/* MAIN */
 main{
     flex:1;
     display:flex;
@@ -50,16 +48,8 @@ main{
     box-shadow:0 10px 40px rgba(0,0,0,0.5);
 }
 
-h1{
-    text-align:center;
-    margin-bottom:20px;
-}
-
-label{
-    display:block;
-    margin-top:20px;
-    font-weight:bold;
-}
+h1{text-align:center;margin-bottom:20px;}
+label{display:block;margin-top:20px;font-weight:bold;}
 
 input, textarea, select{
     width:100%;
@@ -72,12 +62,7 @@ input, textarea, select{
     font-size:15px;
 }
 
-select option{
-    background:#111;
-    color:white;
-}
-
-textarea{ min-height:120px; }
+textarea{min-height:120px;}
 
 .submit-btn{
     margin-top:30px;
@@ -91,76 +76,14 @@ textarea{ min-height:120px; }
     cursor:pointer;
 }
 
-.submit-btn:hover{ transform:scale(1.02); }
-
-.back{
-    display:block;
-    text-align:center;
-    margin-top:20px;
-    opacity:0.7;
-    color:white;
-    text-decoration:none;
-}
-.back:hover{ text-decoration:underline; }
-
-/* FOOTER */
-footer{
-    text-align:center;
-    padding:20px;
-    font-size:12px;
-}
-
+footer{text-align:center;padding:20px;font-size:12px;}
 .link-btn{
     padding:4px 12px;
     border-radius:10px;
     text-decoration:none;
     color:#d8cfff;
     background:rgba(122,77,255,0.15);
-    box-shadow:0 0 10px rgba(122,77,255,0.6);
-    transition:0.2s;
     margin:0 5px;
-    display:inline-block;
-}
-
-.link-btn:hover{
-    background:rgba(122,77,255,0.35);
-    box-shadow:0 0 18px rgba(167,123,255,0.9);
-    transform:scale(1.05);
-}
-
-.small-link{
-    color:#a77bff;
-    text-decoration:none;
-}
-.small-link:hover{ text-decoration:underline; }
-
-.note{
-    margin-top:16px;
-    padding:12px 14px;
-    border-radius:12px;
-    background:rgba(0,0,0,0.25);
-    border:1px solid rgba(167,123,255,0.18);
-    font-size:12px;
-    opacity:0.85;
-    line-height:1.4;
-}
-
-.error{
-    margin-top:14px;
-    padding:10px 12px;
-    border-radius:12px;
-    background:rgba(255,0,0,0.12);
-    border:1px solid rgba(255,0,0,0.25);
-    display:none;
-}
-
-.success{
-    margin-top:14px;
-    padding:10px 12px;
-    border-radius:12px;
-    background:rgba(0,255,120,0.10);
-    border:1px solid rgba(0,255,120,0.20);
-    display:none;
 }
 </style>
 </head>
@@ -168,7 +91,7 @@ footer{
 <body>
 
 <div class="header">
-    <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+<img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
 </div>
 
 <main>
@@ -176,55 +99,51 @@ footer{
 
 <h1>HRX CreatorNET Bewerbung</h1>
 
-<!-- WICHTIG: Das ist KEIN Netlify-Forms mehr, sondern Function-Submit -->
-<form id="hrxForm" autocomplete="on">
-    <!-- Anti-Spam Honeypot (unsichtbar) -->
-    <input type="text" name="website" id="website" style="display:none" tabindex="-1" autocomplete="off">
+<!-- ✅ WEB3FORMS -->
+<form action="https://api.web3forms.com/submit" method="POST">
 
-    <label>Twitch Name</label>
-    <input type="text" name="twitch" required>
+<input type="hidden" name="access_key" value="3c953fd6-290b-45a8-b14d-cc9ba7910960">
+<input type="hidden" name="subject" value="Neue HRX CreatorNET Bewerbung">
+<input type="hidden" name="redirect" value="https://hrx-creator.net/danke.html">
 
-    <label>Twitch Link</label>
-    <input type="url" name="twitch_link" required>
+<!-- Honeypot -->
+<input type="checkbox" name="botcheck" style="display:none">
 
-    <label>Durchschnittliche Viewer (30 Tage)</label>
-    <input type="number" name="viewer" required min="0">
+<label>Twitch Name</label>
+<input type="text" name="twitch" required>
 
-    <label>Streams pro Woche</label>
-    <input type="number" name="streams" required min="0">
+<label>Twitch Link</label>
+<input type="url" name="twitch_link" required>
 
-    <label>Content Kategorie</label>
-    <select name="category" required>
-        <option>Gaming</option>
-        <option>Just Chatting</option>
-        <option>IRL</option>
-        <option>Music</option>
-        <option>Andere</option>
-    </select>
+<label>Durchschnittliche Viewer</label>
+<input type="number" name="viewer" required>
 
-    <label>Discord Tag / Kontakt</label>
-    <input type="text" name="discord" required>
+<label>Streams pro Woche</label>
+<input type="number" name="streams" required>
 
-    <label>Warum willst du ins HRX CreatorNET?</label>
-    <textarea name="reason" required></textarea>
+<label>Kategorie</label>
+<select name="category">
+<option>Gaming</option>
+<option>Just Chatting</option>
+<option>IRL</option>
+<option>Music</option>
+<option>Andere</option>
+</select>
 
-    <label>
-        <input type="checkbox" name="consent" required>
-        Ich stimme der <a href="datenschutz.html" class="small-link" target="_blank" rel="noopener">Datenschutzerklärung</a>
-        und der Kontaktaufnahme zu.
-    </label>
+<label>Discord</label>
+<input type="text" name="discord" required>
 
-    <button type="submit" class="submit-btn" id="sendBtn">Bewerbung senden</button>
+<label>Warum willst du ins HRX CreatorNET?</label>
+<textarea name="reason" required></textarea>
 
-    <div class="error" id="errorBox"></div>
-    <div class="success" id="successBox">✅ Bewerbung wurde gesendet. Weiterleitung…</div>
+<label>
+<input type="checkbox" required>
+Ich stimme der <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> zu.
+</label>
 
-    <div class="note">
-       
-    </div>
+<button type="submit" class="submit-btn">Bewerbung senden</button>
+
 </form>
-
-<a href="index.html" class="back">← Zurück zur Startseite</a>
 
 </div>
 </main>
@@ -233,64 +152,6 @@ footer{
 <a href="impressum.html" class="link-btn">Impressum</a>
 <a href="datenschutz.html" class="link-btn">Datenschutz</a>
 </footer>
-
-<script>
-const form = document.getElementById("hrxForm");
-const btn = document.getElementById("sendBtn");
-const errorBox = document.getElementById("errorBox");
-const successBox = document.getElementById("successBox");
-
-function showError(msg){
-  errorBox.style.display = "block";
-  errorBox.textContent = msg;
-}
-function clearError(){
-  errorBox.style.display = "none";
-  errorBox.textContent = "";
-}
-
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-  clearError();
-
-  // Honeypot
-  const hp = document.getElementById("website").value.trim();
-  if(hp.length > 0){
-    // Bot -> tu so als wärs ok
-    successBox.style.display = "block";
-    setTimeout(()=>window.location.href="danke.html", 700);
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = "Sende…";
-
-  const data = Object.fromEntries(new FormData(form).entries());
-
-  try{
-    const res = await fetch("/.netlify/functions/apply", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify(data)
-    });
-
-    const out = await res.json().catch(()=>({}));
-
-    if(!res.ok){
-      throw new Error(out.error || "Senden fehlgeschlagen. Bitte später erneut versuchen.");
-    }
-
-    successBox.style.display = "block";
-    setTimeout(()=>window.location.href="danke.html", 900);
-
-  }catch(err){
-    showError(err.message || "Unbekannter Fehler.");
-  }finally{
-    btn.disabled = false;
-    btn.textContent = "Bewerbung senden";
-  }
-});
-</script>
 
 </body>
 </html>
