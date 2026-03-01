@@ -48,7 +48,18 @@ main{
     box-shadow:0 10px 40px rgba(0,0,0,0.5);
 }
 
-h1{text-align:center;margin-bottom:20px;}
+h1{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.free-note{
+    text-align:center;
+    margin-bottom:25px;
+    opacity:0.85;
+    font-size:15px;
+}
+
 label{display:block;margin-top:20px;font-weight:bold;}
 
 input, textarea, select{
@@ -99,14 +110,17 @@ footer{text-align:center;padding:20px;font-size:12px;}
 
 <h1>HRX CreatorNET Bewerbung</h1>
 
-<!-- ✅ WEB3FORMS -->
+<p class="free-note">
+100 % kostenlos für Creator – HRX CreatorNET bündelt Reichweite,
+holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.
+</p>
+
 <form action="https://api.web3forms.com/submit" method="POST">
 
 <input type="hidden" name="access_key" value="3c953fd6-290b-45a8-b14d-cc9ba7910960">
 <input type="hidden" name="subject" value="Neue HRX CreatorNET Bewerbung">
 <input type="hidden" name="redirect" value="https://hrx-creator.net/danke.html">
 
-<!-- Honeypot -->
 <input type="checkbox" name="botcheck" style="display:none">
 
 <label>Twitch Name</label>
