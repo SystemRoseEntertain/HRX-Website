@@ -4,28 +4,132 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Danke</title>
+
 <style>
 body{
-  margin:0; font-family:Arial,Helvetica,sans-serif;
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
   background: radial-gradient(circle at top, #1a1033, #05070f);
-  color:white; min-height:100vh; display:flex; align-items:center; justify-content:center;
-  text-align:center; padding:40px;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:40px;
 }
+
+/* Header */
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:80px;
+    background:linear-gradient(90deg,#140b2a,#0b0f1e);
+    border-bottom:1px solid rgba(167,123,255,0.2);
+    box-shadow:0 0 20px rgba(122,77,255,0.4);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 20px 0 30px;
+}
+
+.header img{ height:50px; }
+
+.lang-switch{ display:flex; gap:10px; }
+.lang-btn{
+    padding:6px 14px;
+    border-radius:10px;
+    background: rgba(122,77,255,0.2);
+    color:white;
+    font-size:13px;
+    cursor:pointer;
+    box-shadow:0 0 10px rgba(122,77,255,0.5);
+}
+.lang-btn:hover{ background: rgba(167,123,255,0.5); }
+
 .box{
-  max-width:720px; width:100%;
+  max-width:720px;
+  width:100%;
   background:rgba(255,255,255,0.05);
-  border-radius:16px; padding:30px;
+  border-radius:16px;
+  padding:30px;
   box-shadow:0 10px 40px rgba(0,0,0,0.5);
 }
-a{ color:#a77bff; text-decoration:none; }
-a:hover{ text-decoration:underline; }
+
+.main-btn{
+    display:block;
+    margin-top:20px;
+    padding:14px;
+    background:linear-gradient(90deg,#7a4dff,#a77bff);
+    border-radius:12px;
+    color:white;
+    text-decoration:none;
+    font-size:18px;
+}
+
+.secondary-btn{
+    display:block;
+    margin-top:10px;
+    padding:12px;
+    background: rgba(122,77,255,0.18);
+    border-radius:12px;
+    color:white;
+    text-decoration:none;
+}
 </style>
 </head>
+
 <body>
-  <div class="box">
-    <h1>✅ Bewerbung gesendet</h1>
-    <p>Danke! Wir melden uns bei dir auf Discord.</p>
-    <p><a href="index.html">← Zurück zur Startseite</a></p>
-  </div>
+
+<div class="header">
+    <!-- Logo links oben -->
+    <a href="index.html">
+        <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+    </a>
+
+    <!-- Sprache -->
+    <div class="lang-switch">
+        <span class="lang-btn" onclick="setLang('de')">DE</span>
+        <span class="lang-btn" onclick="setLang('en')">EN</span>
+    </div>
+</div>
+
+<div class="box">
+    <h1 id="title">✅ Bewerbung gesendet</h1>
+    <p id="desc">Danke! Wir melden uns bei dir auf Discord.</p>
+
+    <a href="index.html" class="main-btn" id="home">Zurück zur Startseite</a>
+    <a href="mehr_erfahren.html" class="secondary-btn" id="more">Mehr erfahren</a>
+</div>
+
+<script>
+const text = {
+    de: {
+        title: "✅ Bewerbung gesendet",
+        desc: "Danke! Wir melden uns bei dir auf Discord.",
+        home: "Zurück zur Startseite",
+        more: "Mehr erfahren"
+    },
+    en: {
+        title: "✅ Application sent",
+        desc: "Thank you! We will contact you on Discord.",
+        home: "Back to homepage",
+        more: "Learn more"
+    }
+};
+
+function setLang(lang){
+    document.documentElement.lang = lang;
+    document.title = text[lang].title;
+
+    document.getElementById("title").innerText = text[lang].title;
+    document.getElementById("desc").innerText = text[lang].desc;
+    document.getElementById("home").innerText = text[lang].home;
+    document.getElementById("more").innerText = text[lang].more;
+}
+</script>
+
 </body>
 </html>
