@@ -6,6 +6,9 @@
 <title>HRX CreatorNET Bewerbung</title>
 
 <style>
+/* ✅ Fix für "versetzte Breiten" & Header overflow */
+*{ box-sizing:border-box; }
+
 body{
     margin:0;
     font-family:Arial, Helvetica, sans-serif;
@@ -28,13 +31,18 @@ body{
     display:flex;
     align-items:center;
     justify-content:space-between;
-    padding:0 20px 0 30px;
+    padding:0 24px;
     z-index:1000;
 }
+.header a{ display:flex; align-items:center; }
 .header img{ height:50px; }
 
 /* Sprachbuttons oben rechts */
-.lang-switch{ display:flex; gap:10px; }
+.lang-switch{
+    display:flex;
+    gap:10px;
+    flex-shrink:0;          /* ✅ verhindert rausdrücken */
+}
 .lang-btn{
     padding:6px 14px;
     border-radius:10px;
@@ -46,6 +54,7 @@ body{
     box-shadow: 0 0 10px rgba(122,77,255,0.5);
     cursor:pointer;
     user-select:none;
+    white-space:nowrap;
 }
 .lang-btn:hover{
     background: rgba(167,123,255,0.5);
@@ -109,9 +118,10 @@ textarea{min-height:120px;}
 }
 .submit-btn:hover{ transform:scale(1.02); }
 
+/* ✅ Fix: bündig wie Submit-Button */
 .secondary-btn{
     display:block;
-    margin-top:12px;
+    margin:12px 0 0 0;
     width:100%;
     padding:14px;
     background: rgba(122,77,255,0.18);
@@ -140,6 +150,13 @@ footer{text-align:center;padding:20px;font-size:12px;}
     background:rgba(122,77,255,0.15);
     margin:0 5px;
 }
+
+/* Mobile etwas kompakter */
+@media (max-width:520px){
+    .header{ padding:0 14px; }
+    .lang-btn{ padding:5px 10px; font-size:12px; }
+    .form-box{ padding:22px; }
+}
 </style>
 </head>
 
@@ -147,7 +164,7 @@ footer{text-align:center;padding:20px;font-size:12px;}
 
 <div class="header">
     <!-- Logo links oben -> Link zur Startseite -->
-    <a href="index.html" style="display:flex;align-items:center;">
+    <a href="index.html">
         <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
     </a>
 
@@ -283,7 +300,6 @@ function setLang(lang){
     document.getElementById("l_discord").innerText = t.labels.discord;
     document.getElementById("l_reason").innerText = t.labels.reason;
 
-    // Kategorie-Optionen aktualisieren
     const sel = document.getElementById("category");
     const current = sel.selectedIndex;
     sel.innerHTML = "";
@@ -295,7 +311,6 @@ function setLang(lang){
     });
     sel.selectedIndex = Math.min(current, sel.options.length - 1);
 
-    // Checkbox Text (mit Link) als HTML
     document.getElementById("privacy_text").innerHTML = t.privacyText;
 
     document.getElementById("btn_submit").innerText = t.submit;
