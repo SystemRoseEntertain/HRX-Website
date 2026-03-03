@@ -6,6 +6,8 @@
 <title>Impressum – HRX CreatorNET</title>
 
 <style>
+*{ box-sizing:border-box; }
+
 body{
     margin:0;
     font-family:Arial, Helvetica, sans-serif;
@@ -23,12 +25,44 @@ body{
     background:linear-gradient(90deg,#140b2a,#0b0f1e);
     display:flex;
     align-items:center;
-    padding-left:30px;
+    justify-content:space-between;
+    padding:0 24px;
     box-shadow:0 0 20px rgba(122,77,255,0.4);
+    z-index:1000;
+}
+
+.header a{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
 }
 
 .header img{
     height:50px;
+}
+
+/* Sprachbuttons oben rechts */
+.lang-switch{
+    display:flex;
+    gap:10px;
+    flex-shrink:0;
+}
+.lang-btn{
+    padding:6px 14px;
+    border-radius:10px;
+    background: rgba(122,77,255,0.2);
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    transition:0.2s;
+    box-shadow: 0 0 10px rgba(122,77,255,0.5);
+    cursor:pointer;
+    user-select:none;
+    white-space:nowrap;
+}
+.lang-btn:hover{
+    background: rgba(167,123,255,0.5);
+    transform: scale(1.05);
 }
 
 .container{
@@ -57,17 +91,32 @@ footer{
     font-size:12px;
     opacity:0.7;
 }
+
+/* Mobile etwas kompakter */
+@media (max-width:520px){
+    .header{ padding:0 14px; }
+    .lang-btn{ padding:5px 10px; font-size:12px; }
+}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-    <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+    <!-- ✅ Logo links oben -> Link zur Startseite -->
+    <a href="index.html" aria-label="Zur Startseite">
+        <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+    </a>
+
+    <!-- ✅ DE/EN rechts oben -->
+    <div class="lang-switch">
+        <span class="lang-btn" onclick="setLang('de')">DE</span>
+        <span class="lang-btn" onclick="setLang('en')">EN</span>
+    </div>
 </div>
 
-<div class="container">
-
+<div class="container" id="content">
+<!-- ✅ DE Originaltext 1:1 -->
 <h1>Impressum – HRX CreatorNET</h1>
 
 <p>Dieses Angebot wird gemeinschaftlich betrieben durch:</p>
@@ -99,7 +148,6 @@ Redaktionell verantwortlich:<br>
 Matthias Daniel Mayer, Erdinger Str. 72 a, 85356 Freising
 </p>
 
-
 <h2>🇦🇹 Österreich – Verantwortlich nach ECG / MedienG</h2>
 
 <p>
@@ -118,7 +166,6 @@ Telefon: +43 660 6467667
 Unternehmensgegenstand: Streaming / Online-Content-Erstellung<br>
 Grundlegende Richtung des Mediums: Unterhaltung und Livestreaming-Inhalte
 </p>
-
 
 <h2>Haftungsausschluss</h2>
 
@@ -143,13 +190,106 @@ deutschen Urheberrecht, Medieninhaber ist Rose Entertain UG (haftungsbeschränkt
 Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen
 des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
 </p>
-
 </div>
 
 <footer>
-<a href="index.html">Zur Startseite</a>
+    <a href="index.html" id="backlink">Zur Startseite</a>
 </footer>
 
-</body>
+<script>
+/* ✅ DE Originaltext bleibt 1:1 — EN ist eng daran übersetzt */
+const htmlDE = document.getElementById("content").innerHTML;
 
+const htmlEN = `
+<h1>Legal Notice – HRX CreatorNET</h1>
+
+<p>This service is jointly operated by:</p>
+
+<h2>🇩🇪 Germany – Responsible for content according to §5 TMG</h2>
+
+<p>
+<b>Rose Entertain UG (limited liability)</b><br>
+Erdinger Str. 72 a<br>
+85356 Freising<br>
+Germany
+</p>
+
+<p>
+Phone: +49 (0) 173 1725613<br>
+Email: info(at)rose-entertain.de<br>
+Web: https://rose-entertain.de/
+</p>
+
+<p>
+Register court: District Court (Amtsgericht) Munich<br>
+HRB 293673<br>
+Management: Matthias Daniel Mayer<br>
+VAT ID: DE3699074778
+</p>
+
+<p>
+Editorially responsible:<br>
+Matthias Daniel Mayer, Erdinger Str. 72 a, 85356 Freising
+</p>
+
+<h2>🇦🇹 Austria – Responsible according to ECG / MedienG</h2>
+
+<p>
+<b>Harald Göbl</b><br>
+Zinsenwang 27<br>
+3325 Ferschnitz<br>
+Austria
+</p>
+
+<p>
+Email: harry(at)haraldgoebl.com<br>
+Phone: +43 660 6467667
+</p>
+
+<p>
+Purpose of the business: Streaming / online content creation<br>
+Basic direction of the medium: Entertainment and livestreaming content
+</p>
+
+<h2>Disclaimer</h2>
+
+<p>
+The contents of our pages have been created with the greatest care. However, we cannot assume any liability for the accuracy,
+completeness and up-to-dateness of the contents.
+As a service provider, we are responsible for our own content on these pages in accordance with § 7 para. 1 TMG and the general laws.
+</p>
+
+<p>
+Our offer contains links to external third-party websites over whose content we have no influence.
+Therefore, we cannot assume any liability for such external content.
+The respective provider or operator of the linked pages is always responsible for their content.
+</p>
+
+<h2>Copyright</h2>
+
+<p>
+The content and works created by the site operators on these pages are subject to German copyright law. The media owner is Rose Entertain UG (limited liability), the author is Matthias Daniel Mayer. Third-party contributions are marked as such.
+Reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator.
+</p>
+`;
+
+function setLang(lang){
+  const content = document.getElementById("content");
+  const backlink = document.getElementById("backlink");
+
+  if(lang === "en"){
+    document.documentElement.lang = "en";
+    document.title = "Legal Notice – HRX CreatorNET";
+    content.innerHTML = htmlEN;
+    backlink.textContent = "Back to homepage";
+  } else {
+    document.documentElement.lang = "de";
+    document.title = "Impressum – HRX CreatorNET";
+    content.innerHTML = htmlDE;
+    backlink.textContent = "Zur Startseite";
+  }
+}
+</script>
+
+</body>
 </html>
