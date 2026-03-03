@@ -118,7 +118,6 @@ textarea{min-height:120px;}
 }
 .submit-btn:hover{ transform:scale(1.02); }
 
-/* ✅ Fix: bündig wie Submit-Button */
 .secondary-btn{
     display:block;
     margin:12px 0 0 0;
@@ -158,7 +157,6 @@ footer{text-align:center;padding:20px;font-size:12px;}
     line-height:1.4;
 }
 
-/* Mobile etwas kompakter */
 @media (max-width:520px){
     .header{ padding:0 14px; }
     .lang-btn{ padding:5px 10px; font-size:12px; }
@@ -198,7 +196,7 @@ holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.
 <input type="checkbox" name="botcheck" style="display:none">
 
 <!-- ✅ Plattform Dropdown -->
-<label id="l_platform">Plattform</label>
+<label id="l_platform">Plattform <span id="platform_hint">(TikTok, Twitch)</span></label>
 <select name="platform" id="platform" onchange="applyPlatform()">
     <option value="both" selected>Beides</option>
     <option value="twitch">Twitch</option>
@@ -208,7 +206,6 @@ holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.
 Vorauswahl: Beides – damit du alle Profile direkt angeben kannst.
 </div>
 
-<!-- ✅ Twitch Felder (bei Twitch oder Beides) -->
 <div id="twitch_block">
     <label id="l_twitch">Twitch Name</label>
     <input type="text" name="twitch" id="twitch_name">
@@ -217,7 +214,6 @@ Vorauswahl: Beides – damit du alle Profile direkt angeben kannst.
     <input type="url" name="twitch_link" id="twitch_link">
 </div>
 
-<!-- ✅ TikTok Felder (bei TikTok oder Beides) -->
 <div id="tiktok_block">
     <label id="l_tiktok">TikTok Name</label>
     <input type="text" name="tiktok" id="tiktok_name">
@@ -277,6 +273,7 @@ const i18n = {
         note: "100 % kostenlos für Creator – HRX CreatorNET bündelt Reichweite, holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.",
         labels: {
             platform: "Plattform",
+            platformHint: "(TikTok, Twitch)",
             platformNote: "Vorauswahl: Beides – damit du alle Profile direkt angeben kannst.",
             twitch: "Twitch Name",
             twitch_link: "Twitch Link",
@@ -301,6 +298,7 @@ const i18n = {
         note: "100% free for creators — HRX CreatorNET combines reach, secures strong brand deals, and distributes revenue fairly within the network.",
         labels: {
             platform: "Platform",
+            platformHint: "(TikTok, Twitch)",
             platformNote: "Default: Both — so you can add all profiles right away.",
             twitch: "Twitch name",
             twitch_link: "Twitch link",
@@ -332,7 +330,8 @@ function setLang(lang){
     document.getElementById("h_title").innerText = t.title;
     document.getElementById("h_note").innerText = t.note;
 
-    document.getElementById("l_platform").innerText = t.labels.platform;
+    document.getElementById("l_platform").childNodes[0].textContent = t.labels.platform + " ";
+    document.getElementById("platform_hint").innerText = t.labels.platformHint;
     document.getElementById("platform_note").innerText = t.labels.platformNote;
 
     document.getElementById("l_twitch").innerText = t.labels.twitch;
@@ -346,7 +345,6 @@ function setLang(lang){
     document.getElementById("l_discord").innerText = t.labels.discord;
     document.getElementById("l_reason").innerText = t.labels.reason;
 
-    // Plattform Optionen übersetzen, Auswahl behalten
     const platformSel = document.getElementById("platform");
     const current = platformSel.value;
     platformSel.innerHTML = "";
@@ -358,7 +356,6 @@ function setLang(lang){
     });
     platformSel.value = current;
 
-    // Kategorie Optionen übersetzen, Auswahl behalten
     const catSel = document.getElementById("category");
     const currentCat = catSel.selectedIndex;
     catSel.innerHTML = "";
@@ -376,7 +373,6 @@ function setLang(lang){
     document.getElementById("f_imprint").innerText = t.imprint;
     document.getElementById("f_privacy").innerText = t.privacyFooter;
 
-    // Plattform-Logik nach Sprachwechsel erneut anwenden
     applyPlatform();
 }
 
@@ -406,7 +402,6 @@ function applyPlatform(){
         tiktokName.required = true;
         tiktokLink.required = true;
     }else{
-        // both
         twitchBlock.style.display = "block";
         tiktokBlock.style.display = "block";
         twitchName.required = true;
@@ -416,7 +411,6 @@ function applyPlatform(){
     }
 }
 
-// ✅ Initial: Beides
 setLang("de");
 document.getElementById("platform").value = "both";
 applyPlatform();
