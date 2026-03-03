@@ -41,7 +41,7 @@ body{
 .lang-switch{
     display:flex;
     gap:10px;
-    flex-shrink:0;          /* ✅ verhindert rausdrücken */
+    flex-shrink:0;
 }
 .lang-btn{
     padding:6px 14px;
@@ -151,6 +151,13 @@ footer{text-align:center;padding:20px;font-size:12px;}
     margin:0 5px;
 }
 
+.platform-note{
+    margin-top:10px;
+    font-size:12px;
+    opacity:0.75;
+    line-height:1.4;
+}
+
 /* Mobile etwas kompakter */
 @media (max-width:520px){
     .header{ padding:0 14px; }
@@ -163,12 +170,10 @@ footer{text-align:center;padding:20px;font-size:12px;}
 <body>
 
 <div class="header">
-    <!-- Logo links oben -> Link zur Startseite -->
     <a href="index.html">
         <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
     </a>
 
-    <!-- DE/EN rechts oben -> switcht nur Text -->
     <div class="lang-switch">
         <span class="lang-btn" onclick="setLang('de')">DE</span>
         <span class="lang-btn" onclick="setLang('en')">EN</span>
@@ -192,11 +197,34 @@ holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.
 <input type="hidden" name="redirect" value="https://hrx-creator.net/danke.html">
 <input type="checkbox" name="botcheck" style="display:none">
 
-<label id="l_twitch">Twitch Name</label>
-<input type="text" name="twitch" required>
+<!-- ✅ Plattform Dropdown -->
+<label id="l_platform">Plattform</label>
+<select name="platform" id="platform" onchange="applyPlatform()">
+    <option value="both" selected>Beides</option>
+    <option value="twitch">Twitch</option>
+    <option value="tiktok">TikTok</option>
+</select>
+<div class="platform-note" id="platform_note">
+Vorauswahl: Beides – damit du alle Profile direkt angeben kannst.
+</div>
 
-<label id="l_twitch_link">Twitch Link</label>
-<input type="url" name="twitch_link" required>
+<!-- ✅ Twitch Felder (bei Twitch oder Beides) -->
+<div id="twitch_block">
+    <label id="l_twitch">Twitch Name</label>
+    <input type="text" name="twitch" id="twitch_name">
+
+    <label id="l_twitch_link">Twitch Link</label>
+    <input type="url" name="twitch_link" id="twitch_link">
+</div>
+
+<!-- ✅ TikTok Felder (bei TikTok oder Beides) -->
+<div id="tiktok_block">
+    <label id="l_tiktok">TikTok Name</label>
+    <input type="text" name="tiktok" id="tiktok_name">
+
+    <label id="l_tiktok_link">TikTok Link</label>
+    <input type="url" name="tiktok_link" id="tiktok_link">
+</div>
 
 <label id="l_viewer">Durchschnittliche Viewer</label>
 <input type="number" name="viewer" required>
@@ -228,7 +256,6 @@ holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.
 
 <button type="submit" class="submit-btn" id="btn_submit">Bewerbung senden</button>
 
-<!-- Mehr erfahren Button -->
 <a href="mehr_erfahren.html" class="secondary-btn" id="btn_more">Mehr erfahren</a>
 
 </form>
@@ -242,19 +269,26 @@ holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.
 </footer>
 
 <script>
+let currentLang = "de";
+
 const i18n = {
     de: {
         title: "HRX CreatorNET Bewerbung",
         note: "100 % kostenlos für Creator – HRX CreatorNET bündelt Reichweite, holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.",
         labels: {
+            platform: "Plattform",
+            platformNote: "Vorauswahl: Beides – damit du alle Profile direkt angeben kannst.",
             twitch: "Twitch Name",
             twitch_link: "Twitch Link",
+            tiktok: "TikTok Name",
+            tiktok_link: "TikTok Link",
             viewer: "Durchschnittliche Viewer",
             streams: "Streams pro Woche",
             category: "Kategorie",
             discord: "Discord",
             reason: "Warum willst du ins HRX CreatorNET?"
         },
+        platformOptions: { both: "Beides", twitch: "Twitch", tiktok: "TikTok" },
         category: ["Gaming", "Just Chatting", "IRL", "Music", "Andere"],
         privacyText: 'Ich stimme der <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> zu.',
         submit: "Bewerbung senden",
@@ -266,14 +300,19 @@ const i18n = {
         title: "HRX CreatorNET Application",
         note: "100% free for creators — HRX CreatorNET combines reach, secures strong brand deals, and distributes revenue fairly within the network.",
         labels: {
+            platform: "Platform",
+            platformNote: "Default: Both — so you can add all profiles right away.",
             twitch: "Twitch name",
             twitch_link: "Twitch link",
+            tiktok: "TikTok name",
+            tiktok_link: "TikTok link",
             viewer: "Average viewers",
             streams: "Streams per week",
             category: "Category",
             discord: "Discord",
             reason: "Why do you want to join HRX CreatorNET?"
         },
+        platformOptions: { both: "Both", twitch: "Twitch", tiktok: "TikTok" },
         category: ["Gaming", "Just Chatting", "IRL", "Music", "Other"],
         privacyText: 'I agree to the <a href="datenschutz.html" target="_blank">privacy policy</a>.',
         submit: "Submit application",
@@ -284,6 +323,7 @@ const i18n = {
 };
 
 function setLang(lang){
+    currentLang = lang;
     const t = i18n[lang];
 
     document.documentElement.lang = lang;
@@ -292,33 +332,94 @@ function setLang(lang){
     document.getElementById("h_title").innerText = t.title;
     document.getElementById("h_note").innerText = t.note;
 
+    document.getElementById("l_platform").innerText = t.labels.platform;
+    document.getElementById("platform_note").innerText = t.labels.platformNote;
+
     document.getElementById("l_twitch").innerText = t.labels.twitch;
     document.getElementById("l_twitch_link").innerText = t.labels.twitch_link;
+    document.getElementById("l_tiktok").innerText = t.labels.tiktok;
+    document.getElementById("l_tiktok_link").innerText = t.labels.tiktok_link;
+
     document.getElementById("l_viewer").innerText = t.labels.viewer;
     document.getElementById("l_streams").innerText = t.labels.streams;
     document.getElementById("l_category").innerText = t.labels.category;
     document.getElementById("l_discord").innerText = t.labels.discord;
     document.getElementById("l_reason").innerText = t.labels.reason;
 
-    const sel = document.getElementById("category");
-    const current = sel.selectedIndex;
-    sel.innerHTML = "";
-    t.category.forEach((name) => {
+    // Plattform Optionen übersetzen, Auswahl behalten
+    const platformSel = document.getElementById("platform");
+    const current = platformSel.value;
+    platformSel.innerHTML = "";
+    ["both","twitch","tiktok"].forEach(v=>{
         const opt = document.createElement("option");
-        opt.textContent = name;
-        opt.value = name;
-        sel.appendChild(opt);
+        opt.value = v;
+        opt.textContent = t.platformOptions[v];
+        platformSel.appendChild(opt);
     });
-    sel.selectedIndex = Math.min(current, sel.options.length - 1);
+    platformSel.value = current;
+
+    // Kategorie Optionen übersetzen, Auswahl behalten
+    const catSel = document.getElementById("category");
+    const currentCat = catSel.selectedIndex;
+    catSel.innerHTML = "";
+    t.category.forEach(name=>{
+        const opt = document.createElement("option");
+        opt.value = name;
+        opt.textContent = name;
+        catSel.appendChild(opt);
+    });
+    catSel.selectedIndex = Math.min(currentCat, catSel.options.length - 1);
 
     document.getElementById("privacy_text").innerHTML = t.privacyText;
-
     document.getElementById("btn_submit").innerText = t.submit;
     document.getElementById("btn_more").innerText = t.more;
-
     document.getElementById("f_imprint").innerText = t.imprint;
     document.getElementById("f_privacy").innerText = t.privacyFooter;
+
+    // Plattform-Logik nach Sprachwechsel erneut anwenden
+    applyPlatform();
 }
+
+function applyPlatform(){
+    const mode = document.getElementById("platform").value;
+
+    const twitchBlock = document.getElementById("twitch_block");
+    const tiktokBlock = document.getElementById("tiktok_block");
+
+    const twitchName = document.getElementById("twitch_name");
+    const twitchLink = document.getElementById("twitch_link");
+    const tiktokName = document.getElementById("tiktok_name");
+    const tiktokLink = document.getElementById("tiktok_link");
+
+    if(mode === "twitch"){
+        twitchBlock.style.display = "block";
+        tiktokBlock.style.display = "none";
+        twitchName.required = true;
+        twitchLink.required = true;
+        tiktokName.required = false;
+        tiktokLink.required = false;
+    }else if(mode === "tiktok"){
+        twitchBlock.style.display = "none";
+        tiktokBlock.style.display = "block";
+        twitchName.required = false;
+        twitchLink.required = false;
+        tiktokName.required = true;
+        tiktokLink.required = true;
+    }else{
+        // both
+        twitchBlock.style.display = "block";
+        tiktokBlock.style.display = "block";
+        twitchName.required = true;
+        twitchLink.required = true;
+        tiktokName.required = true;
+        tiktokLink.required = true;
+    }
+}
+
+// ✅ Initial: Beides
+setLang("de");
+document.getElementById("platform").value = "both";
+applyPlatform();
 </script>
 
 </body>
