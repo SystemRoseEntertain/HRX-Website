@@ -18,7 +18,27 @@ body {
     text-align: center;
 }
 .container { max-width: 800px; padding: 40px; }
-.logo { width: 100%; max-width: 500px; margin-bottom: 40px; }
+.logo { width: 100%; max-width: 500px; margin-bottom: 14px; }
+
+/* ✅ Neu: Twitch + TikTok Logos nebeneinander */
+.platform-logos{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:14px;
+    margin: 0 0 28px 0;   /* Abstand nach unten */
+    opacity:0.9;
+}
+.platform-logos img{
+    height:26px;          /* klein unter HRX Logo */
+    width:auto;
+    display:block;
+    filter: drop-shadow(0 0 10px rgba(122,77,255,0.35));
+}
+@media (max-width:520px){
+    .platform-logos img{ height:22px; }
+}
+
 h1 { font-size: 40px; margin-bottom: 10px; }
 p { opacity: 0.8; margin-bottom: 30px; }
 
@@ -90,7 +110,14 @@ footer {
 </div>
 
 <div class="container">
-    <img src="HRX_Logo_Twitchlila_w4.png" class="logo">
+    <img src="HRX_Logo_Twitchlila_w4.png" class="logo" alt="HRX CreatorNET Logo">
+
+    <!-- ✅ Neu: Plattform-Logos nebeneinander -->
+    <div class="platform-logos" aria-label="Plattformen">
+        <img src="logo_tt.png" alt="TikTok">
+        <img src="logo_twitch.png" alt="Twitch">
+    </div>
+
     <h1 id="title">Werde Teil von HRX CreatorNET</h1>
     <p id="desc">Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.</p>
     <a href="bewerbung.html" class="apply-btn" id="apply">Jetzt bewerben</a><br>
