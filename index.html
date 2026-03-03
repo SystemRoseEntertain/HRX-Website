@@ -6,156 +6,200 @@
 <title>HRX CreatorNET – Creator Network</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: radial-gradient(circle at top, #1a1033, #05070f);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-}
-.container { max-width: 800px; padding: 40px; }
-.logo { width: 100%; max-width: 500px; margin-bottom: 14px; }
 
-/* ✅ Neu: Twitch + TikTok Logos nebeneinander */
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background: radial-gradient(circle at top, #1a1033, #05070f);
+    color:white;
+    text-align:center;
+
+    /* FIX */
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.container{
+    max-width:800px;
+    padding:40px;
+    margin:auto;
+
+    /* FIX */
+    flex:1;
+}
+
+.logo{
+    width:100%;
+    max-width:500px;
+    margin-bottom:14px;
+}
+
+/* Plattform Logos */
+
 .platform-logos{
     display:flex;
     justify-content:center;
     align-items:center;
     gap:14px;
-    margin: 0 0 90px 0;   /* Abstand nach unten */
+    margin:0 0 90px 0;
     opacity:0.9;
 }
+
 .platform-logos img{
-    height:52px;          /* klein unter HRX Logo */
+    height:52px;
     width:auto;
     display:block;
     filter: drop-shadow(0 0 10px rgba(122,77,255,0.35));
 }
+
 @media (max-width:520px){
-    .platform-logos img{ height:22px; }
+    .platform-logos img{ height:36px; }
 }
 
-h1 { font-size: 40px; margin-bottom: 10px; }
-p { opacity: 0.8; margin-bottom: 30px; }
-
-.apply-btn, .info-btn {
-    background: linear-gradient(90deg, #7a4dff, #a77bff);
-    border: none;
-    padding: 18px 40px;
-    font-size: 20px;
-    border-radius: 12px;
-    color: white;
-    cursor: pointer;
-    transition: 0.2s;
-    text-decoration: none;
-    display: inline-block;
-    box-shadow: 0 10px 30px rgba(122,77,255,0.4);
-    margin: 10px;
-}
-.apply-btn:hover, .info-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 15px 40px rgba(122,77,255,0.6);
+h1{
+    font-size:40px;
+    margin-bottom:10px;
 }
 
-.lang-switch {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+p{
+    opacity:0.8;
+    margin-bottom:30px;
 }
-.lang-btn {
-    padding: 6px 14px;
-    margin-left: 8px;
-    border-radius: 10px;
-    background: rgba(122,77,255,0.2);
-    color: white;
-    text-decoration: none;
-    font-size: 13px;
-    transition: 0.2s;
-    box-shadow: 0 0 10px rgba(122,77,255,0.5);
-    cursor: pointer;
-}
-.lang-btn:hover { background: rgba(167,123,255,0.5); transform: scale(1.05); }
 
-footer {
-    position: absolute;
-    bottom: 15px;
-    font-size: 12px;
-    opacity: 0.7;
+.apply-btn,
+.info-btn{
+    background: linear-gradient(90deg,#7a4dff,#a77bff);
+    border:none;
+    padding:18px 40px;
+    font-size:20px;
+    border-radius:12px;
+    color:white;
+    cursor:pointer;
+    transition:0.2s;
+    text-decoration:none;
+    display:inline-block;
+    box-shadow:0 10px 30px rgba(122,77,255,0.4);
+    margin:10px;
 }
-.footer-btn {
-    display: inline-block;
-    margin: 6px 5px 0 5px;
-    padding: 4px 12px;
-    font-size: 12px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #d8cfff;
-    background: rgba(122,77,255,0.15);
-    box-shadow: 0 0 10px rgba(122,77,255,0.6);
-    transition: 0.2s;
+
+.apply-btn:hover,
+.info-btn:hover{
+    transform:scale(1.05);
+    box-shadow:0 15px 40px rgba(122,77,255,0.6);
 }
-.footer-btn:hover { background: rgba(122,77,255,0.35); transform: scale(1.05); }
+
+/* Sprache */
+
+.lang-switch{
+    position:absolute;
+    top:20px;
+    right:20px;
+}
+
+.lang-btn{
+    padding:6px 14px;
+    margin-left:8px;
+    border-radius:10px;
+    background:rgba(122,77,255,0.2);
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    transition:0.2s;
+    box-shadow:0 0 10px rgba(122,77,255,0.5);
+    cursor:pointer;
+}
+
+.lang-btn:hover{
+    background:rgba(167,123,255,0.5);
+    transform:scale(1.05);
+}
+
+/* Footer */
+
+footer{
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+    opacity:0.7;
+}
+
+.footer-btn{
+    display:inline-block;
+    margin:6px 5px 0 5px;
+    padding:4px 12px;
+    font-size:12px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#d8cfff;
+    background:rgba(122,77,255,0.15);
+    box-shadow:0 0 10px rgba(122,77,255,0.6);
+    transition:0.2s;
+}
+
+.footer-btn:hover{
+    background:rgba(122,77,255,0.35);
+    transform:scale(1.05);
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="lang-switch">
-    <span class="lang-btn" onclick="setLang('de')">DE</span>
-    <span class="lang-btn" onclick="setLang('en')">EN</span>
+<span class="lang-btn" onclick="setLang('de')">DE</span>
+<span class="lang-btn" onclick="setLang('en')">EN</span>
 </div>
 
 <div class="container">
-    <img src="HRX_Logo_Twitchlila_w4.png" class="logo" alt="HRX CreatorNET Logo">
 
-    <!-- ✅ Neu: Plattform-Logos nebeneinander -->
-    <div class="platform-logos" aria-label="Plattformen">
-        <img src="logo_tt.png" alt="TikTok">
-        <img src="logo_twitch.png" alt="Twitch">
-    </div>
+<img src="HRX_Logo_Twitchlila_w4.png" class="logo" alt="HRX CreatorNET Logo">
 
-    <h1 id="title">Werde Teil von HRX CreatorNET</h1>
-    <p id="desc">Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.</p>
-    <a href="bewerbung.html" class="apply-btn" id="apply">Jetzt bewerben</a><br>
-    <a href="mehr_erfahren.html" class="info-btn" id="info">Mehr erfahren</a>
+<div class="platform-logos">
+<img src="logo_tt.png" alt="TikTok">
+<img src="logo_twitch.png" alt="Twitch">
+</div>
+
+<h1 id="title">Werde Teil von HRX CreatorNET</h1>
+<p id="desc">Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.</p>
+
+<a href="bewerbung.html" class="apply-btn" id="apply">Jetzt bewerben</a><br>
+<a href="mehr_erfahren.html" class="info-btn" id="info">Mehr erfahren</a>
+
 </div>
 
 <footer>
-    © 2026 HRX CreatorNET – HyptryX x Rose Entertain<br>
-    <a href="impressum.html" class="footer-btn">Impressum</a>
-    <a href="datenschutz.html" class="footer-btn">Datenschutz</a>
+© 2026 HRX CreatorNET – HyptryX x Rose Entertain<br>
+<a href="impressum.html" class="footer-btn">Impressum</a>
+<a href="datenschutz.html" class="footer-btn">Datenschutz</a>
 </footer>
 
 <script>
-const text = {
-    de: {
-        title: "Werde Teil von HRX CreatorNET",
-        desc: "Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.",
-        apply: "Jetzt bewerben",
-        info: "Mehr erfahren"
-    },
-    en: {
-        title: "Join HRX CreatorNET",
-        desc: "Assets, brand deals, growth – we take creators to the next level.",
-        apply: "Apply now",
-        info: "Learn more"
-    }
+
+const text={
+de:{
+title:"Werde Teil von HRX CreatorNET",
+desc:"Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.",
+apply:"Jetzt bewerben",
+info:"Mehr erfahren"
+},
+en:{
+title:"Join HRX CreatorNET",
+desc:"Assets, brand deals, growth – we take creators to the next level.",
+apply:"Apply now",
+info:"Learn more"
+}
 };
 
-function setLang(lang) {
-    document.getElementById("title").innerText = text[lang].title;
-    document.getElementById("desc").innerText = text[lang].desc;
-    document.getElementById("apply").innerText = text[lang].apply;
-    document.getElementById("info").innerText = text[lang].info;
+function setLang(lang){
+document.getElementById("title").innerText=text[lang].title;
+document.getElementById("desc").innerText=text[lang].desc;
+document.getElementById("apply").innerText=text[lang].apply;
+document.getElementById("info").innerText=text[lang].info;
 }
+
 </script>
 
 </body>
 </html>
-
-
-
