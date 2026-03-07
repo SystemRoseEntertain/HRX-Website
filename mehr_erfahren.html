@@ -214,7 +214,6 @@ a{ color:inherit; }
   font-size:13px;
 }
 
-
 .tiles{
   display:grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -377,12 +376,11 @@ footer{
 
   <div class="section-head">
     <h2 id="sec_title">Empfohlen</h2>
-    
   </div>
 
   <section class="tiles">
     <article class="tile">
-      <div class="tile-img"><img src="thema1.png" alt="Thema 1"></div>
+      <div class="tile-img"><img src="assets.png" alt="Thema 1"></div>
       <div class="tile-body">
         <div class="badge" id="b1">Assets</div>
         <h3 id="t1">Monatliche Free Assets</h3>
@@ -391,7 +389,7 @@ footer{
     </article>
 
     <article class="tile">
-      <div class="tile-img"><img src="thema2.png" alt="Thema 2"></div>
+      <div class="tile-img"><img src="Branding.png" alt="Thema 2"></div>
       <div class="tile-body">
         <div class="badge" id="b2">Twitch</div>
         <h3 id="t2">Stream-Branding & Setup</h3>
@@ -400,16 +398,16 @@ footer{
     </article>
 
     <article class="tile">
-      <div class="tile-img"><img src="thema3.png" alt="Thema 3"></div>
+      <div class="tile-img"><img src="programmierung.png" alt="Thema 3"></div>
       <div class="tile-body">
         <div class="badge" id="b3">Tech</div>
-        <h3 id="t3">Kleine Web/Shop Hilfe</h3>
-        <p id="d3">Webshop-Setups, kleine Features, Fixes – schnelle Hilfe ohne Agentur-Gelaber.</p>
+        <h3 id="t3">Unterstützung bei Webshop und Programmierung</h3>
+        <p id="d3">Hilfe bei Webshops, Tools und individuellen Features für Creator.</p>
       </div>
     </article>
 
     <article class="tile">
-      <div class="tile-img"><img src="thema4.png" alt="Thema 4"></div>
+      <div class="tile-img"><img src="deals.png" alt="Thema 4"></div>
       <div class="tile-body">
         <div class="badge" id="b4">Partner</div>
         <h3 id="t4">Partnerschaften & Deals</h3>
@@ -418,7 +416,7 @@ footer{
     </article>
 
     <article class="tile">
-      <div class="tile-img"><img src="thema5.png" alt="Thema 5"></div>
+      <div class="tile-img"><img src="assets_unikat.png" alt="Thema 5"></div>
       <div class="tile-body">
         <div class="badge" id="b5">Custom</div>
         <h3 id="t5">Individuelle Assets (Rabatt)</h3>
@@ -427,11 +425,11 @@ footer{
     </article>
 
     <article class="tile">
-      <div class="tile-img"><img src="thema6.png" alt="Thema 6"></div>
+      <div class="tile-img"><img src="partner.png" alt="Thema 6"></div>
       <div class="tile-body">
         <div class="badge" id="b6">Rose Entertain</div>
-        <h3 id="t6">Deep Partnerships (optional)</h3>
-        <p id="d6">Für größere Projekte: Rose Entertain als Game/Dev-Studio – professionell & kostenpflichtig.</p>
+        <h3 id="t6">Deals mit unseren Game Devs</h3>
+        <p id="d6">Kooperationen mit Game-Studios und Entwicklern aus unserem Netzwerk.</p>
       </div>
     </article>
   </section>
@@ -465,15 +463,14 @@ const i18n = {
     btnApply: "Jetzt bewerben",
     btnBack: "Zur Startseite",
     secTitle: "Empfohlen",
-   
     badges: ["Assets","Twitch","Tech","Partner","Custom","Rose Entertain"],
     tiles: [
       ["Monatliche Free Assets", "Jeden Monat neue Panels, Overlays, Badges & Templates – exklusiv im Network."],
       ["Stream-Branding & Setup", "Sauberes Branding und Hilfe beim Setup – damit dein Channel wie ein Profi wirkt."],
-      ["Kleine Web/Shop Hilfe", "Webshop-Setups, kleine Features, Fixes – schnelle Hilfe ohne Agentur-Gelaber."],
+      ["Unterstützung bei Webshop und Programmierung", "Hilfe bei Webshops, Tools und individuellen Features für Creator."],
       ["Partnerschaften & Deals", "Wir matchen Creator & Partner sinnvoll. Keine Versprechen – aber echte Chancen."],
       ["Individuelle Assets (Rabatt)", "Du brauchst was Eigenes? Wir machen’s – als Member zu reduzierten Preisen."],
-      ["Deep Partnerships (optional)", "Für größere Projekte: Rose Entertain als Game/Dev-Studio – professionell & kostenpflichtig."]
+      ["Deals mit unseren Game Devs", "Kooperationen mit Game-Studios und Entwicklern aus unserem Netzwerk."]
     ],
     calloutTitle: "Fair, transparent, creator-first.",
     calloutDesc: "Keine Fixkosten, kein Knebelvertrag. Free Assets im Network – Custom Work nur wenn du’s willst.",
@@ -491,15 +488,14 @@ const i18n = {
     btnApply: "Apply now",
     btnBack: "Back to homepage",
     secTitle: "Featured",
-   
     badges: ["Assets","Twitch","Tech","Partners","Custom","Rose Entertain"],
     tiles: [
       ["Free monthly assets", "New panels, overlays, badges & templates every month — exclusive to members."],
       ["Stream branding & setup", "Clean branding and setup help — so your channel looks pro."],
-      ["Small web/shop help", "Shop setup, small features, fixes — fast help without agency nonsense."],
+      ["Webshop & development support", "Help with webshops, tools and custom features for creators."],
       ["Partnerships & deals", "We connect creators and partners properly. No promises — real opportunities."],
       ["Custom assets (discount)", "Need something unique? We build it — discounted member pricing."],
-      ["Deep partnerships (optional)", "For bigger projects: Rose Entertain as a dev studio — professional & paid."]
+      ["Deals with our game devs", "Collaborations with game studios and developers from our network."]
     ],
     calloutTitle: "Fair, transparent, creator-first.",
     calloutDesc: "No fixed fees, no lock-in contracts. Free assets in the network — custom work only if you want it.",
@@ -524,9 +520,7 @@ function setLang(lang){
   document.getElementById("btn_back").innerText = t.btnBack;
 
   document.getElementById("sec_title").innerText = t.secTitle;
-  document.getElementById("sec_sub").innerText = t.secSub;
 
-  // badges
   document.getElementById("b1").innerText = t.badges[0];
   document.getElementById("b2").innerText = t.badges[1];
   document.getElementById("b3").innerText = t.badges[2];
@@ -534,7 +528,6 @@ function setLang(lang){
   document.getElementById("b5").innerText = t.badges[4];
   document.getElementById("b6").innerText = t.badges[5];
 
-  // tiles
   document.getElementById("t1").innerText = t.tiles[0][0];
   document.getElementById("d1").innerText = t.tiles[0][1];
   document.getElementById("t2").innerText = t.tiles[1][0];
@@ -555,8 +548,9 @@ function setLang(lang){
   document.getElementById("f_privacy").innerText = t.footerPrivacy;
   document.getElementById("foot_line").innerText = t.footerLine;
 }
+
+setLang("de");
 </script>
 
 </body>
 </html>
-
