@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRX CreatorNET – Login</title>
+
+<style>
+*{ box-sizing:border-box; }
+
+html,body{ height:100%; }
+
+body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#fff;
+    background:
+      radial-gradient(1200px 650px at 18% 0%, rgba(122,77,255,0.28), transparent 60%),
+      radial-gradient(900px 520px at 85% 25%, rgba(167,123,255,0.18), transparent 60%),
+      radial-gradient(circle at top, #1a1033, #05070f);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+}
+
+body:before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size:42px 42px;
+    pointer-events:none;
+    opacity:0.25;
+}
+
+/* ===== Header ===== */
+.header{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    min-height:80px;
+    background:linear-gradient(90deg,#140b2a,#0b0f1e);
+    border-bottom:1px solid rgba(167,123,255,0.22);
+    box-shadow:0 0 20px rgba(122,77,255,0.4);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+    z-index:1000;
+}
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    min-width:0;
+}
+
+.header-left > a{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+}
+
+.header img{
+    height:50px;
+    display:block;
+}
+
+.main-nav{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.nav-link{
+    padding:8px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#efeaff;
+    background:rgba(122,77,255,0.10);
+    border:1px solid rgba(167,123,255,0.18);
+    box-shadow:0 0 10px rgba(122,77,255,0.15);
+    font-size:13px;
+    transition:0.2s;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.nav-link:hover{
+    background:rgba(122,77,255,0.22);
+    box-shadow:0 0 16px rgba(167,123,255,0.35);
+    transform:scale(1.04);
+}
+
+.lang-switch{
+    display:flex;
+    gap:10px;
+    flex-shrink:0;
+}
+
+.lang-btn{
+    padding:7px 14px;
+    border-radius:12px;
+    background: rgba(122,77,255,0.18);
+    border: 1px solid rgba(167,123,255,0.25);
+    color:#fff;
+    font-size:13px;
+    cursor:pointer;
+    user-select:none;
+    box-shadow: 0 0 14px rgba(122,77,255,0.25);
+    transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
+    white-space:nowrap;
+}
+
+.lang-btn:hover{
+    transform: translateY(-1px);
+    background: rgba(167,123,255,0.28);
+    box-shadow: 0 0 22px rgba(167,123,255,0.35);
+}
+
+/* ===== Layout ===== */
+main{
+    flex:1;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:120px 20px 40px;
+}
+
+.login-box{
+    width:100%;
+    max-width:460px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+    border:1px solid rgba(167,123,255,0.16);
+    box-shadow:0 18px 60px rgba(0,0,0,0.55);
+    border-radius:22px;
+    padding:30px 26px;
+}
+
+.kicker{
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:#d8cfff;
+    opacity:0.9;
+    margin-bottom:10px;
+    text-align:center;
+}
+
+h1{
+    margin:0 0 10px 0;
+    font-size:34px;
+    text-align:center;
+    letter-spacing:-0.02em;
+}
+
+.subtext{
+    margin:0 0 24px 0;
+    text-align:center;
+    opacity:0.82;
+    font-size:15px;
+    line-height:1.5;
+}
+
+label{
+    display:block;
+    margin-top:18px;
+    font-weight:bold;
+    font-size:14px;
+}
+
+input{
+    width:100%;
+    padding:13px 14px;
+    margin-top:8px;
+    border-radius:12px;
+    border:none;
+    background:rgba(0,0,0,0.55);
+    color:white;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus{
+    box-shadow:0 0 0 1px rgba(167,123,255,0.4), 0 0 18px rgba(122,77,255,0.22);
+}
+
+.login-btn{
+    margin-top:24px;
+    width:100%;
+    padding:15px 16px;
+    background:linear-gradient(90deg, #7a4dff, #a77bff);
+    border:none;
+    border-radius:14px;
+    color:white;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 16px 50px rgba(122,77,255,0.38);
+    transition:transform .15s ease, box-shadow .15s ease;
+}
+
+.login-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 22px 70px rgba(167,123,255,0.45);
+}
+
+.message{
+    min-height:22px;
+    margin-top:14px;
+    text-align:center;
+    font-size:14px;
+    opacity:0.9;
+}
+
+.footer-note{
+    margin-top:18px;
+    text-align:center;
+    font-size:12px;
+    opacity:0.65;
+    line-height:1.5;
+}
+
+/* ===== Footer ===== */
+footer{
+    text-align:center;
+    padding:20px;
+    font-size:12px;
+    opacity:0.85;
+}
+
+.footer-links{
+    margin-top:10px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.footer-btn{
+    display:inline-block;
+    padding:6px 12px;
+    border-radius:12px;
+    text-decoration:none;
+    color:#d8cfff;
+    background:rgba(122,77,255,0.12);
+    border:1px solid rgba(167,123,255,0.18);
+    box-shadow:0 0 14px rgba(122,77,255,0.18);
+    transition:transform .15s ease, background .15s ease;
+}
+
+.footer-btn:hover{
+    transform:translateY(-1px);
+    background:rgba(122,77,255,0.18);
+}
+
+/* ===== Responsive ===== */
+@media (max-width:900px){
+    .header{
+        height:auto;
+        padding:12px 14px;
+        align-items:flex-start;
+    }
+
+    .header-left{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .main-nav{
+        gap:8px;
+    }
+
+    main{
+        padding:150px 20px 40px;
+    }
+}
+
+@media (max-width:560px){
+    .nav-link{ font-size:12px; padding:7px 10px; }
+    .lang-btn{ padding:5px 10px; font-size:12px; }
+    main{ padding:170px 16px 30px; }
+    h1{ font-size:30px; }
+    .login-box{ padding:24px 20px; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-left">
+        <a href="index.html" aria-label="Zur Startseite">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
+        </a>
+
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+            <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+            <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+            <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
+        </nav>
+    </div>
+
+    <div class="lang-switch">
+        <span class="lang-btn" onclick="setLang('de')">DE</span>
+        <span class="lang-btn" onclick="setLang('en')">EN</span>
+    </div>
+</header>
+
+<main>
+    <div class="login-box">
+        <div class="kicker" id="kicker">Interner Bereich</div>
+        <h1 id="title">Login</h1>
+        <p class="subtext" id="subtext">
+            Melde dich an, um auf den internen Bereich von HRX CreatorNET zuzugreifen.
+        </p>
+
+        <form onsubmit="handleLogin(event)">
+            <label for="email" id="label_email">E-Mail</label>
+            <input type="email" id="email" autocomplete="username" required>
+
+            <label for="password" id="label_password">Passwort</label>
+            <input type="password" id="password" autocomplete="current-password" required>
+
+            <button type="submit" class="login-btn" id="btn_login">Einloggen</button>
+        </form>
+
+        <div class="message" id="message"></div>
+
+        <div class="footer-note" id="footer_note"></div>
+    </div>
+</main>
+
+<footer>
+    <div id="footer_line">© 2026 HRX CreatorNET – HyptryX x Rose Entertain</div>
+    <div class="footer-links">
+        <a class="footer-btn" href="impressum.html" id="f_imprint">Impressum</a>
+        <a class="footer-btn" href="datenschutz.html" id="f_privacy">Datenschutz</a>
+    </div>
+</footer>
+
+<script>
+const i18n = {
+    de: {
+        titlePage: "HRX CreatorNET – Login",
+        nav: {
+            home: "Startseite",
+            more: "Mehr erfahren",
+            talents: "Talente",
+            intern: "Intern"
+        },
+        kicker: "Interner Bereich",
+        title: "Login",
+        subtext: "Melde dich an, um auf den internen Bereich von HRX CreatorNET zuzugreifen.",
+        email: "E-Mail",
+        password: "Passwort",
+        login: "Einloggen",
+        footerNote: "Platzhalter-Login für den aktuellen Stand. Das echte Backend folgt später.",
+        success: "Login erfolgreich – du wirst weitergeleitet.",
+        error: "Bitte E-Mail und Passwort eingeben.",
+        footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain",
+        imprint: "Impressum",
+        privacy: "Datenschutz"
+    },
+    en: {
+        titlePage: "HRX CreatorNET – Login",
+        nav: {
+            home: "Home",
+            more: "Learn more",
+            talents: "Talents",
+            intern: "Intern"
+        },
+        kicker: "Internal area",
+        title: "Login",
+        subtext: "Sign in to access the internal area of HRX CreatorNET.",
+        email: "Email",
+        password: "Password",
+        login: "Log in",
+        footerNote: "Placeholder login for the current stage. The real backend will come later.",
+        success: "Login successful – redirecting.",
+        error: "Please enter email and password.",
+        footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain",
+        imprint: "Legal notice",
+        privacy: "Privacy"
+    }
+};
+
+let currentLang = "de";
+
+function setLang(lang){
+    currentLang = lang;
+    const t = i18n[lang];
+
+    document.documentElement.lang = lang;
+    document.title = t.titlePage;
+
+    document.getElementById("nav_home").innerText = t.nav.home;
+    document.getElementById("nav_more").innerText = t.nav.more;
+    document.getElementById("nav_talents").innerText = t.nav.talents;
+    document.getElementById("nav_intern").innerText = t.nav.intern;
+
+    document.getElementById("kicker").innerText = t.kicker;
+    document.getElementById("title").innerText = t.title;
+    document.getElementById("subtext").innerText = t.subtext;
+    document.getElementById("label_email").innerText = t.email;
+    document.getElementById("label_password").innerText = t.password;
+    document.getElementById("btn_login").innerText = t.login;
+    document.getElementById("footer_note").innerText = t.footerNote;
+
+    document.getElementById("footer_line").innerText = t.footerLine;
+    document.getElementById("f_imprint").innerText = t.imprint;
+    document.getElementById("f_privacy").innerText = t.privacy;
+}
+
+function openIntern(){
+    const isLoggedIn = localStorage.getItem("hrx_login");
+    if(isLoggedIn === "true"){
+        window.location.href = "intern.html";
+    }else{
+        window.location.href = "login.html";
+    }
+}
+
+function handleLogin(event){
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const message = document.getElementById("message");
+    const t = i18n[currentLang];
+
+    if(!email || !password){
+        message.textContent = t.error;
+        return;
+    }
+
+    localStorage.setItem("hrx_login", "true");
+    message.textContent = t.success;
+
+    setTimeout(() => {
+        window.location.href = "intern.html";
+    }, 600);
+}
+
+setLang("de");
+</script>
+
+</body>
+</html>

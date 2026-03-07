@@ -36,39 +36,63 @@ a{ color:inherit; }
 /* ===== Header ===== */
 .header{
   position:fixed;
-  top:0; left:0; right:0;
-  height:84px;
-  z-index:1000;
+  top:0;
+  left:0;
+  width:100%;
+  min-height:80px;
+  background:linear-gradient(90deg,#140b2a,#0b0f1e);
+  border-bottom:1px solid rgba(167,123,255,0.22);
+  box-shadow:0 0 20px rgba(122,77,255,0.4);
   display:flex;
   align-items:center;
   justify-content:space-between;
   padding:0 24px;
-  background: linear-gradient(90deg, rgba(20,11,42,0.92), rgba(11,15,30,0.92));
-  border-bottom: 1px solid rgba(167,123,255,0.22);
-  box-shadow: 0 12px 40px rgba(0,0,0,0.45);
-  backdrop-filter: blur(10px);
+  z-index:1000;
 }
-.brand{
+
+.header-left{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:28px;
+  min-width:0;
+}
+
+.header-left > a{
+  display:flex;
+  align-items:center;
   text-decoration:none;
 }
-.brand img{ height:52px; display:block; }
-.brand .brand-text{
+
+.header img{
+  height:52px;
+  display:block;
+}
+
+.main-nav{
   display:flex;
-  flex-direction:column;
-  line-height:1.05;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
 }
-.brand .brand-text strong{
+
+.nav-link{
+  padding:8px 14px;
+  border-radius:10px;
+  text-decoration:none;
+  color:#efeaff;
+  background:rgba(122,77,255,0.10);
+  border:1px solid rgba(167,123,255,0.18);
+  box-shadow:0 0 10px rgba(122,77,255,0.15);
   font-size:13px;
-  letter-spacing:0.14em;
-  text-transform:uppercase;
-  opacity:0.9;
+  transition:0.2s;
+  white-space:nowrap;
+  cursor:pointer;
 }
-.brand .brand-text span{
-  font-size:12px;
-  opacity:0.7;
+
+.nav-link:hover{
+  background:rgba(122,77,255,0.22);
+  box-shadow:0 0 16px rgba(167,123,255,0.35);
+  transform:scale(1.04);
 }
 
 .lang-switch{
@@ -76,6 +100,7 @@ a{ color:inherit; }
   gap:10px;
   flex-shrink:0;
 }
+
 .lang-btn{
   padding:7px 14px;
   border-radius:12px;
@@ -89,6 +114,7 @@ a{ color:inherit; }
   transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
   white-space:nowrap;
 }
+
 .lang-btn:hover{
   transform: translateY(-1px);
   background: rgba(167,123,255,0.28);
@@ -328,13 +354,37 @@ footer{
   .actions{ flex-direction:row; flex-wrap:wrap; }
   .btn-primary, .btn-ghost{ flex:1; min-width:220px; }
 }
+
+@media (max-width: 900px){
+  .header{
+    height:auto;
+    padding:12px 14px;
+    align-items:flex-start;
+  }
+
+  .header-left{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .main-nav{
+    gap:8px;
+  }
+
+  .wrap{
+    padding:150px 20px 70px;
+  }
+}
+
 @media (max-width: 560px){
-  .header{ padding:0 14px; }
-  .brand .brand-text{ display:none; }
   .tiles{ grid-template-columns: 1fr; }
   .hero h1{ font-size:34px; }
   .btn-primary, .btn-ghost{ min-width:0; width:100%; }
   .callout{ flex-direction:column; align-items:flex-start; }
+  .nav-link{ font-size:12px; padding:7px 10px; }
+  .lang-btn{ padding:5px 10px; font-size:12px; }
+  .wrap{ padding:170px 16px 60px; }
 }
 </style>
 </head>
@@ -342,13 +392,18 @@ footer{
 <body>
 
 <header class="header">
-  <a class="brand" href="index.html" aria-label="Zur Startseite">
-    <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo" />
-    <div class="brand-text">
-      <strong>HRX CreatorNET</strong>
-      <span id="brand_sub">Twitch Creator Network</span>
-    </div>
-  </a>
+  <div class="header-left">
+    <a href="index.html" aria-label="Zur Startseite">
+      <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo" />
+    </a>
+
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+      <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+      <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+      <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
+    </nav>
+  </div>
 
   <div class="lang-switch">
     <span class="lang-btn" onclick="setLang('de')">DE</span>
@@ -363,8 +418,9 @@ footer{
         <div class="kicker" id="kicker">Mehr erfahren</div>
         <h1 id="hero_title">Was ist HRX CreatorNET?</h1>
         <p id="hero_desc">
-HRX CreatorNET unterstützt Twitch-Creator mit monatlich kostenlosen Assets, Technik-Hilfe für kleinere Web-/Shop-Themen
-und fairen Partnerschaften. Individuelle Projekte gibt’s optional zu reduzierten Preisen – transparent und ohne Bullshit.
+HRX CreatorNET unterstützt Twitch-Creator mit kostenlosen monatlichen Assets, technischen Tools sowie fairen Partnerschaften im DACH-Raum.
+Wir bauen ein Netzwerk, in dem Creator gemeinsam wachsen, ihre gebündelte Reichweite für starke Deals nutzen und voneinander profitieren.
+Unser Anspruch: echter Support statt leerer Versprechen – und das ohne Gebühren.
         </p>
       </div>
 
@@ -456,7 +512,12 @@ und fairen Partnerschaften. Individuelle Projekte gibt’s optional zu reduziert
 const i18n = {
   de: {
     title: "HRX CreatorNET – Mehr erfahren",
-    brandSub: "Twitch Creator Network",
+    nav: {
+      home: "Startseite",
+      more: "Mehr erfahren",
+      talents: "Talente",
+      intern: "Intern"
+    },
     kicker: "Mehr erfahren",
     heroTitle: "Was ist HRX CreatorNET?",
     heroDesc: `HRX CreatorNET unterstützt Twitch-Creator mit kostenlosen monatlichen Assets, technischen Tools sowie fairen Partnerschaften im DACH-Raum.
@@ -482,7 +543,12 @@ Unser Anspruch: echter Support statt leerer Versprechen – und das ohne Gebühr
   },
   en: {
     title: "HRX CreatorNET – Learn more",
-    brandSub: "Twitch Creator Network",
+    nav: {
+      home: "Home",
+      more: "Learn more",
+      talents: "Talents",
+      intern: "Intern"
+    },
     kicker: "Learn more",
     heroTitle: "What is HRX CreatorNET?",
     heroDesc: `HRX CreatorNET supports Twitch creators with free monthly assets, technical tools and fair partnerships across the DACH region.
@@ -513,7 +579,11 @@ function setLang(lang){
   document.documentElement.lang = lang;
   document.title = t.title;
 
-  document.getElementById("brand_sub").innerText = t.brandSub;
+  document.getElementById("nav_home").innerText = t.nav.home;
+  document.getElementById("nav_more").innerText = t.nav.more;
+  document.getElementById("nav_talents").innerText = t.nav.talents;
+  document.getElementById("nav_intern").innerText = t.nav.intern;
+
   document.getElementById("kicker").innerText = t.kicker;
   document.getElementById("hero_title").innerText = t.heroTitle;
   document.getElementById("hero_desc").innerText = t.heroDesc;
@@ -550,6 +620,15 @@ function setLang(lang){
   document.getElementById("f_imprint").innerText = t.footerImprint;
   document.getElementById("f_privacy").innerText = t.footerPrivacy;
   document.getElementById("foot_line").innerText = t.footerLine;
+}
+
+function openIntern(){
+  const isLoggedIn = localStorage.getItem("hrx_login");
+  if(isLoggedIn === "true"){
+    window.location.href = "intern.html";
+  }else{
+    window.location.href = "login.html";
+  }
 }
 
 setLang("de");

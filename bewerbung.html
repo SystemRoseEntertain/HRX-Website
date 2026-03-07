@@ -34,8 +34,44 @@ body{
     padding:0 24px;
     z-index:1000;
 }
+
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    min-width:0;
+}
+
 .header a{ display:flex; align-items:center; }
 .header img{ height:50px; }
+
+/* ✅ Neue Header Navigation */
+.main-nav{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.nav-link{
+    padding:8px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#efeaff;
+    background:rgba(122,77,255,0.10);
+    border:1px solid rgba(167,123,255,0.18);
+    box-shadow:0 0 10px rgba(122,77,255,0.15);
+    font-size:13px;
+    transition:0.2s;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.nav-link:hover{
+    background:rgba(122,77,255,0.22);
+    box-shadow:0 0 16px rgba(167,123,255,0.35);
+    transform:scale(1.04);
+}
 
 /* Sprachbuttons oben rechts */
 .lang-switch{
@@ -157,10 +193,36 @@ footer{text-align:center;padding:20px;font-size:12px;}
     line-height:1.4;
 }
 
+@media (max-width:900px){
+    .header{
+        height:auto;
+        min-height:80px;
+        padding:12px 14px;
+        align-items:flex-start;
+    }
+
+    .header-left{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .main-nav{
+        gap:8px;
+    }
+
+    main{
+        padding:150px 20px 40px 20px;
+    }
+}
+
+/* Mobile etwas kompakter */
 @media (max-width:520px){
-    .header{ padding:0 14px; }
+    .header{ padding:12px 14px; }
     .lang-btn{ padding:5px 10px; font-size:12px; }
     .form-box{ padding:22px; }
+    .nav-link{ font-size:12px; padding:7px 10px; }
+    main{ padding:170px 16px 30px 16px; }
 }
 </style>
 </head>
@@ -168,9 +230,19 @@ footer{text-align:center;padding:20px;font-size:12px;}
 <body>
 
 <div class="header">
-    <a href="index.html">
-        <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
-    </a>
+
+    <div class="header-left">
+        <a href="index.html">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+        </a>
+
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+            <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+            <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+            <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
+        </nav>
+    </div>
 
     <div class="lang-switch">
         <span class="lang-btn" onclick="setLang('de')">DE</span>
@@ -271,6 +343,12 @@ const i18n = {
     de: {
         title: "HRX CreatorNET Bewerbung",
         note: "100 % kostenlos für Creator – HRX CreatorNET bündelt Reichweite, holt starke Partnerdeals und verteilt Einnahmen fair im Netzwerk.",
+        nav: {
+            home: "Startseite",
+            more: "Mehr erfahren",
+            talents: "Talente",
+            intern: "Intern"
+        },
         labels: {
             platform: "Plattform",
             platformHint: "(TikTok, Twitch)",
@@ -296,6 +374,12 @@ const i18n = {
     en: {
         title: "HRX CreatorNET Application",
         note: "100% free for creators — HRX CreatorNET combines reach, secures strong brand deals, and distributes revenue fairly within the network.",
+        nav: {
+            home: "Home",
+            more: "Learn more",
+            talents: "Talents",
+            intern: "Intern"
+        },
         labels: {
             platform: "Platform",
             platformHint: "(TikTok, Twitch)",
@@ -329,6 +413,11 @@ function setLang(lang){
 
     document.getElementById("h_title").innerText = t.title;
     document.getElementById("h_note").innerText = t.note;
+
+    document.getElementById("nav_home").innerText = t.nav.home;
+    document.getElementById("nav_more").innerText = t.nav.more;
+    document.getElementById("nav_talents").innerText = t.nav.talents;
+    document.getElementById("nav_intern").innerText = t.nav.intern;
 
     document.getElementById("l_platform").childNodes[0].textContent = t.labels.platform + " ";
     document.getElementById("platform_hint").innerText = t.labels.platformHint;
@@ -408,6 +497,16 @@ function applyPlatform(){
         twitchLink.required = true;
         tiktokName.required = true;
         tiktokLink.required = true;
+    }
+}
+
+/* ✅ Intern weiterleiten je nach Loginstatus */
+function openIntern(){
+    const isLoggedIn = localStorage.getItem("hrx_login");
+    if(isLoggedIn === "true"){
+        window.location.href = "intern.html";
+    }else{
+        window.location.href = "login.html";
     }
 }
 

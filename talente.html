@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HRX CreatorNET – Talente</title>
+
+<style>
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
+
+body{
+  margin:0;
+  font-family: Arial, Helvetica, sans-serif;
+  color:#fff;
+  background:
+    radial-gradient(1200px 650px at 18% 0%, rgba(122,77,255,0.28), transparent 60%),
+    radial-gradient(900px 520px at 85% 25%, rgba(167,123,255,0.18), transparent 60%),
+    radial-gradient(circle at top, #1a1033, #05070f);
+  overflow-x:hidden;
+}
+
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:42px 42px;
+  pointer-events:none;
+  opacity:0.25;
+}
+
+a{ color:inherit; text-decoration:none; }
+
+/* ===== Header ===== */
+.header{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  min-height:80px;
+  background:linear-gradient(90deg,#140b2a,#0b0f1e);
+  border-bottom:1px solid rgba(167,123,255,0.22);
+  box-shadow:0 0 20px rgba(122,77,255,0.4);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  z-index:1000;
+}
+
+.header-left{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  min-width:0;
+}
+
+.header-left > a{
+  display:flex;
+  align-items:center;
+}
+
+.header img{
+  height:50px;
+  display:block;
+}
+
+.main-nav{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.nav-link{
+  padding:8px 14px;
+  border-radius:10px;
+  text-decoration:none;
+  color:#efeaff;
+  background:rgba(122,77,255,0.10);
+  border:1px solid rgba(167,123,255,0.18);
+  box-shadow:0 0 10px rgba(122,77,255,0.15);
+  font-size:13px;
+  transition:0.2s;
+  white-space:nowrap;
+  cursor:pointer;
+}
+
+.nav-link:hover{
+  background:rgba(122,77,255,0.22);
+  box-shadow:0 0 16px rgba(167,123,255,0.35);
+  transform:scale(1.04);
+}
+
+.lang-switch{
+  display:flex;
+  gap:10px;
+  flex-shrink:0;
+}
+
+.lang-btn{
+  padding:6px 14px;
+  border-radius:10px;
+  background: rgba(122,77,255,0.2);
+  color:white;
+  text-decoration:none;
+  font-size:13px;
+  transition:0.2s;
+  box-shadow: 0 0 10px rgba(122,77,255,0.5);
+  cursor:pointer;
+  user-select:none;
+  white-space:nowrap;
+}
+
+.lang-btn:hover{
+  background: rgba(167,123,255,0.5);
+  transform: scale(1.05);
+}
+
+/* ===== Layout ===== */
+.wrap{
+  max-width:1280px;
+  margin:0 auto;
+  padding:118px 20px 70px;
+}
+
+/* ===== Hero ===== */
+.hero{
+  position:relative;
+  border-radius:22px;
+  padding:30px 26px;
+  background:
+    radial-gradient(700px 240px at 25% 0%, rgba(122,77,255,0.30), transparent 65%),
+    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
+  border:1px solid rgba(167,123,255,0.18);
+  box-shadow:0 20px 70px rgba(0,0,0,0.55);
+  overflow:hidden;
+  margin-bottom:24px;
+}
+
+.hero:after{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:radial-gradient(600px 220px at 80% 35%, rgba(167,123,255,0.16), transparent 60%);
+  pointer-events:none;
+}
+
+.hero-inner{
+  position:relative;
+  z-index:1;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  flex-wrap:wrap;
+}
+
+.kicker{
+  font-size:12px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:#d8cfff;
+  opacity:0.9;
+  margin-bottom:10px;
+}
+
+.hero h1{
+  margin:0 0 10px 0;
+  font-size:42px;
+  letter-spacing:-0.02em;
+}
+
+.hero p{
+  margin:0;
+  max-width:760px;
+  opacity:0.88;
+  font-size:16px;
+  line-height:1.55;
+}
+
+.hero-stat{
+  min-width:180px;
+  padding:18px 20px;
+  border-radius:18px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(167,123,255,0.15);
+  box-shadow:0 18px 60px rgba(0,0,0,0.35);
+}
+
+.hero-stat strong{
+  display:block;
+  font-size:28px;
+  margin-bottom:4px;
+}
+
+.hero-stat span{
+  opacity:0.76;
+  font-size:13px;
+}
+
+/* ===== Filter row ===== */
+.top-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  margin:8px 4px 18px;
+  flex-wrap:wrap;
+}
+
+.chips{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.chip{
+  display:inline-flex;
+  align-items:center;
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(122,77,255,0.12);
+  border:1px solid rgba(167,123,255,0.22);
+  color:#efeaff;
+  font-size:13px;
+  box-shadow:0 0 18px rgba(122,77,255,0.18);
+}
+
+.chip.active{
+  background:linear-gradient(90deg, rgba(122,77,255,0.26), rgba(167,123,255,0.22));
+  border-color:rgba(167,123,255,0.38);
+}
+
+.result-text{
+  font-size:13px;
+  opacity:0.75;
+}
+
+/* ===== Grid ===== */
+.talent-grid{
+  display:grid;
+  grid-template-columns:repeat(4, minmax(0, 1fr));
+  gap:18px;
+}
+
+.card{
+  position:relative;
+  border-radius:20px;
+  overflow:hidden;
+  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
+  border:1px solid rgba(167,123,255,0.16);
+  box-shadow:0 18px 60px rgba(0,0,0,0.55);
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+}
+
+.card:hover{
+  transform:translateY(-4px);
+  border-color:rgba(167,123,255,0.34);
+  box-shadow:0 24px 85px rgba(0,0,0,0.65);
+}
+
+.card-inner{
+  padding:18px;
+}
+
+.card-img{
+  width:100%;
+  aspect-ratio:1 / 1;
+  border-radius:18px;
+  overflow:hidden;
+  background:#0b0f1e;
+  border:1px solid rgba(167,123,255,0.12);
+  margin-bottom:16px;
+}
+
+.card-img img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.card h3{
+  margin:0 0 10px 0;
+  font-size:20px;
+  line-height:1.2;
+}
+
+.meta{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:16px;
+  font-size:14px;
+  opacity:0.78;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:12px;
+  background:rgba(122,77,255,0.14);
+  border:1px solid rgba(167,123,255,0.20);
+  color:#e9e3ff;
+  opacity:0.95;
+  margin-bottom:12px;
+}
+
+.desc{
+  margin:0 0 18px 0;
+  opacity:0.84;
+  font-size:14px;
+  line-height:1.5;
+  min-height:63px;
+}
+
+.socials{
+  display:flex;
+  gap:12px;
+  align-items:center;
+}
+
+.social-btn{
+  width:42px;
+  height:42px;
+  border-radius:12px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(122,77,255,0.12);
+  border:1px solid rgba(167,123,255,0.22);
+  box-shadow:0 0 18px rgba(122,77,255,0.18);
+  transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+}
+
+.social-btn:hover{
+  transform:translateY(-2px);
+  background:rgba(122,77,255,0.18);
+  box-shadow:0 0 24px rgba(167,123,255,0.28);
+}
+
+.social-btn img{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+  display:block;
+}
+
+/* ===== Footer ===== */
+footer{
+  margin-top:30px;
+  padding:18px 0 10px;
+  text-align:center;
+  opacity:0.85;
+  font-size:12px;
+}
+
+.footer-links{
+  margin-top:10px;
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.footer-btn{
+  display:inline-block;
+  padding:6px 12px;
+  border-radius:12px;
+  text-decoration:none;
+  color:#d8cfff;
+  background:rgba(122,77,255,0.12);
+  border:1px solid rgba(167,123,255,0.18);
+  box-shadow:0 0 14px rgba(122,77,255,0.18);
+  transition:transform .15s ease, background .15s ease;
+}
+
+.footer-btn:hover{
+  transform:translateY(-1px);
+  background:rgba(122,77,255,0.18);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 1180px){
+  .talent-grid{
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px){
+  .header{
+    height:auto;
+    padding:12px 14px;
+    align-items:flex-start;
+  }
+
+  .header-left{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+
+  .main-nav{
+    gap:8px;
+  }
+
+  .wrap{
+    padding:150px 20px 70px;
+  }
+}
+
+@media (max-width: 860px){
+  .talent-grid{
+    grid-template-columns:repeat(2, minmax(0, 1fr));
+  }
+
+  .hero h1{
+    font-size:34px;
+  }
+}
+
+@media (max-width: 560px){
+  .talent-grid{
+    grid-template-columns:1fr;
+  }
+
+  .nav-link{
+    font-size:12px;
+    padding:7px 10px;
+  }
+
+  .lang-btn{
+    padding:5px 10px;
+    font-size:12px;
+  }
+
+  .wrap{
+    padding:170px 16px 60px;
+  }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <a href="index.html" aria-label="Zur Startseite">
+      <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo" />
+    </a>
+
+    <nav class="main-nav">
+      <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+      <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+      <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+      <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
+    </nav>
+  </div>
+
+  <div class="lang-switch">
+    <span class="lang-btn" onclick="setLang('de')">DE</span>
+    <span class="lang-btn" onclick="setLang('en')">EN</span>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="kicker" id="hero_kicker">Creator Network</div>
+        <h1 id="hero_title">Unsere Talente</h1>
+        <p id="hero_desc">
+          Hier findest du ausgewählte Creator aus dem HRX CreatorNET.
+          Gaming, Live-Content und starke Persönlichkeiten — direkt mit ihren Twitch- und TikTok-Profilen verlinkt.
+        </p>
+      </div>
+
+      <div class="hero-stat">
+        <strong id="talentCount">8</strong>
+        <span id="talentCountLabel">Aktive Talente</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="top-row">
+    <div class="chips">
+      <span class="chip active" id="chip_1">Aktive Talente</span>
+      <span class="chip" id="chip_2">HRX CreatorNET</span>
+    </div>
+    <div class="result-text" id="result_text">Stand: 2026</div>
+  </div>
+
+  <section class="talent-grid" id="talentGrid"></section>
+
+  <footer>
+    <div id="footer_line">© 2026 HRX CreatorNET – HyptryX x Rose Entertain</div>
+    <div class="footer-links">
+      <a class="footer-btn" href="impressum.html" id="f_imprint">Impressum</a>
+      <a class="footer-btn" href="datenschutz.html" id="f_privacy">Datenschutz</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+const talents = [
+  {
+    name: "Creator 1",
+    since: "01.01.2026",
+    image: "creator1.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator1",
+    tiktok: "https://www.tiktok.com/@creator1"
+  },
+  {
+    name: "Creator 2",
+    since: "01.01.2026",
+    image: "creator2.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator2",
+    tiktok: "https://www.tiktok.com/@creator2"
+  },
+  {
+    name: "Creator 3",
+    since: "01.01.2026",
+    image: "creator3.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator3",
+    tiktok: "https://www.tiktok.com/@creator3"
+  },
+  {
+    name: "Creator 4",
+    since: "01.01.2026",
+    image: "creator4.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator4",
+    tiktok: "https://www.tiktok.com/@creator4"
+  },
+  {
+    name: "Creator 5",
+    since: "01.01.2026",
+    image: "creator5.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator5",
+    tiktok: "https://www.tiktok.com/@creator5"
+  },
+  {
+    name: "Creator 6",
+    since: "01.01.2026",
+    image: "creator6.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator6",
+    tiktok: "https://www.tiktok.com/@creator6"
+  },
+  {
+    name: "Creator 7",
+    since: "01.01.2026",
+    image: "creator7.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator7",
+    tiktok: "https://www.tiktok.com/@creator7"
+  },
+  {
+    name: "Creator 8",
+    since: "01.01.2026",
+    image: "creator8.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/creator8",
+    tiktok: "https://www.tiktok.com/@creator8"
+  }
+];
+
+const i18n = {
+  de: {
+    nav: {
+      home: "Startseite",
+      more: "Mehr erfahren",
+      talents: "Talente",
+      intern: "Intern"
+    },
+    heroKicker: "Creator Network",
+    heroTitle: "Unsere Talente",
+    heroDesc: "Hier findest du ausgewählte Creator aus dem HRX CreatorNET. Gaming, Live-Content und starke Persönlichkeiten — direkt mit ihren Twitch- und TikTok-Profilen verlinkt.",
+    talentCountLabel: "Aktive Talente",
+    chip1: "Aktive Talente",
+    chip2: "HRX CreatorNET",
+    resultText: "Stand: 2026",
+    footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain",
+    imprint: "Impressum",
+    privacy: "Datenschutz",
+    metaSince: "Dabei seit:",
+    defaultDesc: "Profil folgt in Kürze.",
+    defaultBadge: "Creator"
+  },
+  en: {
+    nav: {
+      home: "Home",
+      more: "Learn more",
+      talents: "Talents",
+      intern: "Intern"
+    },
+    heroKicker: "Creator Network",
+    heroTitle: "Our talents",
+    heroDesc: "Here you can find selected creators from HRX CreatorNET. Gaming, live content and strong personalities — directly linked to their Twitch and TikTok profiles.",
+    talentCountLabel: "Active talents",
+    chip1: "Active talents",
+    chip2: "HRX CreatorNET",
+    resultText: "Status: 2026",
+    footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain",
+    imprint: "Legal notice",
+    privacy: "Privacy",
+    metaSince: "Since:",
+    defaultDesc: "Profile coming soon.",
+    defaultBadge: "Creator"
+  }
+};
+
+let currentLang = "de";
+
+function renderTalents(){
+  const t = i18n[currentLang];
+  const grid = document.getElementById("talentGrid");
+  document.getElementById("talentCount").innerText = talents.length;
+
+  grid.innerHTML = talents.map(talent => `
+    <article class="card">
+      <div class="card-inner">
+        <div class="card-img">
+          <img src="${talent.image}" alt="${talent.name}">
+        </div>
+
+        <div class="badge">${talent.badge || t.defaultBadge}</div>
+        <h3>${talent.name}</h3>
+        <div class="meta">${t.metaSince} ${talent.since}</div>
+        <p class="desc">${talent.desc || t.defaultDesc}</p>
+
+        <div class="socials">
+          <a class="social-btn" href="${talent.twitch}" target="_blank" rel="noopener noreferrer" aria-label="Twitch Profil von ${talent.name}">
+            <img src="logo_twitch.png" alt="Twitch">
+          </a>
+          <a class="social-btn" href="${talent.tiktok}" target="_blank" rel="noopener noreferrer" aria-label="TikTok Profil von ${talent.name}">
+            <img src="logo_tt.png" alt="TikTok">
+          </a>
+        </div>
+      </div>
+    </article>
+  `).join("");
+}
+
+function setLang(lang){
+  currentLang = lang;
+  const t = i18n[lang];
+
+  document.documentElement.lang = lang;
+  document.title = lang === "de" ? "HRX CreatorNET – Talente" : "HRX CreatorNET – Talents";
+
+  document.getElementById("nav_home").innerText = t.nav.home;
+  document.getElementById("nav_more").innerText = t.nav.more;
+  document.getElementById("nav_talents").innerText = t.nav.talents;
+  document.getElementById("nav_intern").innerText = t.nav.intern;
+
+  document.getElementById("hero_kicker").innerText = t.heroKicker;
+  document.getElementById("hero_title").innerText = t.heroTitle;
+  document.getElementById("hero_desc").innerText = t.heroDesc;
+  document.getElementById("talentCountLabel").innerText = t.talentCountLabel;
+  document.getElementById("chip_1").innerText = t.chip1;
+  document.getElementById("chip_2").innerText = t.chip2;
+  document.getElementById("result_text").innerText = t.resultText;
+  document.getElementById("footer_line").innerText = t.footerLine;
+  document.getElementById("f_imprint").innerText = t.imprint;
+  document.getElementById("f_privacy").innerText = t.privacy;
+
+  renderTalents();
+}
+
+function openIntern(){
+  const isLoggedIn = localStorage.getItem("hrx_login");
+  if(isLoggedIn === "true"){
+    window.location.href = "intern.html";
+  }else{
+    window.location.href = "login.html";
+  }
+}
+
+setLang("de");
+</script>
+
+</body>
+</html>

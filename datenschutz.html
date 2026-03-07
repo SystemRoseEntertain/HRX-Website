@@ -6,6 +6,8 @@
 <title>Datenschutzerklärung – HRX CreatorNET</title>
 
 <style>
+*{ box-sizing:border-box; }
+
 body{
     margin:0;
     font-family:Arial, Helvetica, sans-serif;
@@ -25,14 +27,83 @@ body{
     width:100%;
     height:80px;
     background:linear-gradient(90deg,#140b2a,#0b0f1e);
+    border-bottom:1px solid rgba(167,123,255,0.2);
+    box-shadow:0 0 20px rgba(122,77,255,0.4);
     display:flex;
     align-items:center;
-    padding-left:30px;
-    box-shadow:0 0 20px rgba(122,77,255,0.4);
+    justify-content:space-between;
+    padding:0 24px;
     z-index:1000;
 }
 
-.header img{ height:50px; }
+.header-left{
+    display:flex;
+    align-items:center;
+    gap:28px;
+    min-width:0;
+}
+
+.header a{
+    display:flex;
+    align-items:center;
+    text-decoration:none;
+}
+
+.header img{
+    height:50px;
+}
+
+.main-nav{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.nav-link{
+    padding:8px 14px;
+    border-radius:10px;
+    text-decoration:none;
+    color:#efeaff;
+    background:rgba(122,77,255,0.10);
+    border:1px solid rgba(167,123,255,0.18);
+    box-shadow:0 0 10px rgba(122,77,255,0.15);
+    font-size:13px;
+    transition:0.2s;
+    white-space:nowrap;
+    cursor:pointer;
+}
+
+.nav-link:hover{
+    background:rgba(122,77,255,0.22);
+    box-shadow:0 0 16px rgba(167,123,255,0.35);
+    transform:scale(1.04);
+}
+
+.lang-switch{
+    display:flex;
+    gap:10px;
+    flex-shrink:0;
+}
+
+.lang-btn{
+    padding:6px 14px;
+    border-radius:10px;
+    background: rgba(122,77,255,0.2);
+    color:white;
+    text-decoration:none;
+    font-size:13px;
+    transition:0.2s;
+    box-shadow: 0 0 10px rgba(122,77,255,0.5);
+    cursor:pointer;
+    user-select:none;
+    white-space:nowrap;
+}
+
+.lang-btn:hover{
+    background: rgba(167,123,255,0.5);
+    transform: scale(1.05);
+}
 
 /* CONTENT */
 main{
@@ -71,43 +142,90 @@ footer{
     box-shadow:0 0 20px rgba(167,123,255,0.9);
     transform:scale(1.05);
 }
+
+@media (max-width:900px){
+    .header{
+        height:auto;
+        min-height:80px;
+        padding:12px 14px;
+        align-items:flex-start;
+    }
+
+    .header-left{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+    }
+
+    .main-nav{
+        gap:8px;
+    }
+
+    main{
+        padding:150px 20px 40px 20px;
+    }
+}
+
+@media (max-width:520px){
+    .header{ padding:12px 14px; }
+    .lang-btn{ padding:5px 10px; font-size:12px; }
+    .nav-link{ font-size:12px; padding:7px 10px; }
+    main{ padding:170px 16px 30px 16px; }
+}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-<img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+
+    <div class="header-left">
+        <a href="index.html">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
+        </a>
+
+        <nav class="main-nav">
+            <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+            <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+            <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+            <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
+        </nav>
+    </div>
+
+    <div class="lang-switch">
+        <span class="lang-btn" onclick="setLang('de')">DE</span>
+        <span class="lang-btn" onclick="setLang('en')">EN</span>
+    </div>
 </div>
 
-<main>
+<main id="content">
 
-<h1>Datenschutzerklärung – HRX CreatorNET</h1>
+<h1 id="title">Datenschutzerklärung – HRX CreatorNET</h1>
 
-<h2>1. Verantwortliche</h2>
+<h2 id="h2_1">1. Verantwortliche</h2>
 
-<p>
+<p id="p1">
 Deutschland:<br>
 Rose Entertain UG (haftungsbeschränkt)<br>
 Erdinger Str. 72 a, 85356 Freising<br>
-E-Mail: info(at)rose-entertain.de
+E-Mail: info@rose-entertain.de
 </p>
 
-<p>
+<p id="p2">
 Österreich:<br>
 Harald Göbl<br>
 Zinsenwang 27, 3325 Ferschnitz<br>
-E-Mail: harry(at)haraldgoebl.com
+E-Mail: harry@haraldgoebl.com
 </p>
 
-<h2>2. Zweck der Datenverarbeitung</h2>
-<p>
+<h2 id="h2_2">2. Zweck der Datenverarbeitung</h2>
+<p id="p3">
 Diese Website dient der Bewerbung für das HRX CreatorNET.
 Wir verarbeiten Daten, um Bewerbungen zu prüfen und Kontakt aufzunehmen.
 </p>
 
-<h2>3. Welche Daten wir erfassen</h2>
-<ul>
+<h2 id="h2_3">3. Welche Daten wir erfassen</h2>
+<ul id="list_1">
 <li>Twitch Name und Link</li>
 <li>Viewer-Statistiken</li>
 <li>Discord Kontakt</li>
@@ -115,39 +233,39 @@ Wir verarbeiten Daten, um Bewerbungen zu prüfen und Kontakt aufzunehmen.
 <li>IP-Adresse und Server-Logdaten</li>
 </ul>
 
-<h2>4. Rechtsgrundlage</h2>
-<p>
+<h2 id="h2_4">4. Rechtsgrundlage</h2>
+<p id="p4">
 Art. 6 Abs.1 lit. b DSGVO (vorvertragliche Maßnahmen) und
 Art. 6 Abs.1 lit. f DSGVO (berechtigtes Interesse an Auswahl geeigneter Creator).
 </p>
 
-<h2>5. Hosting</h2>
-<p>
+<h2 id="h2_5">5. Hosting</h2>
+<p id="p5">
 Diese Website wird bei Netlify Inc., USA gehostet.
 Dabei können technische Logdaten verarbeitet werden.
 </p>
 
-<h2>6. Weitergabe von Daten</h2>
-<p>
+<h2 id="h2_6">6. Weitergabe von Daten</h2>
+<p id="p6">
 Bewerbungen können zwischen Rose Entertain UG und Harald Göbl
 intern ausgetauscht werden. Eine Weitergabe an Dritte erfolgt
 nur mit Einwilligung oder gesetzlicher Verpflichtung.
 </p>
 
-<h2>7. Kontaktaufnahme</h2>
-<p>
+<h2 id="h2_7">7. Kontaktaufnahme</h2>
+<p id="p7">
 Kontakt erfolgt ggf. über E-Mail oder Discord.
 Es gelten zusätzlich die Datenschutzbestimmungen der jeweiligen Plattform.
 </p>
 
-<h2>8. Speicherdauer</h2>
-<p>
+<h2 id="h2_8">8. Speicherdauer</h2>
+<p id="p8">
 Bewerbungsdaten werden spätestens nach 6 Monaten gelöscht,
 wenn keine Zusammenarbeit zustande kommt.
 </p>
 
-<h2>9. Rechte der Nutzer</h2>
-<p>
+<h2 id="h2_9">9. Rechte der Nutzer</h2>
+<p id="p9">
 Sie haben Recht auf Auskunft, Berichtigung, Löschung,
 Einschränkung, Datenübertragbarkeit und Beschwerde bei einer Aufsichtsbehörde.
 </p>
@@ -156,14 +274,172 @@ Einschränkung, Datenübertragbarkeit und Beschwerde bei einer Aufsichtsbehörde
 
 <footer>
 
-<button onclick="window.history.length > 1 ? history.back() : location.href='index.html'" class="btn">
+<button onclick="window.history.length > 1 ? history.back() : location.href='index.html'" class="btn" id="btn_back">
 ← Zurück
 </button>
 
-<a href="impressum.html" class="btn">Impressum</a>
+<a href="impressum.html" class="btn" id="btn_imprint">Impressum</a>
 
 </footer>
 
-</body>
+<script>
+const i18n = {
+    de: {
+        nav: {
+            home: "Startseite",
+            more: "Mehr erfahren",
+            talents: "Talente",
+            intern: "Intern"
+        },
+        title: "Datenschutzerklärung – HRX CreatorNET",
+        h2_1: "1. Verantwortliche",
+        p1: `Deutschland:<br>
+Rose Entertain UG (haftungsbeschränkt)<br>
+Erdinger Str. 72 a, 85356 Freising<br>
+E-Mail: info@rose-entertain.de`,
+        p2: `Österreich:<br>
+Harald Göbl<br>
+Zinsenwang 27, 3325 Ferschnitz<br>
+E-Mail: harry@haraldgoebl.com`,
+        h2_2: "2. Zweck der Datenverarbeitung",
+        p3: `Diese Website dient der Bewerbung für das HRX CreatorNET.
+Wir verarbeiten Daten, um Bewerbungen zu prüfen und Kontakt aufzunehmen.`,
+        h2_3: "3. Welche Daten wir erfassen",
+        list1: [
+            "Twitch Name und Link",
+            "Viewer-Statistiken",
+            "Discord Kontakt",
+            "Texte aus Bewerbungsformular",
+            "IP-Adresse und Server-Logdaten"
+        ],
+        h2_4: "4. Rechtsgrundlage",
+        p4: `Art. 6 Abs.1 lit. b DSGVO (vorvertragliche Maßnahmen) und
+Art. 6 Abs.1 lit. f DSGVO (berechtigtes Interesse an Auswahl geeigneter Creator).`,
+        h2_5: "5. Hosting",
+        p5: `Diese Website wird bei Netlify Inc., USA gehostet.
+Dabei können technische Logdaten verarbeitet werden.`,
+        h2_6: "6. Weitergabe von Daten",
+        p6: `Bewerbungen können zwischen Rose Entertain UG und Harald Göbl
+intern ausgetauscht werden. Eine Weitergabe an Dritte erfolgt
+nur mit Einwilligung oder gesetzlicher Verpflichtung.`,
+        h2_7: "7. Kontaktaufnahme",
+        p7: `Kontakt erfolgt ggf. über E-Mail oder Discord.
+Es gelten zusätzlich die Datenschutzbestimmungen der jeweiligen Plattform.`,
+        h2_8: "8. Speicherdauer",
+        p8: `Bewerbungsdaten werden spätestens nach 6 Monaten gelöscht,
+wenn keine Zusammenarbeit zustande kommt.`,
+        h2_9: "9. Rechte der Nutzer",
+        p9: `Sie haben Recht auf Auskunft, Berichtigung, Löschung,
+Einschränkung, Datenübertragbarkeit und Beschwerde bei einer Aufsichtsbehörde.`,
+        back: "← Zurück",
+        imprint: "Impressum"
+    },
+    en: {
+        nav: {
+            home: "Home",
+            more: "Learn more",
+            talents: "Talents",
+            intern: "Intern"
+        },
+        title: "Privacy Policy – HRX CreatorNET",
+        h2_1: "1. Data controllers",
+        p1: `Germany:<br>
+Rose Entertain UG (limited liability)<br>
+Erdinger Str. 72 a, 85356 Freising<br>
+Email: info@rose-entertain.de`,
+        p2: `Austria:<br>
+Harald Göbl<br>
+Zinsenwang 27, 3325 Ferschnitz<br>
+Email: harry@haraldgoebl.com`,
+        h2_2: "2. Purpose of data processing",
+        p3: `This website is used for applications to HRX CreatorNET.
+We process data in order to review applications and get in touch.`,
+        h2_3: "3. What data we collect",
+        list1: [
+            "Twitch name and link",
+            "Viewer statistics",
+            "Discord contact",
+            "Texts from the application form",
+            "IP address and server log data"
+        ],
+        h2_4: "4. Legal basis",
+        p4: `Art. 6 para. 1 lit. b GDPR (pre-contractual measures) and
+Art. 6 para. 1 lit. f GDPR (legitimate interest in selecting suitable creators).`,
+        h2_5: "5. Hosting",
+        p5: `This website is hosted by Netlify Inc., USA.
+Technical log data may be processed in the process.`,
+        h2_6: "6. Sharing of data",
+        p6: `Applications may be shared internally between Rose Entertain UG and Harald Göbl.
+Data will only be passed on to third parties with consent or legal obligation.`,
+        h2_7: "7. Contact",
+        p7: `Contact may take place via email or Discord.
+The privacy policies of the respective platform also apply.`,
+        h2_8: "8. Storage period",
+        p8: `Application data will be deleted after 6 months at the latest
+if no cooperation is established.`,
+        h2_9: "9. Rights of users",
+        p9: `You have the right to information, correction, deletion,
+restriction, data portability and complaint to a supervisory authority.`,
+        back: "← Back",
+        imprint: "Legal notice"
+    }
+};
 
+function setLang(lang){
+    const t = i18n[lang];
+
+    document.documentElement.lang = lang;
+    document.title = t.title;
+
+    document.getElementById("nav_home").innerText = t.nav.home;
+    document.getElementById("nav_more").innerText = t.nav.more;
+    document.getElementById("nav_talents").innerText = t.nav.talents;
+    document.getElementById("nav_intern").innerText = t.nav.intern;
+
+    document.getElementById("title").innerText = t.title;
+    document.getElementById("h2_1").innerText = t.h2_1;
+    document.getElementById("p1").innerHTML = t.p1;
+    document.getElementById("p2").innerHTML = t.p2;
+    document.getElementById("h2_2").innerText = t.h2_2;
+    document.getElementById("p3").innerText = t.p3;
+    document.getElementById("h2_3").innerText = t.h2_3;
+
+    const list = document.getElementById("list_1");
+    list.innerHTML = "";
+    t.list1.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        list.appendChild(li);
+    });
+
+    document.getElementById("h2_4").innerText = t.h2_4;
+    document.getElementById("p4").innerText = t.p4;
+    document.getElementById("h2_5").innerText = t.h2_5;
+    document.getElementById("p5").innerText = t.p5;
+    document.getElementById("h2_6").innerText = t.h2_6;
+    document.getElementById("p6").innerText = t.p6;
+    document.getElementById("h2_7").innerText = t.h2_7;
+    document.getElementById("p7").innerText = t.p7;
+    document.getElementById("h2_8").innerText = t.h2_8;
+    document.getElementById("p8").innerText = t.p8;
+    document.getElementById("h2_9").innerText = t.h2_9;
+    document.getElementById("p9").innerText = t.p9;
+
+    document.getElementById("btn_back").innerText = t.back;
+    document.getElementById("btn_imprint").innerText = t.imprint;
+}
+
+function openIntern(){
+    const isLoggedIn = localStorage.getItem("hrx_login");
+    if(isLoggedIn === "true"){
+        window.location.href = "intern.html";
+    }else{
+        window.location.href = "login.html";
+    }
+}
+
+setLang("de");
+</script>
+
+</body>
 </html>
