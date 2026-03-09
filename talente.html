@@ -482,7 +482,7 @@ footer{
       </div>
 
       <div class="hero-stat">
-        <strong id="talentCount">8</strong>
+        <strong id="talentCount">13</strong>
         <span id="talentCountLabel">Aktive Talente</span>
       </div>
     </div>
@@ -510,76 +510,121 @@ footer{
 <script>
 const talents = [
   {
-    name: "Creator 1",
-    since: "01.01.2026",
-    image: "creator1.png",
+    name: "RoninMartoku",
+    since: "03.2026",
+    image: "roninmartoku.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator1",
-    tiktok: "https://www.tiktok.com/@creator1"
+    twitch: "https://www.twitch.tv/roninmartoku",
+    tiktok: ""
   },
   {
-    name: "Creator 2",
-    since: "01.01.2026",
-    image: "creator2.png",
+    name: "HypTryX",
+    since: "03.2026",
+    image: "hyptryx.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator2",
-    tiktok: "https://www.tiktok.com/@creator2"
+    twitch: "https://www.twitch.tv/hyptryx",
+    tiktok: "https://www.tiktok.com/@hyptryx_?lang=de-DE"
   },
   {
-    name: "Creator 3",
-    since: "01.01.2026",
-    image: "creator3.png",
+    name: "CryoShoX",
+    since: "03.2026",
+    image: "cryoshox.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator3",
-    tiktok: "https://www.tiktok.com/@creator3"
+    twitch: "https://www.twitch.tv/cryoshox",
+    tiktok: ""
   },
   {
-    name: "Creator 4",
-    since: "01.01.2026",
-    image: "creator4.png",
+    name: "berniiiboy",
+    since: "03.2026",
+    image: "berniiiboy.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator4",
-    tiktok: "https://www.tiktok.com/@creator4"
+    twitch: "https://www.twitch.tv/berniiiboy",
+    tiktok: "https://www.tiktok.com/@berniiiboy"
   },
   {
-    name: "Creator 5",
-    since: "01.01.2026",
-    image: "creator5.png",
+    name: "pedapeter",
+    since: "03.2026",
+    image: "pedapeter.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator5",
-    tiktok: "https://www.tiktok.com/@creator5"
+    twitch: "",
+    tiktok: "https://www.tiktok.com/@pedapeter"
   },
   {
-    name: "Creator 6",
-    since: "01.01.2026",
-    image: "creator6.png",
+    name: "tommecs",
+    since: "03.2026",
+    image: "tommecs.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator6",
-    tiktok: "https://www.tiktok.com/@creator6"
+    twitch: "https://www.twitch.tv/tommecs",
+    tiktok: "https://www.tiktok.com/@tommecs"
   },
   {
-    name: "Creator 7",
-    since: "01.01.2026",
-    image: "creator7.png",
+    name: "WalkingDavidson",
+    since: "03.2026",
+    image: "walkingdavidson.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator7",
-    tiktok: "https://www.tiktok.com/@creator7"
+    twitch: "https://www.twitch.tv/walkingdavidson",
+    tiktok: ""
   },
   {
-    name: "Creator 8",
-    since: "01.01.2026",
-    image: "creator8.png",
+    name: "LinkTheBeast",
+    since: "03.2026",
+    image: "linkthebeast.png",
     badge: "Creator",
     desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/creator8",
-    tiktok: "https://www.tiktok.com/@creator8"
+    twitch: "",
+    tiktok: "https://www.tiktok.com/@linkthebeast7"
+  },
+  {
+    name: "naddl_twitch",
+    since: "03.2026",
+    image: "naddl_twitch.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/naddl_twitch",
+    tiktok: ""
+  },
+  {
+    name: "neotano",
+    since: "03.2026",
+    image: "neotano.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/neotano",
+    tiktok: ""
+  },
+  {
+    name: "Hey Basti",
+    since: "03.2026",
+    image: "hey_basti.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/hey_basti_",
+    tiktok: "https://www.tiktok.com/@hey_basti_"
+  },
+  {
+    name: "JasiVali",
+    since: "03.2026",
+    image: "jasivali.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/jasivali",
+    tiktok: ""
+  },
+  {
+    name: "gta_glitch63",
+    since: "03.2026",
+    image: "gta_glitch63.png",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/gta_glitch63",
+    tiktok: ""
   }
 ];
 
@@ -648,12 +693,16 @@ function renderTalents(){
         <p class="desc">${talent.desc || t.defaultDesc}</p>
 
         <div class="socials">
-          <a class="social-btn" href="${talent.twitch}" target="_blank" rel="noopener noreferrer" aria-label="Twitch Profil von ${talent.name}">
-            <img src="logo_twitch.png" alt="Twitch">
-          </a>
-          <a class="social-btn" href="${talent.tiktok}" target="_blank" rel="noopener noreferrer" aria-label="TikTok Profil von ${talent.name}">
-            <img src="logo_tt.png" alt="TikTok">
-          </a>
+          ${talent.twitch ? `
+            <a class="social-btn" href="${talent.twitch}" target="_blank" rel="noopener noreferrer" aria-label="Twitch Profil von ${talent.name}">
+              <img src="logo_twitch.png" alt="Twitch">
+            </a>
+          ` : ""}
+          ${talent.tiktok ? `
+            <a class="social-btn" href="${talent.tiktok}" target="_blank" rel="noopener noreferrer" aria-label="TikTok Profil von ${talent.name}">
+              <img src="logo_tt.png" alt="TikTok">
+            </a>
+          ` : ""}
         </div>
       </div>
     </article>
