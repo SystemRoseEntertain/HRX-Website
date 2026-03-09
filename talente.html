@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="de">
 <head>
 <meta charset="UTF-8" />
@@ -519,7 +519,7 @@ const talents = [
     tiktok: ""
   },
   {
-    name: "HypTryX",
+    name: "HyptryX",
     since: "03.2026",
     image: "hyptryx.png",
     badge: "Creator",
@@ -591,7 +591,7 @@ const talents = [
     tiktok: ""
   },
   {
-    name: "neotano",
+    name: "NeoTano",
     since: "03.2026",
     image: "neotano.png",
     badge: "Creator",
@@ -675,12 +675,23 @@ const i18n = {
 
 let currentLang = "de";
 
+function shuffleArray(array){
+  const shuffled = [...array];
+  for(let i = shuffled.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function renderTalents(){
   const t = i18n[currentLang];
   const grid = document.getElementById("talentGrid");
+  const shuffledTalents = shuffleArray(talents);
+
   document.getElementById("talentCount").innerText = talents.length;
 
-  grid.innerHTML = talents.map(talent => `
+  grid.innerHTML = shuffledTalents.map(talent => `
     <article class="card">
       <div class="card-inner">
         <div class="card-img">
