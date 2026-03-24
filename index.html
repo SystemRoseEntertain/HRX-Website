@@ -1,205 +1,777 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRX CreatorNET – Creator Network</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HRX CreatorNET – Startseite</title>
 
-<style>
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#1a1d28;
+      --muted:#7b8090;
+      --muted-light:#cbc7c0;
+      --nav:#b9b9b9;
+      --nav-active:#666666;
+      --line:#e2dfd8;
+      --violet:#6841b7;
+      --violet-dark:#5932aa;
+      --white:#ffffff;
+      --max:1720px;
+      --shadow-soft:0 12px 30px rgba(20,20,24,0.07);
+      --shadow-btn:0 10px 22px rgba(104,65,183,0.18);
+    }
 
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background: radial-gradient(circle at top, #1a1033, #05070f);
-    color:white;
-    text-align:center;
+    *{
+      box-sizing:border-box;
+    }
 
-    /* FIX */
-    min-height:100vh;
-    display:flex;
-    flex-direction:column;
-}
+    html,body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:#ffffff;
+      overflow-x:hidden;
+    }
 
-.container{
-    max-width:800px;
-    padding:40px;
-    margin:auto;
+    body{
+      min-height:100vh;
+    }
 
-    /* FIX */
-    flex:1;
-}
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
 
-.logo{
-    width:100%;
-    max-width:500px;
-    margin-bottom:14px;
-}
+    img{
+      display:block;
+      max-width:100%;
+      height:auto;
+    }
 
-/* Plattform Logos */
+    .page{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      position:relative;
+      background:#ffffff;
+    }
 
-.platform-logos{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:14px;
-    margin:0 0 90px 0;
-    opacity:0.9;
-}
+    .shell{
+      width:min(calc(100% - 48px), var(--max));
+      margin:0 auto;
+    }
 
-.platform-logos img{
-    height:52px;
-    width:auto;
-    display:block;
-    filter: drop-shadow(0 0 10px rgba(122,77,255,0.35));
-}
+    header{
+      padding:18px 0 0;
+      position:relative;
+      z-index:5;
+      background:transparent;
+    }
 
-@media (max-width:520px){
-    .platform-logos img{ height:36px; }
-}
+    .header-row{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:start;
+      gap:20px;
+    }
 
-h1{
-    font-size:40px;
-    margin-bottom:10px;
-}
+    .brand{
+      display:flex;
+      align-items:flex-start;
+    }
 
-p{
-    opacity:0.8;
-    margin-bottom:30px;
-}
+    .brand img{
+      width:420px;
+      max-width:25vw;
+      min-width:260px;
+    }
 
-.apply-btn,
-.info-btn{
-    background: linear-gradient(90deg,#7a4dff,#a77bff);
-    border:none;
-    padding:18px 40px;
-    font-size:20px;
-    border-radius:12px;
-    color:white;
-    cursor:pointer;
-    transition:0.2s;
-    text-decoration:none;
-    display:inline-block;
-    box-shadow:0 10px 30px rgba(122,77,255,0.4);
-    margin:10px;
-}
+    .nav-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:36px;
+      padding-top:30px;
+      flex-wrap:wrap;
+    }
 
-.apply-btn:hover,
-.info-btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 15px 40px rgba(122,77,255,0.6);
-}
+    .nav-link{
+      position:relative;
+      font-size:16px;
+      font-weight:700;
+      color:var(--nav);
+      line-height:1;
+      transition:0.18s ease;
+    }
 
-/* Sprache */
+    .nav-link:hover{
+      color:var(--text);
+    }
 
-.lang-switch{
-    position:absolute;
-    top:20px;
-    right:20px;
-}
+    .nav-link.active{
+      color:var(--nav-active);
+    }
 
-.lang-btn{
-    padding:6px 14px;
-    margin-left:8px;
-    border-radius:10px;
-    background:rgba(122,77,255,0.2);
-    color:white;
-    text-decoration:none;
-    font-size:13px;
-    transition:0.2s;
-    box-shadow:0 0 10px rgba(122,77,255,0.5);
-    cursor:pointer;
-}
+    .nav-link.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-9px;
+      height:2px;
+      background:#7a7a7a;
+      border-radius:2px;
+    }
 
-.lang-btn:hover{
-    background:rgba(167,123,255,0.5);
-    transform:scale(1.05);
-}
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding-top:14px;
+    }
 
-/* Footer */
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:5px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.96);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(10px);
+    }
 
-footer{
-    text-align:center;
-    padding:20px;
-    font-size:12px;
-    opacity:0.7;
-}
+    .lang-btn{
+      border:none;
+      background:transparent;
+      color:#707483;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:0.06em;
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      transition:0.18s ease;
+    }
 
-.footer-btn{
-    display:inline-block;
-    margin:6px 5px 0 5px;
-    padding:4px 12px;
-    font-size:12px;
-    border-radius:10px;
-    text-decoration:none;
-    color:#d8cfff;
-    background:rgba(122,77,255,0.15);
-    box-shadow:0 0 10px rgba(122,77,255,0.6);
-    transition:0.2s;
-}
+    .lang-btn.active{
+      background:var(--violet);
+      color:#fff;
+    }
 
-.footer-btn:hover{
-    background:rgba(122,77,255,0.35);
-    transform:scale(1.05);
-}
+    .login-btn{
+      border:none;
+      background:var(--violet);
+      color:#fff;
+      font-weight:800;
+      font-size:16px;
+      padding:16px 34px;
+      border-radius:999px;
+      box-shadow:var(--shadow-btn);
+      transition:0.18s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-</style>
+    .login-btn:hover,
+    .pill-link:hover{
+      background:var(--violet-dark);
+      transform:translateY(-1px);
+    }
+
+    main{
+      flex:1;
+      display:flex;
+      align-items:stretch;
+      padding:0 0 18px;
+      background:#ffffff;
+    }
+
+    .hero{
+      position:relative;
+      min-height:calc(100vh - 128px);
+      overflow:hidden;
+      background:#ffffff;
+    }
+
+    .hero-glow{
+      display:none;
+    }
+
+    .hero-stage{
+      position:absolute;
+      left:50%;
+      bottom:-8px;
+      transform:translateX(-50%);
+      width:min(100%, 1680px);
+      z-index:0;
+      pointer-events:none;
+    }
+
+    .hero-stage img{
+      width:100%;
+      height:auto;
+      display:block;
+    }
+
+    .hero-layout{
+      position:relative;
+      z-index:2;
+      min-height:calc(100vh - 128px);
+      display:grid;
+      grid-template-columns:30% 40% 30%;
+      align-items:start;
+    }
+
+    .zone-left,
+    .zone-center,
+    .zone-right{
+      position:relative;
+      min-height:calc(100vh - 128px);
+    }
+
+    .zone-left{
+      padding-top:218px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    /* hier mittig deutlich höher, damit nichts überlappt */
+    .zone-center{
+      padding-top:108px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+    }
+
+    .zone-right{
+      padding-top:252px;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+
+    .talents-card{
+      width:min(100%, 330px);
+      filter:drop-shadow(0 16px 34px rgba(27,27,34,0.10));
+      margin-bottom:28px;
+    }
+
+    .talents-placeholder{
+      width:min(100%, 330px);
+      height:182px;
+      margin-bottom:28px;
+    }
+
+    .headline{
+      margin:0;
+      font-size:clamp(60px, 5.8vw, 98px);
+      line-height:0.92;
+      font-weight:900;
+      letter-spacing:-0.055em;
+      max-width:540px;
+      color:var(--text);
+    }
+
+    .headline .accent{
+      color:var(--violet);
+    }
+
+    .subline{
+      margin:14px 0 0;
+      font-size:clamp(16px, 1.06vw, 21px);
+      line-height:1.42;
+      color:var(--muted);
+      max-width:470px;
+      font-weight:500;
+    }
+
+    .side-claim{
+      margin:0 0 22px;
+      font-size:clamp(18px, 1.38vw, 30px);
+      line-height:1.16;
+      font-weight:900;
+      letter-spacing:0.045em;
+      color:#171a24;
+      max-width:255px;
+      text-align:left;
+    }
+
+    .side-claim .accent{
+      color:var(--violet);
+    }
+
+    .pill-link{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-width:170px;
+      padding:17px 32px;
+      border-radius:999px;
+      background:var(--violet);
+      color:#fff;
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:0.02em;
+      box-shadow:var(--shadow-btn);
+      transition:0.18s ease;
+      white-space:nowrap;
+    }
+
+    .center-btn{
+      margin-top:22px;
+      min-width:188px;
+    }
+
+    .right-btn{
+      min-width:175px;
+    }
+
+    .stats{
+      position:absolute;
+      left:50%;
+      bottom:10px;
+      transform:translateX(-50%);
+      width:min(520px, 74%);
+      display:flex;
+      justify-content:center;
+      gap:58px;
+      text-align:center;
+      z-index:3;
+    }
+
+    .stats::before{
+      content:"";
+      position:absolute;
+      left:50%;
+      transform:translateX(-50%);
+      top:-22px;
+      width:min(1100px, 260%);
+      height:1px;
+      background:linear-gradient(90deg, transparent, var(--line) 18%, var(--line) 82%, transparent);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:clamp(17px, 1.15vw, 23px);
+      font-weight:900;
+      letter-spacing:-0.02em;
+      color:#1d1f27;
+      margin-bottom:10px;
+      line-height:1.05;
+    }
+
+    .stat span{
+      display:block;
+      color:var(--muted-light);
+      font-weight:700;
+      font-size:clamp(10px, 0.72vw, 13px);
+      letter-spacing:0.05em;
+      line-height:1.1;
+    }
+
+    footer{
+      padding:0 0 18px;
+      position:relative;
+      z-index:5;
+      background:#ffffff;
+    }
+
+    .footer-row{
+      display:flex;
+      justify-content:center;
+      gap:40px;
+      flex-wrap:wrap;
+      color:#d0ccc5;
+      font-weight:700;
+      font-size:13px;
+      border-top:1px solid rgba(123,117,140,0.10);
+      padding-top:12px;
+    }
+
+    .footer-row a:hover{
+      color:var(--violet);
+    }
+
+    @media (max-width:1500px){
+      .brand img{
+        width:360px;
+      }
+
+      .nav-wrap{
+        gap:26px;
+      }
+
+      .zone-left{
+        padding-top:205px;
+      }
+
+      .zone-center{
+        padding-top:94px;
+      }
+
+      .zone-right{
+        padding-top:235px;
+      }
+
+      .headline{
+        font-size:clamp(54px, 5.2vw, 88px);
+      }
+
+      .hero-stage{
+        bottom:-4px;
+      }
+    }
+
+    @media (max-width:1240px){
+      .header-row{
+        grid-template-columns:1fr;
+        gap:16px;
+      }
+
+      .brand{
+        justify-content:center;
+      }
+
+      .nav-wrap{
+        padding-top:0;
+      }
+
+      .top-actions{
+        justify-content:center;
+        padding-top:0;
+      }
+
+      .hero{
+        min-height:auto;
+        padding-bottom:24px;
+      }
+
+      .hero-stage{
+        left:50%;
+        bottom:32px;
+        width:min(1400px, 120%);
+      }
+
+      .hero-layout{
+        min-height:auto;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        gap:28px;
+        padding-top:20px;
+      }
+
+      .zone-left,
+      .zone-center,
+      .zone-right{
+        min-height:auto;
+        padding-top:0;
+        align-items:center;
+        text-align:center;
+      }
+
+      .zone-right{
+        padding-bottom:10px;
+      }
+
+      .side-claim{
+        max-width:360px;
+        text-align:center;
+      }
+
+      .stats{
+        position:relative;
+        left:auto;
+        bottom:auto;
+        transform:none;
+        margin:24px auto 0;
+        width:min(560px, 92%);
+      }
+
+      .stats::before{
+        width:100%;
+      }
+    }
+
+    @media (max-width:760px){
+      .shell{
+        width:min(calc(100% - 24px), var(--max));
+      }
+
+      .brand img{
+        width:min(280px, 72vw);
+        min-width:auto;
+      }
+
+      .nav-wrap{
+        gap:14px 18px;
+      }
+
+      .nav-link{
+        font-size:15px;
+      }
+
+      .login-btn{
+        padding:14px 24px;
+        font-size:15px;
+      }
+
+      .lang-btn{
+        padding:9px 12px;
+      }
+
+      .hero-stage{
+        width:150%;
+        bottom:72px;
+      }
+
+      .headline{
+        font-size:clamp(40px, 12vw, 60px);
+      }
+
+      .subline{
+        font-size:17px;
+      }
+
+      .talents-card,
+      .talents-placeholder{
+        max-width:280px;
+      }
+
+      .talents-placeholder{
+        height:160px;
+      }
+
+      .pill-link{
+        min-width:0;
+        width:100%;
+        max-width:245px;
+        padding:16px 24px;
+        font-size:15px;
+      }
+
+      .side-claim{
+        font-size:22px;
+      }
+
+      .stats{
+        gap:26px;
+        flex-wrap:wrap;
+      }
+
+      .footer-row{
+        gap:18px 24px;
+        font-size:13px;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="page">
+    <header>
+      <div class="shell">
+        <div class="header-row">
+          <a class="brand" href="index.html" aria-label="HRX CreatorNET Home">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
+          </a>
 
-<div class="lang-switch">
-<span class="lang-btn" onclick="setLang('de')">DE</span>
-<span class="lang-btn" onclick="setLang('en')">EN</span>
-</div>
+          <nav class="nav-wrap" aria-label="Hauptnavigation">
+            <a href="index.html" class="nav-link active" id="nav-home">Startseite</a>
+            <a href="bewerbung.html" class="nav-link" id="nav-apply">Bewerbung</a>
+            <a href="mehr_erfahren.html" class="nav-link" id="nav-about">About HRX</a>
+            <a href="talente.html" class="nav-link" id="nav-talents">Talente</a>
+            <a href="team.html" class="nav-link" id="nav-team">Team</a>
+            <a href="news.html" class="nav-link" id="nav-news">News</a>
+            <a href="playtok.html" class="nav-link" id="nav-playtok">Playtok</a>
+          </nav>
 
-<div class="container">
+          <div class="top-actions">
+            <div class="lang-switch" aria-label="Sprache wechseln">
+              <button class="lang-btn active" id="btn-de" type="button" onclick="setLang('de')">DE</button>
+              <button class="lang-btn" id="btn-en" type="button" onclick="setLang('en')">EN</button>
+            </div>
 
-<img src="HRX_Logo_Twitchlila_w4.png" class="logo" alt="HRX CreatorNET Logo">
+            <a href="login.html" class="login-btn" id="login-btn">Login</a>
+          </div>
+        </div>
+      </div>
+    </header>
 
-<div class="platform-logos">
-<img src="logo_tt.png" alt="TikTok">
-<img src="logo_twitch.png" alt="Twitch">
-</div>
+    <main>
+      <div class="shell">
+        <section class="hero">
+          <div class="hero-glow" aria-hidden="true"></div>
 
-<h1 id="title">Werde Teil von HRX CreatorNET</h1>
-<p id="desc">Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.</p>
+          <div class="hero-stage" aria-hidden="true">
+            <img src="Background_png.png" alt="">
+          </div>
 
-<a href="bewerbung.html" class="apply-btn" id="apply">Jetzt bewerben</a><br>
-<a href="mehr_erfahren.html" class="info-btn" id="info">Mehr erfahren</a>
+          <div class="hero-layout">
+            <div class="zone-left">
+              <img src="Talente.png" alt="HRX Talente" class="talents-card" id="talents-image">
+              <div class="talents-placeholder" id="talents-placeholder" aria-hidden="true"></div>
+              <a href="talente.html" class="pill-link" id="talents-btn">Talente</a>
+            </div>
 
-</div>
+            <div class="zone-center">
+              <h1 class="headline" id="hero-title">
+                Where creators<br>
+                build <span class="accent">legacy.</span>
+              </h1>
 
-<footer>
-© 2026 HRX CreatorNET – HyptryX x Rose Entertain<br>
-<a href="impressum.html" class="footer-btn">Impressum</a>
-<a href="datenschutz.html" class="footer-btn">Datenschutz</a>
-</footer>
+              <p class="subline" id="hero-subline">
+                Ein privates Netzwerk für Creator mit Anspruch.<br>
+                Collaborate. Grow. Monetize.
+              </p>
 
-<script>
+              <a href="bewerbung.html" class="pill-link center-btn" id="hero-cta">Join the Network</a>
+            </div>
 
-const text={
-de:{
-title:"Werde Teil von HRX CreatorNET",
-desc:"Assets, Werbedeals, Wachstum – wir bringen Creator auf das nächste Level.",
-apply:"Jetzt bewerben",
-info:"Mehr erfahren"
-},
-en:{
-title:"Join HRX CreatorNET",
-desc:"Assets, brand deals, growth – we take creators to the next level.",
-apply:"Apply now",
-info:"Learn more"
-}
-};
+            <div class="zone-right">
+              <p class="side-claim" id="side-claim">
+                Start your Stream.<br>
+                <span class="accent">LIVE</span> your Dream
+              </p>
 
-function setLang(lang){
-document.getElementById("title").innerText=text[lang].title;
-document.getElementById("desc").innerText=text[lang].desc;
-document.getElementById("apply").innerText=text[lang].apply;
-document.getElementById("info").innerText=text[lang].info;
-}
+              <a href="mehr_erfahren.html" class="pill-link right-btn" id="about-btn">About HRX</a>
+            </div>
+          </div>
 
-</script>
+          <section class="stats" aria-label="Kennzahlen">
+            <div class="stat">
+              <strong id="stat-1-value">30+</strong>
+              <span id="stat-1-label">Creators</span>
+            </div>
+            <div class="stat">
+              <strong id="stat-2-value">1 Mio+</strong>
+              <span id="stat-2-label">Followers</span>
+            </div>
+            <div class="stat">
+              <strong id="stat-3-value">Only Invite</strong>
+              <span id="stat-3-label">Access</span>
+            </div>
+          </section>
+        </section>
+      </div>
+    </main>
 
+    <footer>
+      <div class="shell">
+        <div class="footer-row">
+          <a href="impressum.html" id="footer-imprint">Impressum</a>
+          <a href="datenschutz.html" id="footer-privacy">Datenschutz</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const text = {
+      de: {
+        navHome: "Startseite",
+        navApply: "Bewerbung",
+        navAbout: "About HRX",
+        navTalents: "Talente",
+        navTeam: "Team",
+        navNews: "News",
+        navPlaytok: "Playtok",
+        login: "Login",
+        heroTitle: 'Where creators<br>build <span class="accent">legacy.</span>',
+        heroSubline: "Ein privates Netzwerk für Creator mit Anspruch.<br>Collaborate. Grow. Monetize.",
+        heroCta: "Join the Network",
+        talentsBtn: "Talente",
+        sideClaim: 'Start your Stream.<br><span class="accent">LIVE</span> your Dream',
+        aboutBtn: "About HRX",
+        stat1Value: "30+",
+        stat1Label: "Creators",
+        stat2Value: "1 Mio+",
+        stat2Label: "Followers",
+        stat3Value: "Only Invite",
+        stat3Label: "Access",
+        footerImprint: "Impressum",
+        footerPrivacy: "Datenschutz",
+        htmlLang: "de"
+      },
+      en: {
+        navHome: "Home",
+        navApply: "Apply",
+        navAbout: "About HRX",
+        navTalents: "Talents",
+        navTeam: "Team",
+        navNews: "News",
+        navPlaytok: "Playtok",
+        login: "Login",
+        heroTitle: 'Where creators<br>build <span class="accent">legacy.</span>',
+        heroSubline: "A private network for serious creators.<br>Collaborate. Grow. Monetize.",
+        heroCta: "Join the Network",
+        talentsBtn: "Talents",
+        sideClaim: 'Start your Stream.<br><span class="accent">LIVE</span> your Dream',
+        aboutBtn: "About HRX",
+        stat1Value: "30+",
+        stat1Label: "Creators",
+        stat2Value: "1M+",
+        stat2Label: "Followers",
+        stat3Value: "Invite Only",
+        stat3Label: "Access",
+        footerImprint: "Imprint",
+        footerPrivacy: "Privacy",
+        htmlLang: "en"
+      }
+    };
+
+    function setLang(lang){
+      document.documentElement.lang = text[lang].htmlLang;
+
+      document.getElementById("nav-home").textContent = text[lang].navHome;
+      document.getElementById("nav-apply").textContent = text[lang].navApply;
+      document.getElementById("nav-about").textContent = text[lang].navAbout;
+      document.getElementById("nav-talents").textContent = text[lang].navTalents;
+      document.getElementById("nav-team").textContent = text[lang].navTeam;
+      document.getElementById("nav-news").textContent = text[lang].navNews;
+      document.getElementById("nav-playtok").textContent = text[lang].navPlaytok;
+      document.getElementById("login-btn").textContent = text[lang].login;
+
+      document.getElementById("hero-title").innerHTML = text[lang].heroTitle;
+      document.getElementById("hero-subline").innerHTML = text[lang].heroSubline;
+      document.getElementById("hero-cta").textContent = text[lang].heroCta;
+      document.getElementById("talents-btn").textContent = text[lang].talentsBtn;
+      document.getElementById("side-claim").innerHTML = text[lang].sideClaim;
+      document.getElementById("about-btn").textContent = text[lang].aboutBtn;
+
+      document.getElementById("footer-imprint").textContent = text[lang].footerImprint;
+      document.getElementById("footer-privacy").textContent = text[lang].footerPrivacy;
+
+      document.getElementById("btn-de").classList.toggle("active", lang === "de");
+      document.getElementById("btn-en").classList.toggle("active", lang === "en");
+
+      localStorage.setItem("hrxLang", lang);
+    }
+
+    const talentsImage = document.getElementById("talents-image");
+    const talentsPlaceholder = document.getElementById("talents-placeholder");
+
+    talentsImage.addEventListener("load", () => {
+      talentsPlaceholder.style.display = "none";
+    });
+
+    talentsImage.addEventListener("error", () => {
+      talentsImage.style.display = "none";
+      talentsPlaceholder.style.display = "block";
+    });
+
+    const savedLang = localStorage.getItem("hrxLang");
+    if(savedLang && text[savedLang]){
+      setLang(savedLang);
+    } else {
+      setLang("de");
+    }
+  </script>
 </body>
 </html>
