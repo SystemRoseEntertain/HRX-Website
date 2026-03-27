@@ -1,763 +1,1268 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>HRX CreatorNET – Talente</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HRX CreatorNET – Talente</title>
 
-<style>
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
+  <style>
+    :root{
+      --bg:#f7f6f3;
+      --bg-2:#efeeea;
+      --text:#171923;
+      --muted:#8e93a3;
+      --muted-2:#b8b8b8;
+      --violet:#6841b7;
+      --violet-dark:#5932aa;
+      --white:#ffffff;
+      --line:#e7e3dc;
+      --shadow:0 20px 45px rgba(16,18,24,0.10);
+      --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
+      --radius-xl:28px;
+      --radius-lg:22px;
+      --radius-md:16px;
+      --max:1720px;
+    }
 
-body{
-  margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  color:#fff;
-  background:
-    radial-gradient(1200px 650px at 18% 0%, rgba(122,77,255,0.28), transparent 60%),
-    radial-gradient(900px 520px at 85% 25%, rgba(167,123,255,0.18), transparent 60%),
-    radial-gradient(circle at top, #1a1033, #05070f);
-  overflow-x:hidden;
-}
+    *{
+      box-sizing:border-box;
+    }
 
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size:42px 42px;
-  pointer-events:none;
-  opacity:0.25;
-}
+    html,body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(560px 320px at 50% 18%, rgba(104,65,183,0.08), transparent 62%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      overflow-x:hidden;
+    }
 
-a{ color:inherit; text-decoration:none; }
+    body{
+      min-height:100vh;
+    }
 
-/* ===== Header ===== */
-.header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  min-height:80px;
-  background:linear-gradient(90deg,#140b2a,#0b0f1e);
-  border-bottom:1px solid rgba(167,123,255,0.22);
-  box-shadow:0 0 20px rgba(122,77,255,0.4);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
-  z-index:1000;
-}
+    a{
+      color:inherit;
+      text-decoration:none;
+    }
 
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:28px;
-  min-width:0;
-}
+    img{
+      display:block;
+      max-width:100%;
+      height:auto;
+    }
 
-.header-left > a{
-  display:flex;
-  align-items:center;
-}
+    .page{
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+    }
 
-.header img{
-  height:50px;
-  display:block;
-}
+    .shell{
+      width:min(calc(100% - 48px), var(--max));
+      margin:0 auto;
+    }
 
-.main-nav{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
+    header{
+      padding:18px 0 8px;
+      position:relative;
+      z-index:10;
+    }
 
-.nav-link{
-  padding:8px 14px;
-  border-radius:10px;
-  text-decoration:none;
-  color:#efeaff;
-  background:rgba(122,77,255,0.10);
-  border:1px solid rgba(167,123,255,0.18);
-  box-shadow:0 0 10px rgba(122,77,255,0.15);
-  font-size:13px;
-  transition:0.2s;
-  white-space:nowrap;
-  cursor:pointer;
-}
+    .header-row{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:start;
+      gap:20px;
+    }
 
-.nav-link:hover{
-  background:rgba(122,77,255,0.22);
-  box-shadow:0 0 16px rgba(167,123,255,0.35);
-  transform:scale(1.04);
-}
+    .brand img{
+      width:420px;
+      max-width:25vw;
+      min-width:260px;
+    }
 
-.lang-switch{
-  display:flex;
-  gap:10px;
-  flex-shrink:0;
-}
+    .nav-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:36px;
+      padding-top:30px;
+      flex-wrap:wrap;
+    }
 
-.lang-btn{
-  padding:6px 14px;
-  border-radius:10px;
-  background: rgba(122,77,255,0.2);
-  color:white;
-  text-decoration:none;
-  font-size:13px;
-  transition:0.2s;
-  box-shadow: 0 0 10px rgba(122,77,255,0.5);
-  cursor:pointer;
-  user-select:none;
-  white-space:nowrap;
-}
+    .nav-link{
+      position:relative;
+      font-size:16px;
+      font-weight:700;
+      color:var(--muted-2);
+      line-height:1;
+      transition:0.18s ease;
+    }
 
-.lang-btn:hover{
-  background: rgba(167,123,255,0.5);
-  transform: scale(1.05);
-}
+    .nav-link:hover{
+      color:var(--text);
+    }
 
-/* ===== Layout ===== */
-.wrap{
-  max-width:1280px;
-  margin:0 auto;
-  padding:118px 20px 70px;
-}
+    .nav-link.active{
+      color:#666666;
+    }
 
-/* ===== Hero ===== */
-.hero{
-  position:relative;
-  border-radius:22px;
-  padding:30px 26px;
-  background:
-    radial-gradient(700px 240px at 25% 0%, rgba(122,77,255,0.30), transparent 65%),
-    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
-  border:1px solid rgba(167,123,255,0.18);
-  box-shadow:0 20px 70px rgba(0,0,0,0.55);
-  overflow:hidden;
-  margin-bottom:24px;
-}
+    .nav-link.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-9px;
+      height:2px;
+      background:#7a7a7a;
+      border-radius:2px;
+    }
 
-.hero:after{
-  content:"";
-  position:absolute;
-  inset:-2px;
-  background:radial-gradient(600px 220px at 80% 35%, rgba(167,123,255,0.16), transparent 60%);
-  pointer-events:none;
-}
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding-top:14px;
+    }
 
-.hero-inner{
-  position:relative;
-  z-index:1;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:20px;
-  flex-wrap:wrap;
-}
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:5px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.96);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(10px);
+    }
 
-.kicker{
-  font-size:12px;
-  letter-spacing:0.18em;
-  text-transform:uppercase;
-  color:#d8cfff;
-  opacity:0.9;
-  margin-bottom:10px;
-}
+    .lang-btn{
+      border:none;
+      background:transparent;
+      color:#707483;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:0.06em;
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      transition:0.18s ease;
+    }
 
-.hero h1{
-  margin:0 0 10px 0;
-  font-size:42px;
-  letter-spacing:-0.02em;
-}
+    .lang-btn.active{
+      background:var(--violet);
+      color:#fff;
+    }
 
-.hero p{
-  margin:0;
-  max-width:760px;
-  opacity:0.88;
-  font-size:16px;
-  line-height:1.55;
-}
+    .login-btn{
+      border:none;
+      background:var(--violet);
+      color:#fff;
+      font-weight:800;
+      font-size:16px;
+      padding:16px 34px;
+      border-radius:999px;
+      box-shadow:0 10px 22px rgba(104,65,183,0.18);
+      transition:0.18s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
 
-.hero-stat{
-  min-width:180px;
-  padding:18px 20px;
-  border-radius:18px;
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(167,123,255,0.15);
-  box-shadow:0 18px 60px rgba(0,0,0,0.35);
-}
+    .login-btn:hover{
+      background:var(--violet-dark);
+      transform:translateY(-1px);
+    }
 
-.hero-stat strong{
-  display:block;
-  font-size:28px;
-  margin-bottom:4px;
-}
+    main{
+      flex:1;
+      padding:28px 0 60px;
+    }
 
-.hero-stat span{
-  opacity:0.76;
-  font-size:13px;
-}
+    .hero{
+      text-align:center;
+      margin-bottom:34px;
+    }
 
-/* ===== Filter row ===== */
-.top-row{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:16px;
-  margin:8px 4px 18px;
-  flex-wrap:wrap;
-}
+    .hero h1{
+      margin:0 0 16px;
+      font-size:clamp(46px,4.2vw,72px);
+      line-height:0.96;
+      font-weight:900;
+      letter-spacing:-0.045em;
+    }
 
-.chips{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+    .hero p{
+      margin:0 auto;
+      max-width:900px;
+      font-size:clamp(18px,1.3vw,28px);
+      line-height:1.45;
+      color:var(--muted);
+    }
 
-.chip{
-  display:inline-flex;
-  align-items:center;
-  padding:10px 14px;
-  border-radius:999px;
-  background:rgba(122,77,255,0.12);
-  border:1px solid rgba(167,123,255,0.22);
-  color:#efeaff;
-  font-size:13px;
-  box-shadow:0 0 18px rgba(122,77,255,0.18);
-}
+    .hero-actions{
+      margin-top:28px;
+      display:flex;
+      justify-content:center;
+      gap:14px;
+      flex-wrap:wrap;
+    }
 
-.chip.active{
-  background:linear-gradient(90deg, rgba(122,77,255,0.26), rgba(167,123,255,0.22));
-  border-color:rgba(167,123,255,0.38);
-}
+    .action-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+      min-width:180px;
+      padding:16px 28px;
+      border-radius:999px;
+      font-size:16px;
+      font-weight:800;
+      letter-spacing:0.02em;
+      transition:0.18s ease;
+      box-shadow:var(--shadow-soft);
+    }
 
-.result-text{
-  font-size:13px;
-  opacity:0.75;
-}
+    .action-btn.primary{
+      background:var(--violet);
+      color:#fff;
+    }
 
-/* ===== Grid ===== */
-.talent-grid{
-  display:grid;
-  grid-template-columns:repeat(4, minmax(0, 1fr));
-  gap:18px;
-}
+    .action-btn.secondary{
+      background:#ffffff;
+      color:var(--text);
+      border:1px solid rgba(23,25,35,0.08);
+    }
 
-.card{
-  position:relative;
-  border-radius:20px;
-  overflow:hidden;
-  background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-  border:1px solid rgba(167,123,255,0.16);
-  box-shadow:0 18px 60px rgba(0,0,0,0.55);
-  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-}
+    .action-btn:hover{
+      transform:translateY(-1px);
+    }
 
-.card:hover{
-  transform:translateY(-4px);
-  border-color:rgba(167,123,255,0.34);
-  box-shadow:0 24px 85px rgba(0,0,0,0.65);
-}
+    .view-switch{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      margin:0 0 28px;
+      flex-wrap:wrap;
+    }
 
-.card-inner{
-  padding:18px;
-}
+    .view-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+      min-width:180px;
+      padding:14px 24px;
+      border-radius:999px;
+      font-size:15px;
+      font-weight:800;
+      transition:0.18s ease;
+      box-shadow:var(--shadow-soft);
+      background:#fff;
+      color:var(--text);
+      border:1px solid rgba(23,25,35,0.08);
+    }
 
-.card-img{
-  width:100%;
-  aspect-ratio:1 / 1;
-  border-radius:18px;
-  overflow:hidden;
-  background:#0b0f1e;
-  border:1px solid rgba(167,123,255,0.12);
-  margin-bottom:16px;
-}
+    .view-btn.active{
+      background:var(--violet);
+      color:#fff;
+      border-color:transparent;
+    }
 
-.card-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
+    .featured-wrap{
+      position:relative;
+      margin-bottom:18px;
+    }
 
-.card h3{
-  margin:0 0 10px 0;
-  font-size:20px;
-  line-height:1.2;
-}
+    .featured-grid{
+      display:grid;
+      grid-template-columns:repeat(4, minmax(0,1fr));
+      gap:18px;
+      align-items:stretch;
+    }
 
-.meta{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  margin-bottom:16px;
-  font-size:14px;
-  opacity:0.78;
-}
+    .creator-card{
+      position:relative;
+      border-radius:30px;
+      overflow:hidden;
+      background:rgba(255,255,255,0.7);
+      border:1px solid rgba(255,255,255,0.75);
+      box-shadow:var(--shadow);
+      min-height:640px;
+      backdrop-filter:blur(12px);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      isolation:isolate;
+      transition:transform .16s ease, box-shadow .16s ease;
+    }
 
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:6px 10px;
-  border-radius:999px;
-  font-size:12px;
-  background:rgba(122,77,255,0.14);
-  border:1px solid rgba(167,123,255,0.20);
-  color:#e9e3ff;
-  opacity:0.95;
-  margin-bottom:12px;
-}
+    .creator-card:hover{
+      transform:translateY(-4px);
+      box-shadow:0 26px 55px rgba(16,18,24,0.14);
+    }
 
-.desc{
-  margin:0 0 18px 0;
-  opacity:0.84;
-  font-size:14px;
-  line-height:1.5;
-  min-height:63px;
-}
+    .creator-card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      z-index:0;
+      opacity:1;
+    }
 
-.socials{
-  display:flex;
-  gap:12px;
-  align-items:center;
-}
+    .creator-card.pink::before{
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255,255,255,0.45), transparent 42%),
+        linear-gradient(180deg, #f4edf1 0%, #eedee7 100%);
+    }
 
-.social-btn{
-  width:42px;
-  height:42px;
-  border-radius:12px;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(122,77,255,0.12);
-  border:1px solid rgba(167,123,255,0.22);
-  box-shadow:0 0 18px rgba(122,77,255,0.18);
-  transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
-}
+    .creator-card.blue::before{
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255,255,255,0.45), transparent 42%),
+        linear-gradient(180deg, #e8edf8 0%, #dfe5f3 100%);
+    }
 
-.social-btn:hover{
-  transform:translateY(-2px);
-  background:rgba(122,77,255,0.18);
-  box-shadow:0 0 24px rgba(167,123,255,0.28);
-}
+    .creator-card.gold::before{
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255,255,255,0.45), transparent 42%),
+        linear-gradient(180deg, #f5f0df 0%, #f0e6cf 100%);
+    }
 
-.social-btn img{
-  width:20px;
-  height:20px;
-  object-fit:contain;
-  display:block;
-}
+    .creator-card.mint::before{
+      background:
+        radial-gradient(circle at 50% 28%, rgba(255,255,255,0.45), transparent 42%),
+        linear-gradient(180deg, #e4f0ec 0%, #d9eae4 100%);
+    }
 
-/* ===== Footer ===== */
-footer{
-  margin-top:30px;
-  padding:18px 0 10px;
-  text-align:center;
-  opacity:0.85;
-  font-size:12px;
-}
+    .creator-visual{
+      position:relative;
+      z-index:1;
+      flex:1;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+      padding:26px 18px 0;
+      min-height:380px;
+    }
 
-.footer-links{
-  margin-top:10px;
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  flex-wrap:wrap;
-}
+    .creator-visual img{
+      max-height:370px;
+      width:auto;
+      object-fit:contain;
+      filter:drop-shadow(0 18px 26px rgba(18,20,27,0.12));
+    }
 
-.footer-btn{
-  display:inline-block;
-  padding:6px 12px;
-  border-radius:12px;
-  text-decoration:none;
-  color:#d8cfff;
-  background:rgba(122,77,255,0.12);
-  border:1px solid rgba(167,123,255,0.18);
-  box-shadow:0 0 14px rgba(122,77,255,0.18);
-  transition:transform .15s ease, background .15s ease;
-}
+    .creator-content{
+      position:relative;
+      z-index:1;
+      padding:24px 24px 22px;
+      text-align:center;
+      background:linear-gradient(180deg, rgba(255,255,255,0.0) 0%, rgba(255,255,255,0.56) 20%, rgba(255,255,255,0.88) 100%);
+    }
 
-.footer-btn:hover{
-  transform:translateY(-1px);
-  background:rgba(122,77,255,0.18);
-}
+    .creator-badge{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:7px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.55);
+      border:1px solid rgba(23,25,35,0.06);
+      color:#686f81;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:0.06em;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
 
-/* ===== Responsive ===== */
-@media (max-width: 1180px){
-  .talent-grid{
-    grid-template-columns:repeat(3, minmax(0, 1fr));
-  }
-}
+    .creator-name{
+      margin:0 0 10px;
+      font-size:clamp(26px,1.8vw,40px);
+      font-weight:500;
+      letter-spacing:-0.03em;
+      color:#2b2f3a;
+    }
 
-@media (max-width: 900px){
-  .header{
-    height:auto;
-    padding:12px 14px;
-    align-items:flex-start;
-  }
+    .creator-role{
+      margin:0 0 10px;
+      color:var(--muted);
+      font-size:clamp(16px,1vw,22px);
+      line-height:1.35;
+      min-height:48px;
+    }
 
-  .header-left{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-  }
+    .creator-meta{
+      margin:0 0 18px;
+      color:#9ca2b2;
+      font-size:14px;
+      font-weight:700;
+    }
 
-  .main-nav{
-    gap:8px;
-  }
+    .socials{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      align-items:center;
+    }
 
-  .wrap{
-    padding:150px 20px 70px;
-  }
-}
+    .social-btn{
+      width:52px;
+      height:52px;
+      border-radius:14px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(255,255,255,0.76);
+      border:1px solid rgba(23,25,35,0.06);
+      box-shadow:0 10px 24px rgba(18,20,27,0.08);
+      transition:transform .15s ease, background .15s ease, box-shadow .15s ease;
+    }
 
-@media (max-width: 860px){
-  .talent-grid{
-    grid-template-columns:repeat(2, minmax(0, 1fr));
-  }
+    .social-btn:hover{
+      transform:translateY(-2px);
+      background:#ffffff;
+      box-shadow:0 14px 28px rgba(18,20,27,0.11);
+    }
 
-  .hero h1{
-    font-size:34px;
-  }
-}
+    .social-btn img{
+      width:22px;
+      height:22px;
+      object-fit:contain;
+      display:block;
+    }
 
-@media (max-width: 560px){
-  .talent-grid{
-    grid-template-columns:1fr;
-  }
+    .social-btn.disabled{
+      opacity:0.35;
+      pointer-events:none;
+      filter:grayscale(1);
+    }
 
-  .nav-link{
-    font-size:12px;
-    padding:7px 10px;
-  }
+    .arrow-btn{
+      position:absolute;
+      top:38%;
+      transform:translateY(-50%);
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      border:none;
+      background:rgba(255,255,255,0.84);
+      box-shadow:var(--shadow-soft);
+      color:#7b7f88;
+      font-size:38px;
+      line-height:1;
+      cursor:pointer;
+      z-index:5;
+      transition:0.18s ease;
+    }
 
-  .lang-btn{
-    padding:5px 10px;
-    font-size:12px;
-  }
+    .arrow-btn:hover{
+      background:#ffffff;
+      color:var(--text);
+    }
 
-  .wrap{
-    padding:170px 16px 60px;
-  }
-}
-</style>
+    .arrow-left{
+      left:-26px;
+    }
+
+    .arrow-right{
+      right:-26px;
+    }
+
+    .pagination{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      margin-top:28px;
+      flex-wrap:wrap;
+    }
+
+    .page-btn{
+      min-width:44px;
+      height:44px;
+      padding:0 16px;
+      border:none;
+      border-radius:999px;
+      background:#fff;
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+      box-shadow:var(--shadow-soft);
+      border:1px solid rgba(23,25,35,0.08);
+      transition:0.18s ease;
+    }
+
+    .page-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .page-btn.active{
+      background:var(--violet);
+      color:#fff;
+      border-color:transparent;
+    }
+
+    .page-btn:disabled{
+      opacity:0.4;
+      cursor:not-allowed;
+      transform:none;
+    }
+
+    .lurk-section{
+      margin-top:56px;
+      padding:34px 28px 30px;
+      border-radius:32px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.78) 0%, rgba(255,255,255,0.94) 100%);
+      border:1px solid rgba(23,25,35,0.06);
+      box-shadow:var(--shadow);
+    }
+
+    .lurk-head{
+      text-align:center;
+      margin-bottom:24px;
+    }
+
+    .lurk-head h2{
+      margin:0 0 10px;
+      font-size:clamp(30px,2.4vw,48px);
+      line-height:1;
+      letter-spacing:-0.04em;
+    }
+
+    .lurk-head p{
+      margin:0 auto;
+      max-width:760px;
+      color:var(--muted);
+      font-size:18px;
+      line-height:1.5;
+    }
+
+    .lurk-actions{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:24px;
+    }
+
+    .lurk-btn{
+      border:none;
+      background:var(--violet);
+      color:white;
+      padding:14px 22px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:800;
+      font-size:15px;
+      box-shadow:0 10px 22px rgba(104,65,183,0.18);
+      transition:0.18s ease;
+    }
+
+    .lurk-btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid rgba(23,25,35,0.08);
+      box-shadow:var(--shadow-soft);
+    }
+
+    .lurk-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    .lurk-grid{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:18px;
+    }
+
+    .lurk-card{
+      background:#18181b;
+      border-radius:24px;
+      padding:12px;
+      box-shadow:0 14px 30px rgba(16,18,24,0.16);
+      overflow:hidden;
+    }
+
+    .lurk-card h3{
+      margin:0 0 10px;
+      color:#fff;
+      font-size:18px;
+      font-weight:800;
+      text-align:left;
+      padding:4px 4px 0;
+      text-transform:none;
+    }
+
+    .lurk-card iframe{
+      width:100%;
+      height:240px;
+      border:0;
+      border-radius:16px;
+      display:block;
+      background:#000;
+    }
+
+    footer{
+      padding:18px 0 28px;
+    }
+
+    .footer-row{
+      display:flex;
+      justify-content:center;
+      gap:40px;
+      flex-wrap:wrap;
+      color:#d0ccc5;
+      font-weight:700;
+      font-size:13px;
+      border-top:1px solid rgba(123,117,140,0.10);
+      padding-top:14px;
+    }
+
+    .footer-row a:hover{
+      color:var(--violet);
+    }
+
+    @media (max-width:1400px){
+      .brand img{
+        width:360px;
+      }
+
+      .featured-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+
+      .lurk-grid{
+        grid-template-columns:repeat(2, minmax(0,1fr));
+      }
+    }
+
+    @media (max-width:1180px){
+      .header-row{
+        grid-template-columns:1fr;
+        gap:16px;
+      }
+
+      .brand{
+        justify-content:center;
+      }
+
+      .nav-wrap{
+        padding-top:0;
+      }
+
+      .top-actions{
+        justify-content:center;
+        padding-top:0;
+      }
+
+      .arrow-btn{
+        display:none;
+      }
+    }
+
+    @media (max-width:760px){
+      .shell{
+        width:min(calc(100% - 24px), var(--max));
+      }
+
+      .brand img{
+        width:min(280px, 72vw);
+        min-width:auto;
+      }
+
+      .nav-wrap{
+        gap:14px 18px;
+      }
+
+      .nav-link{
+        font-size:15px;
+      }
+
+      .login-btn{
+        padding:14px 24px;
+        font-size:15px;
+      }
+
+      .hero h1{
+        font-size:40px;
+      }
+
+      .hero p{
+        font-size:17px;
+      }
+
+      .hero-actions{
+        flex-direction:column;
+        align-items:center;
+      }
+
+      .featured-grid,
+      .lurk-grid{
+        grid-template-columns:1fr;
+      }
+
+      .creator-card{
+        min-height:580px;
+      }
+
+      .creator-visual img{
+        max-height:320px;
+      }
+
+      .action-btn,
+      .view-btn,
+      .lurk-btn{
+        width:100%;
+        min-width:0;
+      }
+
+      .lurk-section{
+        padding:24px 16px 20px;
+      }
+    }
+  </style>
 </head>
 <body>
+  <div class="page">
+    <header>
+      <div class="shell">
+        <div class="header-row">
+          <a class="brand" href="index.html" aria-label="HRX CreatorNET Startseite">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
+          </a>
 
-<header class="header">
-  <div class="header-left">
-    <a href="index.html" aria-label="Zur Startseite">
-      <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo" />
-    </a>
+          <nav class="nav-wrap" aria-label="Hauptnavigation">
+            <a href="index.html" class="nav-link" id="nav-home">Startseite</a>
+            <a href="bewerbung.html" class="nav-link" id="nav-apply">Bewerbung</a>
+            <a href="mehr_erfahren.html" class="nav-link" id="nav-about">About HRX</a>
+            <a href="talente.html" class="nav-link active" id="nav-talents">Talente</a>
+            <a href="team.html" class="nav-link" id="nav-team">Team</a>
+            <a href="news.html" class="nav-link" id="nav-news">News</a>
+            <a href="playtok.html" class="nav-link" id="nav-playtok">Playtok</a>
+          </nav>
 
-    <nav class="main-nav">
-      <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
-      <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
-      <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
-      <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
-    </nav>
-  </div>
+          <div class="top-actions">
+            <div class="lang-switch" aria-label="Sprache wechseln">
+              <button class="lang-btn active" id="btn-de" type="button" onclick="setLang('de')">DE</button>
+              <button class="lang-btn" id="btn-en" type="button" onclick="setLang('en')">EN</button>
+            </div>
 
-  <div class="lang-switch">
-    <span class="lang-btn" onclick="setLang('de')">DE</span>
-    <span class="lang-btn" onclick="setLang('en')">EN</span>
-  </div>
-</header>
-
-<main class="wrap">
-  <section class="hero">
-    <div class="hero-inner">
-      <div>
-        <div class="kicker" id="hero_kicker">Creator Network</div>
-        <h1 id="hero_title">Unsere Talente</h1>
-        <p id="hero_desc">
-          Hier findest du ausgewählte Creator aus dem HRX CreatorNET.
-          Gaming, Live-Content und starke Persönlichkeiten — direkt mit ihren Twitch- und TikTok-Profilen verlinkt.
-        </p>
-      </div>
-
-      <div class="hero-stat">
-        <strong id="talentCount">13</strong>
-        <span id="talentCountLabel">Aktive Talente</span>
-      </div>
-    </div>
-  </section>
-
-  <div class="top-row">
-    <div class="chips">
-      <span class="chip active" id="chip_1">Aktive Talente</span>
-      <span class="chip" id="chip_2">HRX CreatorNET</span>
-    </div>
-    <div class="result-text" id="result_text">Stand: 2026</div>
-  </div>
-
-  <section class="talent-grid" id="talentGrid"></section>
-
-  <footer>
-    <div id="footer_line">© 2026 HRX CreatorNET – HyptryX x Rose Entertain</div>
-    <div class="footer-links">
-      <a class="footer-btn" href="impressum.html" id="f_imprint">Impressum</a>
-      <a class="footer-btn" href="datenschutz.html" id="f_privacy">Datenschutz</a>
-    </div>
-  </footer>
-</main>
-
-<script>
-const talents = [
-  {
-    name: "RoninMartoku",
-    since: "03.2026",
-    image: "roninmartoku.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/roninmartoku",
-    tiktok: ""
-  },
-  {
-    name: "HyptryX",
-    since: "03.2026",
-    image: "hyptryx.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/hyptryx",
-    tiktok: "https://www.tiktok.com/@hyptryx_?lang=de-DE"
-  },
-  {
-    name: "CryoShoX",
-    since: "03.2026",
-    image: "cryoshox.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/cryoshox",
-    tiktok: ""
-  },
-  {
-    name: "berniiiboy",
-    since: "03.2026",
-    image: "berniiiboy.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/berniiiboy",
-    tiktok: "https://www.tiktok.com/@berniiiboy"
-  },
-  {
-    name: "pedapeter",
-    since: "03.2026",
-    image: "pedapeter.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "",
-    tiktok: "https://www.tiktok.com/@pedapeter"
-  },
-  {
-    name: "tommecs",
-    since: "03.2026",
-    image: "tommecs.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/tommecs",
-    tiktok: "https://www.tiktok.com/@tommecs"
-  },
-  {
-    name: "WalkingDavidson",
-    since: "03.2026",
-    image: "walkingdavidson.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/walkingdavidson",
-    tiktok: ""
-  },
-  {
-    name: "LinkTheBeast",
-    since: "03.2026",
-    image: "linkthebeast.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "",
-    tiktok: "https://www.tiktok.com/@linkthebeast7"
-  },
-  {
-    name: "n_addl",
-    since: "03.2026",
-    image: "naddl_twitch.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/n_addl",
-    tiktok: ""
-  },
-  {
-    name: "NeoTano",
-    since: "03.2026",
-    image: "neotano.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/neotano",
-    tiktok: ""
-  },
-  {
-    name: "Hey Basti",
-    since: "03.2026",
-    image: "hey_basti.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/hey_basti_",
-    tiktok: "https://www.tiktok.com/@hey_basti_"
-  },
-  {
-    name: "JasiVali",
-    since: "03.2026",
-    image: "jasivali.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/jasivali",
-    tiktok: ""
-  },
-  {
-    name: "gta_glitch63",
-    since: "03.2026",
-    image: "gta_glitch63.png",
-    badge: "Creator",
-    desc: "Profil folgt in Kürze.",
-    twitch: "https://www.twitch.tv/gta_glitch63",
-    tiktok: ""
-  }
-];
-
-const i18n = {
-  de: {
-    nav: {
-      home: "Startseite",
-      more: "Mehr erfahren",
-      talents: "Talente",
-      intern: "Intern"
-    },
-    heroKicker: "Creator Network",
-    heroTitle: "Unsere Talente",
-    heroDesc: "Hier findest du ausgewählte Creator aus dem HRX CreatorNET. Gaming, Live-Content und starke Persönlichkeiten — direkt mit ihren Twitch- und TikTok-Profilen verlinkt.",
-    talentCountLabel: "Aktive Talente",
-    chip1: "Aktive Talente",
-    chip2: "HRX CreatorNET",
-    resultText: "Stand: 2026",
-    footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain",
-    imprint: "Impressum",
-    privacy: "Datenschutz",
-    metaSince: "Dabei seit:",
-    defaultDesc: "Profil folgt in Kürze.",
-    defaultBadge: "Creator"
-  },
-  en: {
-    nav: {
-      home: "Home",
-      more: "Learn more",
-      talents: "Talents",
-      intern: "Intern"
-    },
-    heroKicker: "Creator Network",
-    heroTitle: "Our talents",
-    heroDesc: "Here you can find selected creators from HRX CreatorNET. Gaming, live content and strong personalities — directly linked to their Twitch and TikTok profiles.",
-    talentCountLabel: "Active talents",
-    chip1: "Active talents",
-    chip2: "HRX CreatorNET",
-    resultText: "Status: 2026",
-    footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain",
-    imprint: "Legal notice",
-    privacy: "Privacy",
-    metaSince: "Since:",
-    defaultDesc: "Profile coming soon.",
-    defaultBadge: "Creator"
-  }
-};
-
-let currentLang = "de";
-
-function shuffleArray(array){
-  const shuffled = [...array];
-  for(let i = shuffled.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-}
-
-function renderTalents(){
-  const t = i18n[currentLang];
-  const grid = document.getElementById("talentGrid");
-  const shuffledTalents = shuffleArray(talents);
-
-  document.getElementById("talentCount").innerText = talents.length;
-
-  grid.innerHTML = shuffledTalents.map(talent => `
-    <article class="card">
-      <div class="card-inner">
-        <div class="card-img">
-          <img src="${talent.image}" alt="${talent.name}">
-        </div>
-
-        <div class="badge">${talent.badge || t.defaultBadge}</div>
-        <h3>${talent.name}</h3>
-        <div class="meta">${t.metaSince} ${talent.since}</div>
-        <p class="desc">${talent.desc || t.defaultDesc}</p>
-
-        <div class="socials">
-          ${talent.twitch ? `
-            <a class="social-btn" href="${talent.twitch}" target="_blank" rel="noopener noreferrer" aria-label="Twitch Profil von ${talent.name}">
-              <img src="logo_twitch.png" alt="Twitch">
-            </a>
-          ` : ""}
-          ${talent.tiktok ? `
-            <a class="social-btn" href="${talent.tiktok}" target="_blank" rel="noopener noreferrer" aria-label="TikTok Profil von ${talent.name}">
-              <img src="logo_tt.png" alt="TikTok">
-            </a>
-          ` : ""}
+            <a href="login.html" class="login-btn" id="login-btn">Login</a>
+          </div>
         </div>
       </div>
-    </article>
-  `).join("");
-}
+    </header>
 
-function setLang(lang){
-  currentLang = lang;
-  const t = i18n[lang];
+    <main>
+      <div class="shell">
+        <section class="hero">
+          <h1 id="page-title">Featured Creator Talents</h1>
+          <p id="page-subtitle">Lerne unsere stärksten kreativen Köpfe im HRX CreatorNET kennen.</p>
 
-  document.documentElement.lang = lang;
-  document.title = lang === "de" ? "HRX CreatorNET – Talente" : "HRX CreatorNET – Talents";
+          <div class="hero-actions">
+            <a href="bewerbung.html" class="action-btn primary" id="apply-btn">Jetzt bewerben</a>
+            <a href="mehr_erfahren.html" class="action-btn secondary" id="more-btn">Mehr erfahren</a>
+          </div>
+        </section>
 
-  document.getElementById("nav_home").innerText = t.nav.home;
-  document.getElementById("nav_more").innerText = t.nav.more;
-  document.getElementById("nav_talents").innerText = t.nav.talents;
-  document.getElementById("nav_intern").innerText = t.nav.intern;
+        <div class="view-switch">
+          <button class="view-btn active" id="carouselViewBtn" type="button">Karussell</button>
+          <button class="view-btn" id="allViewBtn" type="button">Alle Creator anzeigen</button>
+        </div>
 
-  document.getElementById("hero_kicker").innerText = t.heroKicker;
-  document.getElementById("hero_title").innerText = t.heroTitle;
-  document.getElementById("hero_desc").innerText = t.heroDesc;
-  document.getElementById("talentCountLabel").innerText = t.talentCountLabel;
-  document.getElementById("chip_1").innerText = t.chip1;
-  document.getElementById("chip_2").innerText = t.chip2;
-  document.getElementById("result_text").innerText = t.resultText;
-  document.getElementById("footer_line").innerText = t.footerLine;
-  document.getElementById("f_imprint").innerText = t.imprint;
-  document.getElementById("f_privacy").innerText = t.privacy;
+        <section class="featured-wrap">
+          <button class="arrow-btn arrow-left" id="prevBtn" type="button" aria-label="Vorherige Talente">‹</button>
+          <button class="arrow-btn arrow-right" id="nextBtn" type="button" aria-label="Nächste Talente">›</button>
 
-  renderTalents();
-}
+          <div class="featured-grid" id="featuredGrid"></div>
+          <div class="pagination" id="pagination"></div>
+        </section>
 
-function openIntern(){
-  const isLoggedIn = localStorage.getItem("hrx_login");
-  if(isLoggedIn === "true"){
-    window.location.href = "intern.html";
-  }else{
-    window.location.href = "login.html";
-  }
-}
+        <section class="lurk-section">
+          <div class="lurk-head">
+            <h2 id="lurk-title">Random Lurk</h2>
+            <p id="lurk-subtitle">Starte den HRX Random Lurk und zeige zufällig ausgewählte Creator direkt hier auf der Seite.</p>
+          </div>
 
-setLang("de");
-</script>
+          <div class="lurk-actions">
+            <button class="lurk-btn" id="lurk-start-btn" type="button" onclick="startLurk()">LURK STARTEN</button>
+            <button class="lurk-btn secondary" id="lurk-stop-btn" type="button" onclick="stopLurk()">STOP</button>
+          </div>
 
+          <div id="streams" class="lurk-grid"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="shell">
+        <div class="footer-row">
+          <a href="impressum.html" id="footer-imprint">Impressum</a>
+          <a href="datenschutz.html" id="footer-privacy">Datenschutz</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const talents = [
+      {
+        name: "RoninMartoku",
+        since: "03.2026",
+        image: "roninmartoku.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/roninmartoku",
+        tiktok: ""
+      },
+      {
+        name: "HyptryX",
+        since: "03.2026",
+        image: "hyptryx.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/hyptryx",
+        tiktok: "https://www.tiktok.com/@hyptryx_?lang=de-DE"
+      },
+      {
+        name: "CryoShoX",
+        since: "03.2026",
+        image: "cryoshox.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/cryoshox",
+        tiktok: ""
+      },
+      {
+        name: "berniiiboy",
+        since: "03.2026",
+        image: "berniiiboy.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/berniiiboy",
+        tiktok: "https://www.tiktok.com/@berniiiboy"
+      },
+      {
+        name: "pedapeter",
+        since: "03.2026",
+        image: "pedapeter.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "",
+        tiktok: "https://www.tiktok.com/@pedapeter"
+      },
+      {
+        name: "tommecs",
+        since: "03.2026",
+        image: "tommecs.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/tommecs",
+        tiktok: "https://www.tiktok.com/@tommecs"
+      },
+      {
+        name: "WalkingDavidson",
+        since: "03.2026",
+        image: "walkingdavidson.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/walkingdavidson",
+        tiktok: ""
+      },
+      {
+        name: "LinkTheBeast",
+        since: "03.2026",
+        image: "linkthebeast.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "",
+        tiktok: "https://www.tiktok.com/@linkthebeast7"
+      },
+      {
+        name: "n_addl",
+        since: "03.2026",
+        image: "naddl_twitch.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/n_addl",
+        tiktok: ""
+      },
+      {
+        name: "NeoTano",
+        since: "03.2026",
+        image: "neotano.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/neotano",
+        tiktok: ""
+      },
+      {
+        name: "Hey Basti",
+        since: "03.2026",
+        image: "hey_basti.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/hey_basti_",
+        tiktok: "https://www.tiktok.com/@hey_basti_"
+      },
+      {
+        name: "JasiVali",
+        since: "03.2026",
+        image: "jasivali.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/jasivali",
+        tiktok: ""
+      },
+      {
+        name: "gta_glitch63",
+        since: "03.2026",
+        image: "gta_glitch63.png",
+        badge: "Creator",
+        desc: "Profil folgt in Kürze.",
+        twitch: "https://www.twitch.tv/gta_glitch63",
+        tiktok: ""
+      }
+    ];
+
+    const lurkStreamers = [
+      "hyptryx","austriadeluxeedition","derrchrisz","heybasti",
+      "matomatv","berniiiboy","walkingdavidson","neotano",
+      "angeluscorex","tommecs","letz_zock","roninmartoku",
+      "link_thebeast","jasivali","pedapeter","cryoshox","n_addl"
+    ];
+
+    const TWITCH_PARENT = "hrx-creator.net";
+
+    const i18n = {
+      de: {
+        navHome: "Startseite",
+        navApply: "Bewerbung",
+        navAbout: "About HRX",
+        navTalents: "Talente",
+        navTeam: "Team",
+        navNews: "News",
+        navPlaytok: "Playtok",
+        login: "Login",
+        pageTitle: "Unsere Talente",
+        pageSubtitle: "Hier findest du ausgewählte Creator aus dem HRX CreatorNET. Gaming, Live-Content und starke Persönlichkeiten — direkt mit ihren Twitch- und TikTok-Profilen verlinkt.",
+        applyBtn: "Jetzt bewerben",
+        moreBtn: "Mehr erfahren",
+        defaultDesc: "Profil folgt in Kürze.",
+        defaultBadge: "Creator",
+        metaSince: "Dabei seit",
+        footerImprint: "Impressum",
+        footerPrivacy: "Datenschutz",
+        carouselView: "Karussell",
+        allView: "Alle Creator anzeigen",
+        prevPage: "Zurück",
+        nextPage: "Weiter",
+        lurkTitle: "Random Lurk",
+        lurkSubtitle: "Starte den HRX Random Lurk und zeige zufällig ausgewählte Creator direkt hier auf der Seite.",
+        lurkStart: "LURK STARTEN",
+        lurkStop: "STOP",
+        htmlLang: "de"
+      },
+      en: {
+        navHome: "Home",
+        navApply: "Apply",
+        navAbout: "About HRX",
+        navTalents: "Talents",
+        navTeam: "Team",
+        navNews: "News",
+        navPlaytok: "Playtok",
+        login: "Login",
+        pageTitle: "Our talents",
+        pageSubtitle: "Here you can find selected creators from HRX CreatorNET. Gaming, live content and strong personalities — directly linked to their Twitch and TikTok profiles.",
+        applyBtn: "Apply now",
+        moreBtn: "Learn more",
+        defaultDesc: "Profile coming soon.",
+        defaultBadge: "Creator",
+        metaSince: "Since",
+        footerImprint: "Imprint",
+        footerPrivacy: "Privacy",
+        carouselView: "Carousel",
+        allView: "Show all creators",
+        prevPage: "Previous",
+        nextPage: "Next",
+        lurkTitle: "Random Lurk",
+        lurkSubtitle: "Start the HRX random lurk and show randomly selected creators directly on this page.",
+        lurkStart: "START LURK",
+        lurkStop: "STOP",
+        htmlLang: "en"
+      }
+    };
+
+    let currentLang = "de";
+    let currentView = "carousel";
+    let carouselIndex = 0;
+    let currentPage = 1;
+
+    const CAROUSEL_COUNT = 4;
+    const ALL_COUNT = 10;
+
+    let lurkInterval = null;
+
+    const grid = document.getElementById("featuredGrid");
+    const pagination = document.getElementById("pagination");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const carouselViewBtn = document.getElementById("carouselViewBtn");
+    const allViewBtn = document.getElementById("allViewBtn");
+    const streamsEl = document.getElementById("streams");
+
+    function cardTone(index){
+      const tones = ["pink", "blue", "gold", "mint"];
+      return tones[index % tones.length];
+    }
+
+    function socialButton(url, icon, label){
+      if(!url){
+        return `
+          <span class="social-btn disabled" aria-hidden="true">
+            <img src="${icon}" alt="">
+          </span>
+        `;
+      }
+
+      return `
+        <a class="social-btn" href="${url}" target="_blank" rel="noopener noreferrer" aria-label="${label}">
+          <img src="${icon}" alt="">
+        </a>
+      `;
+    }
+
+    function renderCards(items, startIndex = 0){
+      const t = i18n[currentLang];
+
+      grid.innerHTML = items.map((talent, index) => `
+        <article class="creator-card ${cardTone(startIndex + index)}">
+          <div class="creator-visual">
+            <img src="${talent.image}" alt="${talent.name}" onerror="this.style.display='none'">
+          </div>
+
+          <div class="creator-content">
+            <div class="creator-badge">${talent.badge || t.defaultBadge}</div>
+            <h2 class="creator-name">${talent.name}</h2>
+            <p class="creator-role">${talent.desc || t.defaultDesc}</p>
+            <p class="creator-meta">${t.metaSince}: ${talent.since}</p>
+
+            <div class="socials">
+              ${socialButton(talent.twitch, "logo_twitch.png", `Twitch Profil von ${talent.name}`)}
+              ${socialButton(talent.tiktok, "logo_tt.png", `TikTok Profil von ${talent.name}`)}
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function renderCarousel(){
+      const visibleItems = [];
+
+      for(let i = 0; i < CAROUSEL_COUNT; i++){
+        const index = (carouselIndex + i) % talents.length;
+        visibleItems.push(talents[index]);
+      }
+
+      renderCards(visibleItems, carouselIndex);
+
+      prevBtn.style.display = talents.length > CAROUSEL_COUNT ? "inline-flex" : "none";
+      nextBtn.style.display = talents.length > CAROUSEL_COUNT ? "inline-flex" : "none";
+      pagination.innerHTML = "";
+    }
+
+    function renderAllView(){
+      const t = i18n[currentLang];
+      const totalPages = Math.ceil(talents.length / ALL_COUNT);
+      const start = (currentPage - 1) * ALL_COUNT;
+      const end = start + ALL_COUNT;
+      const visibleItems = talents.slice(start, end);
+
+      renderCards(visibleItems, start);
+
+      prevBtn.style.display = "none";
+      nextBtn.style.display = "none";
+
+      let paginationHtml = `
+        <button class="page-btn" type="button" ${currentPage === 1 ? "disabled" : ""} onclick="goToPage(${currentPage - 1})">
+          ${t.prevPage}
+        </button>
+      `;
+
+      for(let i = 1; i <= totalPages; i++){
+        paginationHtml += `
+          <button class="page-btn ${i === currentPage ? "active" : ""}" type="button" onclick="goToPage(${i})">
+            ${i}
+          </button>
+        `;
+      }
+
+      paginationHtml += `
+        <button class="page-btn" type="button" ${currentPage === totalPages ? "disabled" : ""} onclick="goToPage(${currentPage + 1})">
+          ${t.nextPage}
+        </button>
+      `;
+
+      pagination.innerHTML = paginationHtml;
+    }
+
+    function renderTalents(){
+      carouselViewBtn.classList.toggle("active", currentView === "carousel");
+      allViewBtn.classList.toggle("active", currentView === "all");
+
+      if(currentView === "carousel"){
+        renderCarousel();
+      } else {
+        renderAllView();
+      }
+    }
+
+    function nextCarousel(){
+      carouselIndex = (carouselIndex + CAROUSEL_COUNT) % talents.length;
+      renderTalents();
+    }
+
+    function prevCarousel(){
+      carouselIndex = (carouselIndex - CAROUSEL_COUNT + talents.length) % talents.length;
+      renderTalents();
+    }
+
+    function switchView(view){
+      currentView = view;
+
+      if(view === "carousel"){
+        carouselIndex = 0;
+      } else {
+        currentPage = 1;
+      }
+
+      renderTalents();
+    }
+
+    function goToPage(page){
+      const totalPages = Math.ceil(talents.length / ALL_COUNT);
+      if(page < 1 || page > totalPages) return;
+      currentPage = page;
+      renderTalents();
+      window.scrollTo({ top: grid.offsetTop - 120, behavior: "smooth" });
+    }
+
+    function shuffleArray(array){
+      const shuffled = [...array];
+      for(let i = shuffled.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    }
+
+    function player(name){
+      return `
+        <div class="lurk-card">
+          <h3>${name}</h3>
+          <iframe
+            src="https://player.twitch.tv/?channel=${name}&parent=${TWITCH_PARENT}&muted=true"
+            allowfullscreen>
+          </iframe>
+        </div>
+      `;
+    }
+
+    function rotateLurk(){
+      const shuffled = shuffleArray(lurkStreamers);
+      const selected = shuffled.slice(0, 3);
+
+      let html = "";
+      selected.forEach(streamer => {
+        html += player(streamer);
+      });
+
+      streamsEl.innerHTML = html;
+    }
+
+    function startLurk(){
+      stopLurk();
+      rotateLurk();
+      lurkInterval = setInterval(rotateLurk, 180000);
+    }
+
+    function stopLurk(){
+      if(lurkInterval){
+        clearInterval(lurkInterval);
+        lurkInterval = null;
+      }
+      streamsEl.innerHTML = "";
+    }
+
+    function setLang(lang){
+      currentLang = lang;
+      const t = i18n[lang];
+
+      document.documentElement.lang = t.htmlLang;
+      document.title = lang === "de" ? "HRX CreatorNET – Talente" : "HRX CreatorNET – Talents";
+
+      document.getElementById("nav-home").textContent = t.navHome;
+      document.getElementById("nav-apply").textContent = t.navApply;
+      document.getElementById("nav-about").textContent = t.navAbout;
+      document.getElementById("nav-talents").textContent = t.navTalents;
+      document.getElementById("nav-team").textContent = t.navTeam;
+      document.getElementById("nav-news").textContent = t.navNews;
+      document.getElementById("nav-playtok").textContent = t.navPlaytok;
+      document.getElementById("login-btn").textContent = t.login;
+
+      document.getElementById("page-title").textContent = t.pageTitle;
+      document.getElementById("page-subtitle").textContent = t.pageSubtitle;
+      document.getElementById("apply-btn").textContent = t.applyBtn;
+      document.getElementById("more-btn").textContent = t.moreBtn;
+      document.getElementById("footer-imprint").textContent = t.footerImprint;
+      document.getElementById("footer-privacy").textContent = t.footerPrivacy;
+
+      document.getElementById("lurk-title").textContent = t.lurkTitle;
+      document.getElementById("lurk-subtitle").textContent = t.lurkSubtitle;
+      document.getElementById("lurk-start-btn").textContent = t.lurkStart;
+      document.getElementById("lurk-stop-btn").textContent = t.lurkStop;
+
+      carouselViewBtn.textContent = t.carouselView;
+      allViewBtn.textContent = t.allView;
+
+      document.getElementById("btn-de").classList.toggle("active", lang === "de");
+      document.getElementById("btn-en").classList.toggle("active", lang === "en");
+
+      localStorage.setItem("hrxLang", lang);
+      renderTalents();
+    }
+
+    prevBtn.addEventListener("click", prevCarousel);
+    nextBtn.addEventListener("click", nextCarousel);
+
+    carouselViewBtn.addEventListener("click", () => switchView("carousel"));
+    allViewBtn.addEventListener("click", () => switchView("all"));
+
+    document.addEventListener("keydown", (event) => {
+      if(currentView !== "carousel") return;
+
+      if(event.key === "ArrowLeft"){
+        prevCarousel();
+      }
+
+      if(event.key === "ArrowRight"){
+        nextCarousel();
+      }
+    });
+
+    const savedLang = localStorage.getItem("hrxLang");
+    if(savedLang && i18n[savedLang]){
+      setLang(savedLang);
+    } else {
+      setLang("de");
+    }
+  </script>
 </body>
 </html>
-
