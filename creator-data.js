@@ -9,6 +9,15 @@ const HRX_CREATORS = [
     tiktok: ""
   },
   {
+    name: "AngelusCorex",
+    since: "03.2026",
+    image: "",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/angeluscorex",
+    tiktok: "https://www.tiktok.com/@angeluscorex?lang=de-DE"
+  },
+    {
     name: "HyptryX",
     since: "03.2026",
     image: "hyptryx.png",
@@ -16,6 +25,51 @@ const HRX_CREATORS = [
     desc: "Profil folgt in Kürze.",
     twitch: "https://www.twitch.tv/hyptryx",
     tiktok: "https://www.tiktok.com/@hyptryx_?lang=de-DE"
+  },
+    {
+    name: "matomatv",
+    since: "03.2026",
+    image: "",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/matomatv",
+    tiktok: "https://www.tiktok.com/@matomatv"
+  },
+    {
+    name: "Letz Zock",
+    since: "03.2026",
+    image: "",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/letz_zock",
+    tiktok: ""
+  },
+    {
+    name: "Pizza_Olli",
+    since: "03.2026",
+    image: "",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/pizza_olli_gaming",
+    tiktok: ""
+  },
+    {
+    name: "AustriaDeluxeEdition🇦🇹",
+    since: "03.2026",
+    image: "",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/austriadeluxeedition",
+    tiktok: "https://www.tiktok.com/@austriadeluxeedition?lang=de-DE"
+  },
+  {
+    name: "ryx3ntv",
+    since: "04.2026",
+    image: "",
+    badge: "Creator",
+    desc: "Profil folgt in Kürze.",
+    twitch: "https://www.twitch.tv/ryx3ntv",
+    tiktok: ""
   },
   {
     name: "CryoShoX",
