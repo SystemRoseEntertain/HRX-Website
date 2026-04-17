@@ -23,11 +23,10 @@
     --success:#1d7f4e;
     --danger:#b42318;
     --warning:#b7791f;
+    --info:#1d4ed8;
   }
 
-  *{
-    box-sizing:border-box;
-  }
+  *{ box-sizing:border-box; }
 
   html,body{
     margin:0;
@@ -41,9 +40,7 @@
     overflow-x:hidden;
   }
 
-  body{
-    min-height:100vh;
-  }
+  body{ min-height:100vh; }
 
   a{
     color:inherit;
@@ -200,9 +197,7 @@
     word-break:break-word;
   }
 
-  .message.show{
-    display:block;
-  }
+  .message.show{ display:block; }
 
   .message.error{
     background:rgba(180,35,24,0.08);
@@ -214,6 +209,19 @@
     background:rgba(29,127,78,0.08);
     color:var(--success);
     border:1px solid rgba(29,127,78,0.18);
+  }
+
+  .debug-box{
+    background:rgba(29,78,216,0.08);
+    color:var(--info);
+    border:1px solid rgba(29,78,216,0.18);
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:18px;
+    font-size:13px;
+    line-height:1.6;
+    white-space:pre-wrap;
+    word-break:break-word;
   }
 
   .stats{
@@ -540,6 +548,7 @@
       </div>
 
       <div class="message" id="message"></div>
+      <div class="debug-box" id="debugBox">Debug startet …</div>
 
       <section class="stats">
         <div class="stat-card">
@@ -589,9 +598,15 @@
 
   const applicationsEl = document.getElementById("applications");
   const messageEl = document.getElementById("message");
+  const debugBox = document.getElementById("debugBox");
   const filterButtons = [...document.querySelectorAll(".filter-btn")];
   let allApplications = [];
   let activeFilter = "all";
+
+  function setDebug(text){
+    debugBox.textContent = text;
+    console.log(text);
+  }
 
   function showMessage(type, text){
     messageEl.className = "message show " + type;
@@ -725,6 +740,7 @@
 
   async function ensureAdminAccess(){
     const { data: authData, error: authError } = await supabase.auth.getUser();
+    setDebug("AUTH USER:\n" + JSON.stringify(authData, null, 2) + "\n\nAUTH ERROR:\n" + JSON.stringify(authError, null, 2));
 
     if(authError || !authData.user){
       window.location.href = "login.html";
@@ -736,6 +752,12 @@
       .select("role")
       .eq("id", authData.user.id)
       .maybeSingle();
+
+    setDebug(
+      "AUTH USER:\n" + JSON.stringify(authData, null, 2) +
+      "\n\nPROFILE:\n" + JSON.stringify(profile, null, 2) +
+      "\n\nPROFILE ERROR:\n" + JSON.stringify(profileError, null, 2)
+    );
 
     if(profileError){
       showMessage("error", "Profil-Fehler: " + profileError.message);
@@ -764,6 +786,12 @@
       .select("*")
       .order("created_at", { ascending: false });
 
+    setDebug(
+      debugBox.textContent +
+      "\n\nAPPLICATIONS DATA:\n" + JSON.stringify(data, null, 2) +
+      "\n\nAPPLICATIONS ERROR:\n" + JSON.stringify(error, null, 2)
+    );
+
     if(error){
       showMessage("error", "Applications-Fehler: " + error.message);
       applicationsEl.innerHTML = `
@@ -776,6 +804,7 @@
     }
 
     allApplications = Array.isArray(data) ? data : [];
+    showMessage("success", "Geladene Bewerbungen: " + allApplications.length);
     updateStats(allApplications);
     renderApplications();
   }
