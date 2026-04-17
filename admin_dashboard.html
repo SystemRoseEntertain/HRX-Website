@@ -1,150 +1,819 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HRX Admin Dashboard</title>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HRX CreatorNET – Admin Dashboard</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body {
-  margin:0;
-  font-family: Arial;
-  background:#111;
-  color:#fff;
-}
+  :root{
+    --bg:#f7f6f3;
+    --bg-2:#efeeea;
+    --text:#171923;
+    --muted:#8e93a3;
+    --muted-2:#b8b8b8;
+    --violet:#6841b7;
+    --violet-dark:#5932aa;
+    --white:#ffffff;
+    --line:#e7e3dc;
+    --shadow:0 20px 45px rgba(16,18,24,0.10);
+    --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
+    --max:1720px;
+    --success:#1d7f4e;
+    --danger:#b42318;
+    --warning:#b7791f;
+  }
 
-.container {
-  max-width:1200px;
-  margin:auto;
-  padding:40px;
-}
+  *{
+    box-sizing:border-box;
+  }
 
-h1 {
-  margin-bottom:30px;
-}
+  html,body{
+    margin:0;
+    padding:0;
+    min-height:100%;
+    font-family:Arial, Helvetica, sans-serif;
+    color:var(--text);
+    background:
+      radial-gradient(560px 320px at 50% 18%, rgba(104,65,183,0.08), transparent 62%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    overflow-x:hidden;
+  }
 
-.card {
-  background:#1c1c1c;
-  padding:20px;
-  border-radius:16px;
-  margin-bottom:16px;
-}
+  body{
+    min-height:100vh;
+  }
 
-.row {
-  display:flex;
-  justify-content:space-between;
-  flex-wrap:wrap;
-  gap:10px;
-}
+  a{
+    color:inherit;
+    text-decoration:none;
+  }
 
-.btn {
-  padding:10px 16px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
+  img{
+    display:block;
+    max-width:100%;
+    height:auto;
+  }
 
-.approve {
-  background:#1d7f4e;
-  color:white;
-}
+  .page{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
 
-.reject {
-  background:#b42318;
-  color:white;
-}
+  .shell{
+    width:min(calc(100% - 48px), var(--max));
+    margin:0 auto;
+  }
+
+  header{
+    padding:18px 0 8px;
+    position:relative;
+    z-index:10;
+  }
+
+  .header-row{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:start;
+    gap:20px;
+  }
+
+  .brand{
+    display:flex;
+    align-items:flex-start;
+  }
+
+  .brand img{
+    width:420px;
+    max-width:25vw;
+    min-width:260px;
+  }
+
+  .nav-wrap{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:36px;
+    padding-top:30px;
+    flex-wrap:wrap;
+  }
+
+  .nav-link{
+    position:relative;
+    font-size:16px;
+    font-weight:700;
+    color:var(--muted-2);
+    line-height:1;
+    transition:0.18s ease;
+  }
+
+  .nav-link:hover{
+    color:var(--text);
+  }
+
+  .nav-link.active{
+    color:#666666;
+  }
+
+  .nav-link.active::after{
+    content:"";
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-9px;
+    height:2px;
+    background:#7a7a7a;
+    border-radius:2px;
+  }
+
+  .top-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding-top:14px;
+  }
+
+  .top-btn{
+    border:none;
+    background:var(--violet);
+    color:#fff;
+    font-weight:800;
+    font-size:15px;
+    padding:14px 22px;
+    border-radius:999px;
+    box-shadow:0 10px 22px rgba(104,65,183,0.18);
+    transition:0.18s ease;
+    cursor:pointer;
+  }
+
+  .top-btn:hover{
+    background:var(--violet-dark);
+    transform:translateY(-1px);
+  }
+
+  .top-btn.secondary{
+    background:#fff;
+    color:var(--text);
+    border:1px solid rgba(23,25,35,0.08);
+    box-shadow:var(--shadow-soft);
+  }
+
+  main{
+    flex:1;
+    padding:26px 0 70px;
+  }
+
+  .dashboard-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:26px;
+  }
+
+  .dashboard-head h1{
+    margin:0 0 8px;
+    font-size:clamp(34px,4vw,56px);
+    line-height:0.95;
+    letter-spacing:-0.045em;
+  }
+
+  .dashboard-head p{
+    margin:0;
+    color:var(--muted);
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  .message{
+    display:none;
+    margin-bottom:18px;
+    padding:14px 16px;
+    border-radius:16px;
+    font-size:14px;
+    line-height:1.5;
+    font-weight:700;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  .message.show{
+    display:block;
+  }
+
+  .message.error{
+    background:rgba(180,35,24,0.08);
+    color:var(--danger);
+    border:1px solid rgba(180,35,24,0.18);
+  }
+
+  .message.success{
+    background:rgba(29,127,78,0.08);
+    color:var(--success);
+    border:1px solid rgba(29,127,78,0.18);
+  }
+
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4, minmax(0,1fr));
+    gap:16px;
+    margin-bottom:22px;
+  }
+
+  .stat-card{
+    background:rgba(255,255,255,0.86);
+    border:1px solid rgba(23,25,35,0.06);
+    border-radius:24px;
+    padding:20px;
+    box-shadow:var(--shadow-soft);
+  }
+
+  .stat-label{
+    color:var(--muted);
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:8px;
+  }
+
+  .stat-value{
+    font-size:34px;
+    font-weight:900;
+    letter-spacing:-0.04em;
+  }
+
+  .toolbar{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+  }
+
+  .filter-btn{
+    border:none;
+    background:#fff;
+    color:var(--text);
+    border-radius:999px;
+    padding:12px 18px;
+    font-size:14px;
+    font-weight:800;
+    cursor:pointer;
+    border:1px solid rgba(23,25,35,0.08);
+    box-shadow:var(--shadow-soft);
+    transition:.18s ease;
+  }
+
+  .filter-btn.active{
+    background:var(--violet);
+    color:#fff;
+    border-color:transparent;
+  }
+
+  .applications{
+    display:grid;
+    gap:18px;
+  }
+
+  .app-card{
+    background:rgba(255,255,255,0.88);
+    border:1px solid rgba(23,25,35,0.06);
+    border-radius:28px;
+    padding:24px;
+    box-shadow:var(--shadow-soft);
+  }
+
+  .app-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:18px;
+    flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+
+  .app-title{
+    margin:0 0 8px;
+    font-size:24px;
+    font-weight:900;
+    letter-spacing:-0.03em;
+  }
+
+  .app-sub{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    padding:9px 14px;
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+
+  .badge.pending{
+    background:rgba(183,121,31,0.10);
+    color:var(--warning);
+  }
+
+  .badge.approved{
+    background:rgba(29,127,78,0.10);
+    color:var(--success);
+  }
+
+  .badge.rejected{
+    background:rgba(180,35,24,0.10);
+    color:var(--danger);
+  }
+
+  .app-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0,1fr));
+    gap:14px;
+    margin-bottom:18px;
+  }
+
+  .meta{
+    background:#fff;
+    border:1px solid rgba(23,25,35,0.06);
+    border-radius:18px;
+    padding:14px 15px;
+  }
+
+  .meta-label{
+    font-size:12px;
+    font-weight:900;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:0.05em;
+    margin-bottom:6px;
+  }
+
+  .meta-value{
+    font-size:14px;
+    line-height:1.45;
+    word-break:break-word;
+  }
+
+  .reason-box{
+    background:#fff;
+    border:1px solid rgba(23,25,35,0.06);
+    border-radius:20px;
+    padding:16px;
+    margin-bottom:18px;
+  }
+
+  .reason-box .meta-label{
+    margin-bottom:8px;
+  }
+
+  .app-actions{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+
+  .action-btn{
+    border:none;
+    border-radius:999px;
+    padding:12px 18px;
+    font-size:14px;
+    font-weight:900;
+    cursor:pointer;
+    transition:.18s ease;
+  }
+
+  .action-btn.approve{
+    background:var(--success);
+    color:#fff;
+  }
+
+  .action-btn.reject{
+    background:var(--danger);
+    color:#fff;
+  }
+
+  .action-btn.neutral{
+    background:#fff;
+    color:var(--text);
+    border:1px solid rgba(23,25,35,0.08);
+    box-shadow:var(--shadow-soft);
+  }
+
+  .action-btn:hover{
+    transform:translateY(-1px);
+  }
+
+  .empty-state{
+    background:rgba(255,255,255,0.86);
+    border:1px solid rgba(23,25,35,0.06);
+    border-radius:28px;
+    padding:34px 24px;
+    text-align:center;
+    color:var(--muted);
+    box-shadow:var(--shadow-soft);
+  }
+
+  footer{
+    padding:18px 0 28px;
+  }
+
+  .footer-row{
+    display:flex;
+    justify-content:center;
+    gap:40px;
+    flex-wrap:wrap;
+    color:#d0ccc5;
+    font-weight:700;
+    font-size:13px;
+    border-top:1px solid rgba(123,117,140,0.10);
+    padding-top:14px;
+  }
+
+  .footer-row a:hover{
+    color:var(--violet);
+  }
+
+  @media (max-width:1180px){
+    .header-row{
+      grid-template-columns:1fr;
+      gap:16px;
+    }
+
+    .brand{
+      justify-content:center;
+    }
+
+    .nav-wrap{
+      padding-top:0;
+    }
+
+    .top-actions{
+      justify-content:center;
+      padding-top:0;
+    }
+
+    .stats{
+      grid-template-columns:repeat(2, minmax(0,1fr));
+    }
+
+    .app-grid{
+      grid-template-columns:repeat(2, minmax(0,1fr));
+    }
+  }
+
+  @media (max-width:760px){
+    .shell{
+      width:min(calc(100% - 24px), var(--max));
+    }
+
+    .brand img{
+      width:min(280px, 72vw);
+      min-width:auto;
+    }
+
+    .nav-wrap{
+      gap:14px 18px;
+    }
+
+    .nav-link{
+      font-size:15px;
+    }
+
+    .stats{
+      grid-template-columns:1fr;
+    }
+
+    .app-grid{
+      grid-template-columns:1fr;
+    }
+
+    .app-card{
+      padding:18px;
+      border-radius:22px;
+    }
+  }
 </style>
 </head>
 
 <body>
+<div class="page">
+  <header>
+    <div class="shell">
+      <div class="header-row">
+        <a class="brand" href="index.html" aria-label="HRX CreatorNET Startseite">
+          <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
+        </a>
 
-<div class="container">
-  <h1>Admin Dashboard</h1>
-  <div id="applications"></div>
+        <nav class="nav-wrap" aria-label="Hauptnavigation">
+          <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+          <a href="bewerbung.html" class="nav-link" id="nav_apply">Bewerbung</a>
+          <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+          <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+          <a href="news.html" class="nav-link" id="nav_news">News</a>
+          <a href="team.html" class="nav-link" id="nav_team">Team</a>
+          <a href="playtok.html" class="nav-link" id="nav_playtok">PlayTok</a>
+        </nav>
+
+        <div class="top-actions">
+          <button class="top-btn secondary" id="reloadBtn" type="button">Neu laden</button>
+          <button class="top-btn" id="logoutBtn" type="button">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="shell">
+      <div class="dashboard-head">
+        <div>
+          <h1>Admin Dashboard</h1>
+          <p>Verwalte Bewerbungen, prüfe Creator-Profile und entscheide über Aufnahme oder Ablehnung.</p>
+        </div>
+      </div>
+
+      <div class="message" id="message"></div>
+
+      <section class="stats">
+        <div class="stat-card">
+          <div class="stat-label">Gesamt</div>
+          <div class="stat-value" id="statTotal">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value" id="statPending">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Approved</div>
+          <div class="stat-value" id="statApproved">0</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Rejected</div>
+          <div class="stat-value" id="statRejected">0</div>
+        </div>
+      </section>
+
+      <div class="toolbar">
+        <button class="filter-btn active" data-filter="all">Alle</button>
+        <button class="filter-btn" data-filter="pending">Pending</button>
+        <button class="filter-btn" data-filter="approved">Approved</button>
+        <button class="filter-btn" data-filter="rejected">Rejected</button>
+      </div>
+
+      <section class="applications" id="applications"></section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <div class="footer-row">
+        <a href="impressum.html">Impressum</a>
+        <a href="datenschutz.html">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <script>
-const supabase = window.supabase.createClient(
-  "https://payxkjbgdrbrmwqmczhz.supabase.co",
-  "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa"
-);
+  const supabase = window.supabase.createClient(
+    "https://payxkjbgdrbrmwqmczhz.supabase.co",
+    "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa"
+  );
 
-async function checkAccess() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const applicationsEl = document.getElementById("applications");
+  const messageEl = document.getElementById("message");
+  const filterButtons = [...document.querySelectorAll(".filter-btn")];
+  let allApplications = [];
+  let activeFilter = "all";
 
-  if (!user) {
-    window.location.href = "login.html";
-    return;
+  function showMessage(type, text){
+    messageEl.className = "message show " + type;
+    messageEl.textContent = text;
   }
 
-  const { data } = await supabase
-    .from("profiles")
-    .select("role")
-    .eq("id", user.id)
-    .single();
-
-  if (!data || (data.role !== "admin" && data.role !== "owner")) {
-    alert("Kein Zugriff");
-    window.location.href = "login.html";
-    return;
+  function clearMessage(){
+    messageEl.className = "message";
+    messageEl.textContent = "";
   }
 
-  loadApplications();
-}
+  function escapeHtml(value){
+    if(value === null || value === undefined) return "";
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
-async function loadApplications() {
-  const { data } = await supabase
-    .from("applications")
-    .select("*")
-    .order("created_at", { ascending:false });
+  function statusBadge(status){
+    const safe = escapeHtml(status || "pending");
+    return `<span class="badge ${safe}">${safe}</span>`;
+  }
 
-  const container = document.getElementById("applications");
-  container.innerHTML = "";
+  function updateStats(items){
+    document.getElementById("statTotal").textContent = items.length;
+    document.getElementById("statPending").textContent = items.filter(x => x.status === "pending").length;
+    document.getElementById("statApproved").textContent = items.filter(x => x.status === "approved").length;
+    document.getElementById("statRejected").textContent = items.filter(x => x.status === "rejected").length;
+  }
 
-  data.forEach(app => {
-    const el = document.createElement("div");
-    el.className = "card";
+  function filteredItems(){
+    if(activeFilter === "all") return allApplications;
+    return allApplications.filter(item => item.status === activeFilter);
+  }
 
-    el.innerHTML = `
-      <div class="row">
-        <div>
-          <b>${app.twitch || app.tiktok || "User"}</b><br>
-          ${app.email}<br>
-          ${app.platform} | ${app.viewer} Viewer
+  function renderApplications(){
+    const items = filteredItems();
+
+    if(!items.length){
+      applicationsEl.innerHTML = `
+        <div class="empty-state">
+          <h3>Keine Bewerbungen in diesem Filter</h3>
+          <p>Aktuell gibt es hier nichts anzuzeigen.</p>
         </div>
-        <div>
-          Status: ${app.status}
+      `;
+      return;
+    }
+
+    applicationsEl.innerHTML = items.map(app => `
+      <article class="app-card">
+        <div class="app-top">
+          <div>
+            <h2 class="app-title">${escapeHtml(app.twitch || app.tiktok || app.email || "Bewerbung")}</h2>
+            <div class="app-sub">
+              Eingegangen: ${app.created_at ? new Date(app.created_at).toLocaleString("de-DE") : "-"}
+            </div>
+          </div>
+          <div>${statusBadge(app.status)}</div>
         </div>
-      </div>
 
-      <div style="margin-top:10px;">
-        ${app.reason}
-      </div>
+        <div class="app-grid">
+          <div class="meta">
+            <div class="meta-label">E-Mail</div>
+            <div class="meta-value">${escapeHtml(app.email || "-")}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">Discord</div>
+            <div class="meta-value">${escapeHtml(app.discord || "-")}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">Plattform</div>
+            <div class="meta-value">${escapeHtml(app.platform || "-")}</div>
+          </div>
 
-      <div style="margin-top:15px;">
-        <button class="btn approve" onclick="updateStatus('${app.id}','approved')">Approve</button>
-        <button class="btn reject" onclick="updateStatus('${app.id}','rejected')">Reject</button>
-      </div>
-    `;
+          <div class="meta">
+            <div class="meta-label">Twitch</div>
+            <div class="meta-value">${escapeHtml(app.twitch || "-")}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">TikTok</div>
+            <div class="meta-value">${escapeHtml(app.tiktok || "-")}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">Kategorie</div>
+            <div class="meta-value">${escapeHtml(app.category || "-")}</div>
+          </div>
 
-    container.appendChild(el);
+          <div class="meta">
+            <div class="meta-label">Viewer</div>
+            <div class="meta-value">${escapeHtml(app.viewer ?? "-")}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">Streams/Woche</div>
+            <div class="meta-value">${escapeHtml(app.streams ?? "-")}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">Alter</div>
+            <div class="meta-value">${escapeHtml(app.age_group || "-")}</div>
+          </div>
+
+          <div class="meta">
+            <div class="meta-label">Twitch-Link</div>
+            <div class="meta-value">${app.twitch_link ? `<a href="${escapeHtml(app.twitch_link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(app.twitch_link)}</a>` : "-"}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">TikTok-Link</div>
+            <div class="meta-value">${app.tiktok_link ? `<a href="${escapeHtml(app.tiktok_link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(app.tiktok_link)}</a>` : "-"}</div>
+          </div>
+          <div class="meta">
+            <div class="meta-label">Empfohlen von</div>
+            <div class="meta-value">${escapeHtml(app.referred_by || "-")}</div>
+          </div>
+        </div>
+
+        <div class="reason-box">
+          <div class="meta-label">Warum HRX CreatorNET?</div>
+          <div class="meta-value">${escapeHtml(app.reason || "-")}</div>
+        </div>
+
+        <div class="app-actions">
+          <button class="action-btn approve" onclick="updateStatus('${app.id}','approved')">Approve</button>
+          <button class="action-btn reject" onclick="updateStatus('${app.id}','rejected')">Reject</button>
+          <button class="action-btn neutral" onclick="updateStatus('${app.id}','pending')">Auf Pending setzen</button>
+        </div>
+      </article>
+    `).join("");
+  }
+
+  async function ensureAdminAccess(){
+    const { data: authData, error: authError } = await supabase.auth.getUser();
+
+    if(authError || !authData.user){
+      window.location.href = "login.html";
+      return false;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", authData.user.id)
+      .maybeSingle();
+
+    if(profileError){
+      showMessage("error", "Profil-Fehler: " + profileError.message);
+      return false;
+    }
+
+    if(!profile || (profile.role !== "owner" && profile.role !== "admin")){
+      showMessage("error", "Kein Zugriff auf das Admin Dashboard.");
+      setTimeout(() => {
+        window.location.href = "login.html";
+      }, 1200);
+      return false;
+    }
+
+    return true;
+  }
+
+  async function loadApplications(){
+    clearMessage();
+
+    const accessOk = await ensureAdminAccess();
+    if(!accessOk) return;
+
+    const { data, error } = await supabase
+      .from("applications")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if(error){
+      showMessage("error", "Applications-Fehler: " + error.message);
+      applicationsEl.innerHTML = `
+        <div class="empty-state">
+          <h3>Laden fehlgeschlagen</h3>
+          <p>Die Bewerbungen konnten nicht geladen werden.</p>
+        </div>
+      `;
+      return;
+    }
+
+    allApplications = Array.isArray(data) ? data : [];
+    updateStats(allApplications);
+    renderApplications();
+  }
+
+  async function updateStatus(id, status){
+    clearMessage();
+
+    const { error } = await supabase
+      .from("applications")
+      .update({ status })
+      .eq("id", id);
+
+    if(error){
+      showMessage("error", "Status-Update fehlgeschlagen: " + error.message);
+      return;
+    }
+
+    showMessage("success", "Status erfolgreich auf \"" + status + "\" gesetzt.");
+    await loadApplications();
+  }
+
+  document.getElementById("reloadBtn").addEventListener("click", loadApplications);
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await supabase.auth.signOut();
+    window.location.href = "login.html";
   });
-}
 
-async function updateStatus(id, status) {
-  await supabase
-    .from("applications")
-    .update({ status })
-    .eq("id", id);
+  filterButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterButtons.forEach(x => x.classList.remove("active"));
+      btn.classList.add("active");
+      activeFilter = btn.dataset.filter;
+      renderApplications();
+    });
+  });
 
   loadApplications();
-}
-
-checkAccess();
 </script>
-
 </body>
 </html>
