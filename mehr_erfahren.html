@@ -1,638 +1,825 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>HRX CreatorNET – Mehr erfahren</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRX CreatorNET – About HRX</title>
 
 <style>
-*{ box-sizing:border-box; }
-html,body{ height:100%; }
-body{
+:root{
+  --bg:#f7f6f3;
+  --bg-2:#efeeea;
+  --text:#171923;
+  --muted:#8e93a3;
+  --muted-2:#b8b8b8;
+  --violet:#6841b7;
+  --violet-dark:#5932aa;
+  --white:#ffffff;
+  --line:#e7e3dc;
+  --shadow:0 20px 45px rgba(16,18,24,0.10);
+  --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
+  --radius-xl:32px;
+  --radius-lg:24px;
+  --radius-md:18px;
+  --max:1720px;
+}
+
+*{box-sizing:border-box;}
+
+html,body{
   margin:0;
-  font-family: Arial, Helvetica, sans-serif;
-  color:#fff;
+  padding:0;
+  min-height:100%;
+  font-family:Arial, Helvetica, sans-serif;
+  color:var(--text);
   background:
-    radial-gradient(1200px 650px at 18% 0%, rgba(122,77,255,0.28), transparent 60%),
-    radial-gradient(900px 520px at 85% 25%, rgba(167,123,255,0.18), transparent 60%),
-    radial-gradient(circle at top, #1a1033, #05070f);
+    radial-gradient(560px 320px at 50% 18%, rgba(104,65,183,0.08), transparent 62%),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
   overflow-x:hidden;
 }
 
-/* Subtle grid texture */
-body:before{
-  content:"";
-  position:fixed; inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 42px 42px;
-  pointer-events:none;
-  opacity:0.25;
-}
+body{min-height:100vh;}
 
-a{ color:inherit; }
-
-/* ===== Header ===== */
-.header{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  min-height:80px;
-  background:linear-gradient(90deg,#140b2a,#0b0f1e);
-  border-bottom:1px solid rgba(167,123,255,0.22);
-  box-shadow:0 0 20px rgba(122,77,255,0.4);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
-  z-index:1000;
-}
-
-.header-left{
-  display:flex;
-  align-items:center;
-  gap:28px;
-  min-width:0;
-}
-
-.header-left > a{
-  display:flex;
-  align-items:center;
+a{
+  color:inherit;
   text-decoration:none;
 }
 
-.header img{
-  height:52px;
+img{
   display:block;
+  max-width:100%;
+  height:auto;
 }
 
-.main-nav{
+.page{
+  min-height:100vh;
   display:flex;
+  flex-direction:column;
+}
+
+.shell{
+  width:min(calc(100% - 48px), var(--max));
+  margin:0 auto;
+}
+
+header{
+  padding:18px 0 8px;
+  position:relative;
+  z-index:10;
+}
+
+.header-row{
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:start;
+  gap:20px;
+}
+
+.brand img{
+  width:420px;
+  max-width:25vw;
+  min-width:260px;
+}
+
+.nav-wrap{
+  display:flex;
+  justify-content:center;
   align-items:center;
-  gap:10px;
+  gap:36px;
+  padding-top:30px;
   flex-wrap:wrap;
 }
 
 .nav-link{
-  padding:8px 14px;
-  border-radius:10px;
-  text-decoration:none;
-  color:#efeaff;
-  background:rgba(122,77,255,0.10);
-  border:1px solid rgba(167,123,255,0.18);
-  box-shadow:0 0 10px rgba(122,77,255,0.15);
-  font-size:13px;
-  transition:0.2s;
-  white-space:nowrap;
-  cursor:pointer;
+  position:relative;
+  font-size:16px;
+  font-weight:700;
+  color:var(--muted-2);
+  line-height:1;
+  transition:0.18s ease;
 }
 
-.nav-link:hover{
-  background:rgba(122,77,255,0.22);
-  box-shadow:0 0 16px rgba(167,123,255,0.35);
-  transform:scale(1.04);
+.nav-link:hover{color:var(--text);}
+
+.nav-link.active{color:#666666;}
+
+.nav-link.active::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:-9px;
+  height:2px;
+  background:#7a7a7a;
+  border-radius:2px;
+}
+
+.top-actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding-top:14px;
 }
 
 .lang-switch{
   display:flex;
-  gap:10px;
-  flex-shrink:0;
+  align-items:center;
+  gap:6px;
+  padding:5px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.96);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(10px);
 }
 
 .lang-btn{
-  padding:7px 14px;
-  border-radius:12px;
-  background: rgba(122,77,255,0.18);
-  border: 1px solid rgba(167,123,255,0.25);
-  color:#fff;
-  font-size:13px;
+  border:none;
+  background:transparent;
+  color:#707483;
+  font-weight:800;
+  font-size:12px;
+  letter-spacing:0.06em;
+  border-radius:999px;
+  padding:10px 14px;
   cursor:pointer;
-  user-select:none;
-  box-shadow: 0 0 14px rgba(122,77,255,0.25);
-  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
-  white-space:nowrap;
+  transition:0.18s ease;
 }
 
-.lang-btn:hover{
-  transform: translateY(-1px);
-  background: rgba(167,123,255,0.28);
-  box-shadow: 0 0 22px rgba(167,123,255,0.35);
+.lang-btn.active{
+  background:var(--violet);
+  color:#fff;
 }
 
-/* ===== Layout ===== */
-.wrap{
-  max-width: 1180px;
-  margin:0 auto;
-  padding: 118px 20px 70px;
+.login-btn,
+.primary-btn{
+  border:none;
+  background:var(--violet);
+  color:#fff;
+  font-weight:800;
+  font-size:16px;
+  padding:16px 34px;
+  border-radius:999px;
+  box-shadow:0 10px 22px rgba(104,65,183,0.18);
+  transition:0.18s ease;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
 }
 
-/* ===== Hero ===== */
+.login-btn:hover,
+.primary-btn:hover{
+  background:var(--violet-dark);
+  transform:translateY(-1px);
+}
+
+main{
+  flex:1;
+  padding:24px 0 60px;
+}
+
 .hero{
   position:relative;
-  border-radius:22px;
-  padding:30px 26px;
-  background:
-    radial-gradient(700px 240px at 25% 0%, rgba(122,77,255,0.30), transparent 65%),
-    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.03));
-  border: 1px solid rgba(167,123,255,0.18);
-  box-shadow: 0 20px 70px rgba(0,0,0,0.55);
   overflow:hidden;
+  border-radius:var(--radius-xl);
+  padding:56px 54px;
+  background:rgba(255,255,255,0.80);
+  border:1px solid rgba(23,25,35,0.06);
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(12px);
 }
-.hero:after{
+
+.hero::before{
   content:"";
   position:absolute;
-  inset:-2px;
-  background: radial-gradient(600px 220px at 80% 35%, rgba(167,123,255,0.16), transparent 60%);
+  inset:0;
+  background:
+    radial-gradient(420px 220px at 20% 10%, rgba(104,65,183,0.11), transparent 70%),
+    radial-gradient(420px 220px at 86% 18%, rgba(104,65,183,0.08), transparent 70%);
   pointer-events:none;
 }
+
 .hero-grid{
   position:relative;
   z-index:1;
   display:grid;
-  grid-template-columns: 1.3fr 0.7fr;
-  gap:18px;
-  align-items:start;
-}
-.kicker{
-  font-size:12px;
-  letter-spacing:0.18em;
-  text-transform:uppercase;
-  color:#d8cfff;
-  opacity:0.9;
-  margin-bottom:10px;
-}
-.hero h1{
-  margin:0 0 10px 0;
-  font-size:42px;
-  letter-spacing:-0.02em;
-}
-.hero p{
-  margin:0;
-  max-width:720px;
-  opacity:0.88;
-  font-size:16px;
-  line-height:1.55;
-  white-space:pre-line;
-}
-.actions{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:stretch;
-  justify-content:flex-start;
-}
-.btn-primary{
-  display:inline-flex;
+  grid-template-columns:minmax(0, 1.2fr) minmax(280px, 0.8fr);
+  gap:28px;
   align-items:center;
-  justify-content:center;
-  gap:10px;
-  padding:14px 16px;
-  border-radius:14px;
-  background: linear-gradient(90deg, #7a4dff, #a77bff);
-  text-decoration:none;
-  font-weight:bold;
-  box-shadow: 0 16px 50px rgba(122,77,255,0.38);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.btn-primary:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 22px 70px rgba(167,123,255,0.45);
-}
-.btn-ghost{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  padding:12px 16px;
-  border-radius:14px;
-  background: rgba(122,77,255,0.12);
-  border: 1px solid rgba(167,123,255,0.25);
-  text-decoration:none;
-  color:#efeaff;
-  box-shadow: 0 0 18px rgba(122,77,255,0.20);
-  transition: transform .15s ease, background .15s ease, box-shadow .15s ease;
-}
-.btn-ghost:hover{
-  transform: translateY(-1px);
-  background: rgba(122,77,255,0.18);
-  box-shadow: 0 0 26px rgba(167,123,255,0.28);
 }
 
-/* ===== Section title ===== */
+.eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(104,65,183,0.08);
+  color:var(--violet);
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  margin-bottom:18px;
+}
+
+.hero h1{
+  margin:0 0 16px;
+  font-size:clamp(42px,4.4vw,74px);
+  line-height:0.94;
+  font-weight:900;
+  letter-spacing:-0.05em;
+  max-width:780px;
+}
+
+.hero h1 .accent{color:var(--violet);}
+
+.hero p{
+  margin:0;
+  max-width:760px;
+  color:var(--muted);
+  font-size:clamp(17px,1.15vw,22px);
+  line-height:1.56;
+}
+
+.hero-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+
+.secondary-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:56px;
+  padding:16px 24px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid rgba(23,25,35,0.08);
+  color:var(--text);
+  font-size:16px;
+  font-weight:800;
+  box-shadow:var(--shadow-soft);
+  transition:0.18s ease;
+}
+
+.secondary-btn:hover{transform:translateY(-1px);}
+
+.hero-side{
+  display:grid;
+  gap:16px;
+}
+
+.info-card{
+  background:rgba(255,255,255,0.92);
+  border:1px solid rgba(23,25,35,0.06);
+  border-radius:26px;
+  padding:24px 24px 22px;
+  box-shadow:var(--shadow-soft);
+}
+
+.info-card .label{
+  display:block;
+  margin-bottom:10px;
+  color:#9ca2b2;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+
+.info-card strong{
+  display:block;
+  font-size:26px;
+  line-height:1.08;
+  letter-spacing:-0.04em;
+  margin-bottom:8px;
+}
+
+.info-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.55;
+}
+
+.section{
+  margin-top:22px;
+}
+
 .section-head{
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  gap:12px;
-  margin:26px 4px 12px;
+  gap:16px;
+  margin:0 0 16px;
 }
+
 .section-head h2{
   margin:0;
-  font-size:18px;
-  letter-spacing:0.10em;
-  text-transform:uppercase;
-  opacity:0.9;
+  font-size:clamp(28px,2.1vw,42px);
+  line-height:1;
+  letter-spacing:-0.04em;
 }
+
 .section-head p{
   margin:0;
-  opacity:0.75;
-  font-size:13px;
+  color:var(--muted);
+  font-size:15px;
 }
 
-.tiles{
+.grid{
   display:grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap:16px;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:18px;
 }
-.tile{
-  position:relative;
-  border-radius:18px;
-  overflow:hidden;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(167,123,255,0.14);
-  box-shadow: 0 18px 60px rgba(0,0,0,0.55);
-  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+
+.feature-card,
+.step-card,
+.callout{
+  background:rgba(255,255,255,0.82);
+  border:1px solid rgba(23,25,35,0.06);
+  box-shadow:var(--shadow-soft);
+  backdrop-filter:blur(12px);
 }
-.tile:hover{
-  transform: translateY(-3px);
-  border-color: rgba(167,123,255,0.34);
-  box-shadow: 0 24px 85px rgba(0,0,0,0.65);
+
+.feature-card{
+  border-radius:28px;
+  padding:28px 24px 24px;
+  min-height:250px;
 }
-.tile-img{
-  height:160px;
-  background:#0b0f1e;
-  overflow:hidden;
-}
-.tile-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-  filter:saturate(1.05) contrast(1.05);
-  transform: scale(1.02);
-}
-.tile-body{
-  padding:14px 14px 16px;
-}
-.badge{
+
+.card-kicker{
   display:inline-flex;
   align-items:center;
-  gap:8px;
-  padding:6px 10px;
+  padding:7px 12px;
   border-radius:999px;
+  background:rgba(104,65,183,0.08);
+  color:var(--violet);
   font-size:12px;
-  background: rgba(122,77,255,0.14);
-  border: 1px solid rgba(167,123,255,0.20);
-  color:#e9e3ff;
-  opacity:0.95;
-  margin-bottom:10px;
-}
-.tile h3{
-  margin:0 0 8px 0;
-  font-size:18px;
-}
-.tile p{
-  margin:0;
-  opacity:0.82;
-  font-size:14px;
-  line-height:1.5;
+  font-weight:800;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  margin-bottom:18px;
 }
 
-/* ===== Callout ===== */
+.feature-card h3,
+.step-card h3{
+  margin:0 0 12px;
+  font-size:26px;
+  line-height:1.02;
+  letter-spacing:-0.04em;
+}
+
+.feature-card p,
+.step-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.62;
+}
+
+.step-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0,1fr));
+  gap:18px;
+}
+
+.step-card{
+  border-radius:28px;
+  padding:26px 24px 24px;
+}
+
+.step-number{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:var(--violet);
+  color:#fff;
+  font-size:18px;
+  font-weight:900;
+  box-shadow:0 10px 22px rgba(104,65,183,0.18);
+  margin-bottom:18px;
+}
+
 .callout{
-  margin-top:18px;
-  border-radius:18px;
-  padding:16px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.03));
-  border: 1px solid rgba(167,123,255,0.16);
-  box-shadow: 0 18px 60px rgba(0,0,0,0.45);
+  margin-top:22px;
+  border-radius:30px;
+  padding:28px 30px;
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:14px;
+  gap:20px;
 }
-.callout strong{ font-size:14px; letter-spacing:0.06em; text-transform:uppercase; opacity:0.9; }
-.callout span{ display:block; opacity:0.78; font-size:13px; margin-top:4px; }
 
-/* ===== Footer ===== */
-footer{
-  margin-top:26px;
-  padding:18px 0 10px;
-  text-align:center;
-  opacity:0.85;
-  font-size:12px;
+.callout-text strong{
+  display:block;
+  font-size:clamp(28px,2.2vw,40px);
+  line-height:1.02;
+  letter-spacing:-0.04em;
+  margin-bottom:10px;
 }
-.footer-links{
-  margin-top:10px;
+
+.callout-text span{
+  display:block;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.6;
+  max-width:820px;
+}
+
+footer{
+  padding:18px 0 28px;
+}
+
+.footer-row{
   display:flex;
   justify-content:center;
-  gap:10px;
+  gap:40px;
   flex-wrap:wrap;
-}
-.footer-btn{
-  display:inline-block;
-  padding:6px 12px;
-  border-radius:12px;
-  text-decoration:none;
-  color:#d8cfff;
-  background:rgba(122,77,255,0.12);
-  border: 1px solid rgba(167,123,255,0.18);
-  box-shadow: 0 0 14px rgba(122,77,255,0.18);
-  transition: transform .15s ease, background .15s ease;
-}
-.footer-btn:hover{
-  transform: translateY(-1px);
-  background:rgba(122,77,255,0.18);
+  color:#d0ccc5;
+  font-weight:700;
+  font-size:13px;
+  border-top:1px solid rgba(123,117,140,0.10);
+  padding-top:14px;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 980px){
-  .tiles{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .hero-grid{ grid-template-columns: 1fr; }
-  .actions{ flex-direction:row; flex-wrap:wrap; }
-  .btn-primary, .btn-ghost{ flex:1; min-width:220px; }
-}
+.footer-row a:hover{color:var(--violet);}
 
-@media (max-width: 900px){
-  .header{
-    height:auto;
-    padding:12px 14px;
-    align-items:flex-start;
+@media (max-width:1180px){
+  .header-row{
+    grid-template-columns:1fr;
+    gap:16px;
   }
 
-  .header-left{
+  .brand{justify-content:center;}
+  .nav-wrap{padding-top:0;}
+  .top-actions{justify-content:center;padding-top:0;}
+
+  .hero-grid,
+  .grid,
+  .step-grid{
+    grid-template-columns:1fr;
+  }
+
+  .hero-side{
+    grid-template-columns:repeat(2, minmax(0,1fr));
+  }
+}
+
+@media (max-width:760px){
+  .shell{
+    width:min(calc(100% - 24px), var(--max));
+  }
+
+  .brand img{
+    width:min(280px, 72vw);
+    min-width:auto;
+  }
+
+  .nav-wrap{
+    gap:14px 18px;
+  }
+
+  .nav-link{
+    font-size:15px;
+  }
+
+  .login-btn,
+  .primary-btn,
+  .secondary-btn{
+    padding:14px 24px;
+    font-size:15px;
+  }
+
+  .hero{
+    padding:28px 20px;
+    border-radius:24px;
+  }
+
+  .hero h1{
+    font-size:40px;
+  }
+
+  .hero p,
+  .callout-text span{
+    font-size:17px;
+  }
+
+  .hero-side{
+    grid-template-columns:1fr;
+  }
+
+  .callout{
     flex-direction:column;
     align-items:flex-start;
-    gap:10px;
+    padding:24px 20px;
   }
 
-  .main-nav{
-    gap:8px;
+  .hero-actions{
+    flex-direction:column;
   }
 
-  .wrap{
-    padding:150px 20px 70px;
+  .primary-btn,
+  .secondary-btn{
+    width:100%;
   }
-}
-
-@media (max-width: 560px){
-  .tiles{ grid-template-columns: 1fr; }
-  .hero h1{ font-size:34px; }
-  .btn-primary, .btn-ghost{ min-width:0; width:100%; }
-  .callout{ flex-direction:column; align-items:flex-start; }
-  .nav-link{ font-size:12px; padding:7px 10px; }
-  .lang-btn{ padding:5px 10px; font-size:12px; }
-  .wrap{ padding:170px 16px 60px; }
 }
 </style>
 </head>
-
 <body>
+  <div class="page">
+    <header>
+      <div class="shell">
+        <div class="header-row">
+          <a class="brand" href="index.html" aria-label="HRX CreatorNET Home">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
+          </a>
 
-<header class="header">
-  <div class="header-left">
-    <a href="index.html" aria-label="Zur Startseite">
-      <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo" />
-    </a>
+          <nav class="nav-wrap" aria-label="Hauptnavigation">
+            <a href="index.html" class="nav-link" id="nav-home">Startseite</a>
+            <a href="bewerbung.html" class="nav-link" id="nav-apply">Bewerbung</a>
+            <a href="mehr_erfahren.html" class="nav-link active" id="nav-about">About HRX</a>
+            <a href="talente.html" class="nav-link" id="nav-talents">Talente</a>
+            <a href="team.html" class="nav-link" id="nav-team">Team</a>
+            <a href="news.html" class="nav-link" id="nav-news">News</a>
+            <a href="playtok.html" class="nav-link" id="nav-playtok">Playtok</a>
+          </nav>
 
-    <nav class="main-nav">
-      <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
-      <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
-      <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
-      <a href="#" class="nav-link" id="nav_intern" onclick="openIntern(); return false;">Intern</a>
-    </nav>
+          <div class="top-actions">
+            <div class="lang-switch" aria-label="Sprache wechseln">
+              <button class="lang-btn active" id="btn-de" type="button" onclick="setLang('de')">DE</button>
+              <button class="lang-btn" id="btn-en" type="button" onclick="setLang('en')">EN</button>
+            </div>
+
+            <a href="login.html" class="login-btn" id="login-btn">Login</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="shell">
+        <section class="hero">
+          <div class="hero-grid">
+            <div>
+              <div class="eyebrow" id="eyebrow">Creator Network</div>
+              <h1 id="hero-title">Where creators build <span class="accent">legacy.</span></h1>
+              <p id="hero-text">HRX CreatorNET ist ein privates Netzwerk für Creator mit Anspruch. Wir verbinden kostenlose monatliche Assets, technische Unterstützung und faire Partnerschaften in einer Struktur, die auf langfristiges Wachstum statt kurzfristige Gimmicks ausgelegt ist. Unser Ziel ist ein Umfeld, in dem Creator professioneller auftreten, voneinander profitieren und gemeinsam Reichweite in echte Chancen verwandeln.</p>
+
+              <div class="hero-actions">
+                <a href="bewerbung.html" class="primary-btn" id="hero-cta">Jetzt bewerben</a>
+                <a href="talente.html" class="secondary-btn" id="hero-secondary">Talente ansehen</a>
+              </div>
+            </div>
+
+            <div class="hero-side">
+              <article class="info-card">
+                <span class="label" id="info-1-label">Fokus</span>
+                <strong id="info-1-title">Collaborate. Grow. Monetize.</strong>
+                <p id="info-1-text">Kein loses Sammelbecken, sondern ein Network mit echter Ausrichtung auf Sichtbarkeit, Qualität und Entwicklung.</p>
+              </article>
+
+              <article class="info-card">
+                <span class="label" id="info-2-label">Modell</span>
+                <strong id="info-2-title">Free Assets im Network.</strong>
+                <p id="info-2-text">Custom Work, tiefere Produktionen und größere Sonderleistungen nur dann, wenn du sie wirklich willst.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 id="section-1-title">Was du im Network bekommst</h2>
+            <p id="section-1-sub">Drei Bausteine, die HRX CreatorNET ausmachen.</p>
+          </div>
+
+          <div class="grid">
+            <article class="feature-card">
+              <div class="card-kicker" id="card-1-kicker">Assets</div>
+              <h3 id="card-1-title">Monatliche Creator Assets</h3>
+              <p id="card-1-text">Panels, Overlays, Badges, Templates und wiederkehrende Design-Bausteine, die deinen Channel sauberer, professioneller und konsistenter wirken lassen.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="card-kicker" id="card-2-kicker">Tech</div>
+              <h3 id="card-2-title">Technischer Support</h3>
+              <p id="card-2-text">Hilfe bei Stream-Branding, Setup, kleinen Web-Themen, Tools oder individuellen Lösungen, wenn dein Auftritt über Standardlösungen hinausgehen soll.</p>
+            </article>
+
+            <article class="feature-card">
+              <div class="card-kicker" id="card-3-kicker">Partnerschaften</div>
+              <h3 id="card-3-title">Faire Chancen statt leere Versprechen</h3>
+              <p id="card-3-text">Wir bündeln Creator sinnvoll, damit aus Reichweite bessere Möglichkeiten für Kooperationen, Placements und gemeinsame Entwicklung entstehen können.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-head">
+            <h2 id="section-2-title">So funktioniert HRX</h2>
+            <p id="section-2-sub">Klar, direkt und ohne unnötigen Ballast.</p>
+          </div>
+
+          <div class="step-grid">
+            <article class="step-card">
+              <div class="step-number">1</div>
+              <h3 id="step-1-title">Bewerben</h3>
+              <p id="step-1-text">Du bewirbst dich über die HRX-Seite und zeigst uns, wer du bist, wie dein Content aussieht und wohin du mit deinem Kanal willst.</p>
+            </article>
+
+            <article class="step-card">
+              <div class="step-number">2</div>
+              <h3 id="step-2-title">Passender Fit</h3>
+              <p id="step-2-text">Wir schauen nicht nur auf nackte Zahlen, sondern darauf, ob Stil, Anspruch und Entwicklungspotenzial zu dem passen, was wir als Network bauen.</p>
+            </article>
+
+            <article class="step-card">
+              <div class="step-number">3</div>
+              <h3 id="step-3-title">Gemeinsam wachsen</h3>
+              <p id="step-3-text">Im Network bekommst du Zugriff auf Assets, Support und mittelfristig auf Chancen, die alleine oft schwerer zu erreichen sind.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="callout">
+          <div class="callout-text">
+            <strong id="callout-title">Creator first. Clean. Fair.</strong>
+            <span id="callout-text">HRX CreatorNET ist bewusst nicht als klassisches Agentur-Konstrukt gedacht. Keine Fixkosten, kein Zwang zu unnötigen Leistungen und kein künstlich aufgeblasenes BlaBla – sondern ein Netzwerk, das Creator tatsächlich weiterbringen soll.</span>
+          </div>
+
+          <a href="bewerbung.html" class="primary-btn" id="callout-btn">Jetzt bewerben</a>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      <div class="shell">
+        <div class="footer-row">
+          <a href="impressum.html" id="footer-imprint">Impressum</a>
+          <a href="datenschutz.html" id="footer-privacy">Datenschutz</a>
+        </div>
+      </div>
+    </footer>
   </div>
-
-  <div class="lang-switch">
-    <span class="lang-btn" onclick="setLang('de')">DE</span>
-    <span class="lang-btn" onclick="setLang('en')">EN</span>
-  </div>
-</header>
-
-<main class="wrap">
-  <section class="hero">
-    <div class="hero-grid">
-      <div>
-        <div class="kicker" id="kicker">Mehr erfahren</div>
-        <h1 id="hero_title">Was ist HRX CreatorNET?</h1>
-        <p id="hero_desc">
-HRX CreatorNET unterstützt Twitch-Creator mit kostenlosen monatlichen Assets, technischen Tools sowie fairen Partnerschaften im DACH-Raum.
-Wir bauen ein Netzwerk, in dem Creator gemeinsam wachsen, ihre gebündelte Reichweite für starke Deals nutzen und voneinander profitieren.
-Unser Anspruch: echter Support statt leerer Versprechen – und das ohne Gebühren.
-        </p>
-      </div>
-
-      <div class="actions">
-        <a class="btn-primary" href="bewerbung.html" id="btn_apply">Jetzt bewerben</a>
-        <a class="btn-ghost" href="index.html" id="btn_back">Zur Startseite</a>
-      </div>
-    </div>
-  </section>
-
-  <div class="section-head">
-    <h2 id="sec_title">Empfohlen</h2>
-  </div>
-
-  <section class="tiles">
-    <article class="tile">
-      <div class="tile-img"><img src="assets.png" alt="Thema 1"></div>
-      <div class="tile-body">
-        <div class="badge" id="b1">Assets</div>
-        <h3 id="t1">Monatliche Free Assets</h3>
-        <p id="d1">Jeden Monat neue Panels, Overlays, Badges & Templates – exklusiv im Network.</p>
-      </div>
-    </article>
-
-    <article class="tile">
-      <div class="tile-img"><img src="Branding.png" alt="Thema 2"></div>
-      <div class="tile-body">
-        <div class="badge" id="b2">Twitch</div>
-        <h3 id="t2">Stream-Branding & Setup</h3>
-        <p id="d2">Sauberes Branding und Hilfe beim Setup – damit dein Channel wie ein Profi wirkt.</p>
-      </div>
-    </article>
-
-    <article class="tile">
-      <div class="tile-img"><img src="programmierung.png" alt="Thema 3"></div>
-      <div class="tile-body">
-        <div class="badge" id="b3">Tech</div>
-        <h3 id="t3">Unterstützung bei Webshop und Programmierung</h3>
-        <p id="d3">Hilfe bei Webshops, Tools und individuellen Features für Creator.</p>
-      </div>
-    </article>
-
-    <article class="tile">
-      <div class="tile-img"><img src="deals.png" alt="Thema 4"></div>
-      <div class="tile-body">
-        <div class="badge" id="b4">Partner</div>
-        <h3 id="t4">Partnerschaften & Deals</h3>
-        <p id="d4">Wir matchen Creator & Partner sinnvoll. Keine Versprechen – aber echte Chancen.</p>
-      </div>
-    </article>
-
-    <article class="tile">
-      <div class="tile-img"><img src="assets_unikat.png" alt="Thema 5"></div>
-      <div class="tile-body">
-        <div class="badge" id="b5">Custom</div>
-        <h3 id="t5">Individuelle Assets (Rabatt)</h3>
-        <p id="d5">Du brauchst was Eigenes? Wir machen’s – als Member zu reduzierten Preisen.</p>
-      </div>
-    </article>
-
-    <article class="tile">
-      <div class="tile-img"><img src="partner.png" alt="Thema 6"></div>
-      <div class="tile-body">
-        <div class="badge" id="b6">Rose Entertain</div>
-        <h3 id="t6">Deals mit unseren Game Devs</h3>
-        <p id="d6">Kooperationen mit Game-Studios und Entwicklern aus unserem Netzwerk.</p>
-      </div>
-    </article>
-  </section>
-
-  <section class="callout">
-    <div>
-      <strong id="co_title">Fair, transparent, creator-first.</strong>
-      <span id="co_desc">Keine Fixkosten, kein Knebelvertrag. Free Assets im Network – Custom Work nur wenn du’s willst.</span>
-    </div>
-    <a class="btn-primary" href="bewerbung.html" id="btn_apply2">Jetzt bewerben</a>
-  </section>
-
-  <footer>
-    <div id="foot_line">© 2026 HRX CreatorNET – HyptryX x Rose Entertain</div>
-    <div class="footer-links">
-      <a class="footer-btn" href="impressum.html" id="f_imprint">Impressum</a>
-      <a class="footer-btn" href="datenschutz.html" id="f_privacy">Datenschutz</a>
-    </div>
-  </footer>
-</main>
 
 <script>
 const i18n = {
   de: {
-    title: "HRX CreatorNET – Mehr erfahren",
+    title: 'HRX CreatorNET – About HRX',
     nav: {
-      home: "Startseite",
-      more: "Mehr erfahren",
-      talents: "Talente",
-      intern: "Intern"
+      home: 'Startseite',
+      apply: 'Bewerbung',
+      about: 'About HRX',
+      talents: 'Talente',
+      team: 'Team',
+      news: 'News',
+      playtok: 'Playtok',
+      login: 'Login'
     },
-    kicker: "Mehr erfahren",
-    heroTitle: "Was ist HRX CreatorNET?",
-    heroDesc: `HRX CreatorNET unterstützt Twitch-Creator mit kostenlosen monatlichen Assets, technischen Tools sowie fairen Partnerschaften im DACH-Raum.
-Wir bauen ein Netzwerk, in dem Creator gemeinsam wachsen, ihre gebündelte Reichweite für starke Deals nutzen und voneinander profitieren.
-Unser Anspruch: echter Support statt leerer Versprechen – und das ohne Gebühren.`,
-    btnApply: "Jetzt bewerben",
-    btnBack: "Zur Startseite",
-    secTitle: "Empfohlen",
-    badges: ["Assets","Twitch","Tech","Partner","Custom","Rose Entertain"],
-    tiles: [
-      ["Monatliche Free Assets", "Jeden Monat neue Panels, Overlays, Badges & Templates – exklusiv im Network."],
-      ["Stream-Branding & Setup", "Sauberes Branding und Hilfe beim Setup – damit dein Channel wie ein Profi wirkt."],
-      ["Unterstützung bei Webshop und Programmierung", "Hilfe bei Webshops, Tools und individuellen Features für Creator."],
-      ["Partnerschaften & Deals", "Wir matchen Creator & Partner sinnvoll. Keine Versprechen – aber echte Chancen."],
-      ["Individuelle Assets (Rabatt)", "Du brauchst was Eigenes? Wir machen’s – als Member zu reduzierten Preisen."],
-      ["Deals mit unseren Game Devs", "Kooperationen mit Game-Studios und Entwicklern aus unserem Netzwerk."]
+    eyebrow: 'Creator Network',
+    heroTitle: 'Where creators build legacy.',
+    heroText: 'HRX CreatorNET ist ein privates Netzwerk für Creator mit Anspruch. Wir verbinden kostenlose monatliche Assets, technische Unterstützung und faire Partnerschaften in einer Struktur, die auf langfristiges Wachstum statt kurzfristige Gimmicks ausgelegt ist. Unser Ziel ist ein Umfeld, in dem Creator professioneller auftreten, voneinander profitieren und gemeinsam Reichweite in echte Chancen verwandeln.',
+    heroCta: 'Jetzt bewerben',
+    heroSecondary: 'Talente ansehen',
+    info1Label: 'Fokus',
+    info1Title: 'Collaborate. Grow. Monetize.',
+    info1Text: 'Kein loses Sammelbecken, sondern ein Network mit echter Ausrichtung auf Sichtbarkeit, Qualität und Entwicklung.',
+    info2Label: 'Modell',
+    info2Title: 'Free Assets im Network.',
+    info2Text: 'Custom Work, tiefere Produktionen und größere Sonderleistungen nur dann, wenn du sie wirklich willst.',
+    section1Title: 'Was du im Network bekommst',
+    section1Sub: 'Drei Bausteine, die HRX CreatorNET ausmachen.',
+    cards: [
+      ['Assets', 'Monatliche Creator Assets', 'Panels, Overlays, Badges, Templates und wiederkehrende Design-Bausteine, die deinen Channel sauberer, professioneller und konsistenter wirken lassen.'],
+      ['Tech', 'Technischer Support', 'Hilfe bei Stream-Branding, Setup, kleinen Web-Themen, Tools oder individuellen Lösungen, wenn dein Auftritt über Standardlösungen hinausgehen soll.'],
+      ['Partnerschaften', 'Faire Chancen statt leere Versprechen', 'Wir bündeln Creator sinnvoll, damit aus Reichweite bessere Möglichkeiten für Kooperationen, Placements und gemeinsame Entwicklung entstehen können.']
     ],
-    calloutTitle: "Fair, transparent, creator-first.",
-    calloutDesc: "Keine Fixkosten, kein Knebelvertrag. Free Assets im Network – Custom Work nur wenn du’s willst.",
-    footerImprint: "Impressum",
-    footerPrivacy: "Datenschutz",
-    footerLine: "© 2026 HRX CreatorNET – HyptryX x Rose Entertain"
+    section2Title: 'So funktioniert HRX',
+    section2Sub: 'Klar, direkt und ohne unnötigen Ballast.',
+    steps: [
+      ['Bewerben', 'Du bewirbst dich über die HRX-Seite und zeigst uns, wer du bist, wie dein Content aussieht und wohin du mit deinem Kanal willst.'],
+      ['Passender Fit', 'Wir schauen nicht nur auf nackte Zahlen, sondern darauf, ob Stil, Anspruch und Entwicklungspotenzial zu dem passen, was wir als Network bauen.'],
+      ['Gemeinsam wachsen', 'Im Network bekommst du Zugriff auf Assets, Support und mittelfristig auf Chancen, die alleine oft schwerer zu erreichen sind.']
+    ],
+    calloutTitle: 'Creator first. Clean. Fair.',
+    calloutText: 'HRX CreatorNET ist bewusst nicht als klassisches Agentur-Konstrukt gedacht. Keine Fixkosten, kein Zwang zu unnötigen Leistungen und kein künstlich aufgeblasenes BlaBla – sondern ein Netzwerk, das Creator tatsächlich weiterbringen soll.',
+    calloutBtn: 'Jetzt bewerben',
+    footerImprint: 'Impressum',
+    footerPrivacy: 'Datenschutz'
   },
   en: {
-    title: "HRX CreatorNET – Learn more",
+    title: 'HRX CreatorNET – About HRX',
     nav: {
-      home: "Home",
-      more: "Learn more",
-      talents: "Talents",
-      intern: "Intern"
+      home: 'Home',
+      apply: 'Apply',
+      about: 'About HRX',
+      talents: 'Talents',
+      team: 'Team',
+      news: 'News',
+      playtok: 'Playtok',
+      login: 'Login'
     },
-    kicker: "Learn more",
-    heroTitle: "What is HRX CreatorNET?",
-    heroDesc: `HRX CreatorNET supports Twitch creators with free monthly assets, technical tools and fair partnerships across the DACH region.
-We are building a network where creators grow together, use their combined reach for strong deals and benefit from one another.
-Our standard: real support instead of empty promises — and all of it without fees.`,
-    btnApply: "Apply now",
-    btnBack: "Back to homepage",
-    secTitle: "Featured",
-    badges: ["Assets","Twitch","Tech","Partners","Custom","Rose Entertain"],
-    tiles: [
-      ["Free monthly assets", "New panels, overlays, badges & templates every month — exclusive to members."],
-      ["Stream branding & setup", "Clean branding and setup help — so your channel looks pro."],
-      ["Webshop & development support", "Help with webshops, tools and custom features for creators."],
-      ["Partnerships & deals", "We connect creators and partners properly. No promises — real opportunities."],
-      ["Custom assets (discount)", "Need something unique? We build it — discounted member pricing."],
-      ["Deals with our game devs", "Collaborations with game studios and developers from our network."]
+    eyebrow: 'Creator Network',
+    heroTitle: 'Where creators build legacy.',
+    heroText: 'HRX CreatorNET is a private network for creators with standards. We combine free monthly assets, technical support and fair partnerships in a structure designed for long-term growth instead of short-lived gimmicks. Our goal is an environment where creators present themselves more professionally, benefit from each other and turn reach into real opportunities together.',
+    heroCta: 'Apply now',
+    heroSecondary: 'View talents',
+    info1Label: 'Focus',
+    info1Title: 'Collaborate. Grow. Monetize.',
+    info1Text: 'Not a loose collection of profiles, but a network with a real direction around visibility, quality and development.',
+    info2Label: 'Model',
+    info2Title: 'Free assets inside the network.',
+    info2Text: 'Custom work, deeper productions and larger special services only when you actually want them.',
+    section1Title: 'What you get inside the network',
+    section1Sub: 'Three pillars that define HRX CreatorNET.',
+    cards: [
+      ['Assets', 'Monthly creator assets', 'Panels, overlays, badges, templates and recurring design building blocks that make your channel look cleaner, more professional and more consistent.'],
+      ['Tech', 'Technical support', 'Help with stream branding, setup, smaller web topics, tools or individual solutions when your presence should go beyond standard options.'],
+      ['Partnerships', 'Real opportunities instead of empty promises', 'We group creators in a meaningful way so that reach can develop into stronger possibilities for collaborations, placements and shared growth.']
     ],
-    calloutTitle: "Fair, transparent, creator-first.",
-    calloutDesc: "No fixed fees, no lock-in contracts. Free assets in the network — custom work only if you want it.",
-    footerImprint: "Legal notice",
-    footerPrivacy: "Privacy",
-    footerLine: "© 2026 HRX CreatorNET — HyptryX x Rose Entertain"
+    section2Title: 'How HRX works',
+    section2Sub: 'Clear, direct and without unnecessary ballast.',
+    steps: [
+      ['Apply', 'You apply through the HRX website and show us who you are, what your content looks like and where you want to take your channel.'],
+      ['Right fit', 'We do not only look at raw numbers, but at whether style, standards and growth potential fit the kind of network we are building.'],
+      ['Grow together', 'Inside the network you get access to assets, support and, over time, opportunities that are often harder to reach on your own.']
+    ],
+    calloutTitle: 'Creator first. Clean. Fair.',
+    calloutText: 'HRX CreatorNET is deliberately not built like a classic agency construct. No fixed fees, no pressure into unnecessary services and no artificially inflated blah blah — just a network that is meant to genuinely move creators forward.',
+    calloutBtn: 'Apply now',
+    footerImprint: 'Legal notice',
+    footerPrivacy: 'Privacy'
   }
 };
 
 function setLang(lang){
   const t = i18n[lang];
+
   document.documentElement.lang = lang;
   document.title = t.title;
 
-  document.getElementById("nav_home").innerText = t.nav.home;
-  document.getElementById("nav_more").innerText = t.nav.more;
-  document.getElementById("nav_talents").innerText = t.nav.talents;
-  document.getElementById("nav_intern").innerText = t.nav.intern;
+  document.getElementById('nav-home').textContent = t.nav.home;
+  document.getElementById('nav-apply').textContent = t.nav.apply;
+  document.getElementById('nav-about').textContent = t.nav.about;
+  document.getElementById('nav-talents').textContent = t.nav.talents;
+  document.getElementById('nav-team').textContent = t.nav.team;
+  document.getElementById('nav-news').textContent = t.nav.news;
+  document.getElementById('nav-playtok').textContent = t.nav.playtok;
+  document.getElementById('login-btn').textContent = t.nav.login;
 
-  document.getElementById("kicker").innerText = t.kicker;
-  document.getElementById("hero_title").innerText = t.heroTitle;
-  document.getElementById("hero_desc").innerText = t.heroDesc;
+  document.getElementById('eyebrow').textContent = t.eyebrow;
+  document.getElementById('hero-title').innerHTML = t.heroTitle.replace('legacy.', '<span class="accent">legacy.</span>');
+  document.getElementById('hero-text').textContent = t.heroText;
+  document.getElementById('hero-cta').textContent = t.heroCta;
+  document.getElementById('hero-secondary').textContent = t.heroSecondary;
 
-  document.getElementById("btn_apply").innerText = t.btnApply;
-  document.getElementById("btn_apply2").innerText = t.btnApply;
-  document.getElementById("btn_back").innerText = t.btnBack;
+  document.getElementById('info-1-label').textContent = t.info1Label;
+  document.getElementById('info-1-title').textContent = t.info1Title;
+  document.getElementById('info-1-text').textContent = t.info1Text;
+  document.getElementById('info-2-label').textContent = t.info2Label;
+  document.getElementById('info-2-title').textContent = t.info2Title;
+  document.getElementById('info-2-text').textContent = t.info2Text;
 
-  document.getElementById("sec_title").innerText = t.secTitle;
+  document.getElementById('section-1-title').textContent = t.section1Title;
+  document.getElementById('section-1-sub').textContent = t.section1Sub;
+  document.getElementById('card-1-kicker').textContent = t.cards[0][0];
+  document.getElementById('card-1-title').textContent = t.cards[0][1];
+  document.getElementById('card-1-text').textContent = t.cards[0][2];
+  document.getElementById('card-2-kicker').textContent = t.cards[1][0];
+  document.getElementById('card-2-title').textContent = t.cards[1][1];
+  document.getElementById('card-2-text').textContent = t.cards[1][2];
+  document.getElementById('card-3-kicker').textContent = t.cards[2][0];
+  document.getElementById('card-3-title').textContent = t.cards[2][1];
+  document.getElementById('card-3-text').textContent = t.cards[2][2];
 
-  document.getElementById("b1").innerText = t.badges[0];
-  document.getElementById("b2").innerText = t.badges[1];
-  document.getElementById("b3").innerText = t.badges[2];
-  document.getElementById("b4").innerText = t.badges[3];
-  document.getElementById("b5").innerText = t.badges[4];
-  document.getElementById("b6").innerText = t.badges[5];
+  document.getElementById('section-2-title').textContent = t.section2Title;
+  document.getElementById('section-2-sub').textContent = t.section2Sub;
+  document.getElementById('step-1-title').textContent = t.steps[0][0];
+  document.getElementById('step-1-text').textContent = t.steps[0][1];
+  document.getElementById('step-2-title').textContent = t.steps[1][0];
+  document.getElementById('step-2-text').textContent = t.steps[1][1];
+  document.getElementById('step-3-title').textContent = t.steps[2][0];
+  document.getElementById('step-3-text').textContent = t.steps[2][1];
 
-  document.getElementById("t1").innerText = t.tiles[0][0];
-  document.getElementById("d1").innerText = t.tiles[0][1];
-  document.getElementById("t2").innerText = t.tiles[1][0];
-  document.getElementById("d2").innerText = t.tiles[1][1];
-  document.getElementById("t3").innerText = t.tiles[2][0];
-  document.getElementById("d3").innerText = t.tiles[2][1];
-  document.getElementById("t4").innerText = t.tiles[3][0];
-  document.getElementById("d4").innerText = t.tiles[3][1];
-  document.getElementById("t5").innerText = t.tiles[4][0];
-  document.getElementById("d5").innerText = t.tiles[4][1];
-  document.getElementById("t6").innerText = t.tiles[5][0];
-  document.getElementById("d6").innerText = t.tiles[5][1];
+  document.getElementById('callout-title').textContent = t.calloutTitle;
+  document.getElementById('callout-text').textContent = t.calloutText;
+  document.getElementById('callout-btn').textContent = t.calloutBtn;
 
-  document.getElementById("co_title").innerText = t.calloutTitle;
-  document.getElementById("co_desc").innerText = t.calloutDesc;
+  document.getElementById('footer-imprint').textContent = t.footerImprint;
+  document.getElementById('footer-privacy').textContent = t.footerPrivacy;
 
-  document.getElementById("f_imprint").innerText = t.footerImprint;
-  document.getElementById("f_privacy").innerText = t.footerPrivacy;
-  document.getElementById("foot_line").innerText = t.footerLine;
+  document.getElementById('btn-de').classList.toggle('active', lang === 'de');
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
 }
 
-function openIntern(){
-  const isLoggedIn = localStorage.getItem("hrx_login");
-  if(isLoggedIn === "true"){
-    window.location.href = "intern.html";
-  }else{
-    window.location.href = "login.html";
-  }
-}
-
-setLang("de");
+setLang('de');
 </script>
-
 </body>
 </html>

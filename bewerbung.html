@@ -19,6 +19,8 @@
   --shadow:0 20px 45px rgba(16,18,24,0.10);
   --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
   --max:1720px;
+  --success:#1d7f4e;
+  --danger:#b42318;
 }
 
 *{
@@ -284,6 +286,7 @@ textarea{
   margin-top:2px;
   padding:0;
   box-shadow:none;
+  flex:0 0 auto;
 }
 
 .checkbox-row label{
@@ -329,6 +332,12 @@ textarea{
   transform:translateY(-1px);
 }
 
+.submit-btn:disabled{
+  opacity:0.7;
+  cursor:not-allowed;
+  transform:none;
+}
+
 .secondary-btn{
   flex:1 1 220px;
   min-height:56px;
@@ -351,6 +360,32 @@ textarea{
 
 .secondary-btn:hover{
   transform:translateY(-1px);
+}
+
+.notice{
+  display:none;
+  margin-top:20px;
+  padding:14px 16px;
+  border-radius:16px;
+  font-size:14px;
+  line-height:1.5;
+  font-weight:700;
+}
+
+.notice.show{
+  display:block;
+}
+
+.notice.success{
+  background:rgba(29,127,78,0.08);
+  color:var(--success);
+  border:1px solid rgba(29,127,78,0.18);
+}
+
+.notice.error{
+  background:rgba(180,35,24,0.08);
+  color:var(--danger);
+  border:1px solid rgba(180,35,24,0.18);
 }
 
 footer{
@@ -443,6 +478,8 @@ footer{
   }
 }
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -456,7 +493,7 @@ footer{
 
           <nav class="nav-wrap" aria-label="Hauptnavigation">
             <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
-            <a href="bewerbung.html" class="nav-link active" id="nav_apply">Bewerbung</a>
+            <a href="bewerbung_backend.html" class="nav-link active" id="nav_apply">Bewerbung</a>
             <a href="mehr_erfahren.html" class="nav-link" id="nav_more">About HRX</a>
             <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
             <a href="team.html" class="nav-link" id="nav_team">Team</a>
@@ -487,12 +524,7 @@ footer{
 
         <section class="form-wrap">
           <div class="form-box">
-            <form action="https://api.web3forms.com/submit" method="POST">
-              <input type="hidden" name="access_key" value="3c953fd6-290b-45a8-b14d-cc9ba7910960">
-              <input type="hidden" name="subject" value="Neue HRX CreatorNET Bewerbung">
-              <input type="hidden" name="redirect" value="https://hrx-creator.net/danke.html">
-              <input type="checkbox" name="botcheck" style="display:none">
-
+            <form id="application-form" novalidate>
               <div class="form-grid">
                 <div class="field form-full">
                   <label id="l_platform" for="platform">Plattform <span id="platform_hint">(TikTok, Twitch)</span></label>
@@ -511,6 +543,16 @@ footer{
                   <select name="referred_by" id="referred_by">
                     <option value="">Keine Angabe</option>
                   </select>
+                </div>
+
+                <div class="field">
+                  <label id="l_email" for="email">E-Mail</label>
+                  <input type="email" name="email" id="email" required>
+                </div>
+
+                <div class="field">
+                  <label id="l_discord" for="discord">Discord</label>
+                  <input type="text" name="discord" id="discord" required>
                 </div>
 
                 <div id="twitch_block" class="form-full">
@@ -543,12 +585,12 @@ footer{
 
                 <div class="field">
                   <label id="l_viewer" for="viewer">Durchschnittliche Viewer</label>
-                  <input type="number" name="viewer" id="viewer" required>
+                  <input type="number" name="viewer" id="viewer" required min="0">
                 </div>
 
                 <div class="field">
                   <label id="l_streams" for="streams">Streams pro Woche</label>
-                  <input type="number" name="streams" id="streams" required>
+                  <input type="number" name="streams" id="streams" required min="0">
                 </div>
 
                 <div class="field">
@@ -562,14 +604,25 @@ footer{
                   </select>
                 </div>
 
-                <div class="field">
-                  <label id="l_discord" for="discord">Discord</label>
-                  <input type="text" name="discord" id="discord" required>
-                </div>
-
                 <div class="field form-full">
                   <label id="l_reason" for="reason">Warum willst du ins HRX CreatorNET?</label>
                   <textarea name="reason" id="reason" required></textarea>
+                </div>
+
+                <div class="field form-full">
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="age_18" name="age_18">
+                    <label for="age_18" id="age18_text">Ich bin mindestens 18 Jahre alt.</label>
+                  </div>
+
+                  <div class="checkbox-row">
+                    <input type="checkbox" id="age_16" name="age_16">
+                    <label for="age_16" id="age16_text">Falls nicht 18: Ich bin mindestens 16 Jahre alt.</label>
+                  </div>
+
+                  <p class="helper" id="age_note">
+                    Mindestens eines der beiden Felder muss zutreffen.
+                  </p>
                 </div>
 
                 <div class="field form-full">
@@ -586,6 +639,8 @@ footer{
                 <button type="submit" class="submit-btn" id="btn_submit">Bewerbung senden</button>
                 <a href="mehr_erfahren.html" class="secondary-btn" id="btn_more">Mehr erfahren</a>
               </div>
+
+              <div id="form-notice" class="notice"></div>
             </form>
           </div>
         </section>
@@ -604,6 +659,10 @@ footer{
 
   <script src="creator-data.js"></script>
   <script>
+    const SUPABASE_URL = "https://payxkjbgdrbrmwqmczhz.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa";
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
     let currentLang = "de";
 
     const i18n = {
@@ -626,6 +685,7 @@ footer{
           platformNote: "Vorauswahl: Beides – damit du alle Profile direkt angeben kannst.",
           referredBy: "Wer hat dich empfohlen?",
           noReferral: "Keine Angabe",
+          email: "E-Mail",
           twitch: "Twitch Name",
           twitch_link: "Twitch Link",
           tiktok: "TikTok Name",
@@ -634,15 +694,26 @@ footer{
           streams: "Streams pro Woche",
           category: "Kategorie",
           discord: "Discord",
-          reason: "Warum willst du ins HRX CreatorNET?"
+          reason: "Warum willst du ins HRX CreatorNET?",
+          age18: "Ich bin mindestens 18 Jahre alt.",
+          age16: "Falls nicht 18: Ich bin mindestens 16 Jahre alt.",
+          ageNote: "Mindestens eines der beiden Felder muss zutreffen."
         },
         platformOptions: { both: "Beides", twitch: "Twitch", tiktok: "TikTok" },
         category: ["Gaming", "Just Chatting", "IRL", "Music", "Andere"],
         privacyText: 'Ich stimme der <a href="datenschutz.html" target="_blank">Datenschutzerklärung</a> zu.',
         submit: "Bewerbung senden",
+        submitLoading: "Wird gesendet ...",
         more: "Mehr erfahren",
         imprint: "Impressum",
-        privacyFooter: "Datenschutz"
+        privacyFooter: "Datenschutz",
+        success: "Danke! Deine Bewerbung wurde gespeichert.",
+        errorMissingConfig: "Supabase ist noch nicht konfiguriert. Bitte URL und Anon Key eintragen.",
+        errorPrivacy: "Bitte stimme zuerst der Datenschutzerklärung zu.",
+        errorTwitch: "Bitte gib deinen Twitch Namen und Link an.",
+        errorTikTok: "Bitte gib deinen TikTok Namen und Link an.",
+        errorAge: "Bitte bestätige, dass du mindestens 16 Jahre alt bist.",
+        errorGeneric: "Beim Speichern ist ein Fehler aufgetreten:"
       },
       en: {
         title: "HRX CreatorNET Application",
@@ -663,6 +734,7 @@ footer{
           platformNote: "Default: Both — so you can add all profiles right away.",
           referredBy: "Who referred you?",
           noReferral: "No preference / none",
+          email: "Email",
           twitch: "Twitch name",
           twitch_link: "Twitch link",
           tiktok: "TikTok name",
@@ -671,20 +743,31 @@ footer{
           streams: "Streams per week",
           category: "Category",
           discord: "Discord",
-          reason: "Why do you want to join HRX CreatorNET?"
+          reason: "Why do you want to join HRX CreatorNET?",
+          age18: "I am at least 18 years old.",
+          age16: "If not 18: I am at least 16 years old.",
+          ageNote: "At least one of these two fields must apply."
         },
         platformOptions: { both: "Both", twitch: "Twitch", tiktok: "TikTok" },
         category: ["Gaming", "Just Chatting", "IRL", "Music", "Other"],
         privacyText: 'I agree to the <a href="datenschutz.html" target="_blank">privacy policy</a>.',
         submit: "Submit application",
+        submitLoading: "Submitting ...",
         more: "Learn more",
         imprint: "Imprint",
-        privacyFooter: "Privacy"
+        privacyFooter: "Privacy",
+        success: "Thank you! Your application has been saved.",
+        errorMissingConfig: "Supabase is not configured yet. Please set URL and anon key.",
+        errorPrivacy: "Please accept the privacy policy first.",
+        errorTwitch: "Please provide your Twitch name and link.",
+        errorTikTok: "Please provide your TikTok name and link.",
+        errorAge: "Please confirm that you are at least 16 years old.",
+        errorGeneric: "An error occurred while saving:"
       }
     };
 
     function getCreatorNames(){
-      if(!Array.isArray(HRX_CREATORS)) return [];
+      if(typeof HRX_CREATORS === "undefined" || !Array.isArray(HRX_CREATORS)) return [];
       return HRX_CREATORS
         .map(creator => creator.name)
         .filter(Boolean)
@@ -737,18 +820,20 @@ footer{
       document.getElementById("l_platform").childNodes[0].textContent = t.labels.platform + " ";
       document.getElementById("platform_hint").innerText = t.labels.platformHint;
       document.getElementById("platform_note").innerText = t.labels.platformNote;
-
       document.getElementById("l_referred_by").innerText = t.labels.referredBy;
+      document.getElementById("l_email").innerText = t.labels.email;
       document.getElementById("l_twitch").innerText = t.labels.twitch;
       document.getElementById("l_twitch_link").innerText = t.labels.twitch_link;
       document.getElementById("l_tiktok").innerText = t.labels.tiktok;
       document.getElementById("l_tiktok_link").innerText = t.labels.tiktok_link;
-
       document.getElementById("l_viewer").innerText = t.labels.viewer;
       document.getElementById("l_streams").innerText = t.labels.streams;
       document.getElementById("l_category").innerText = t.labels.category;
       document.getElementById("l_discord").innerText = t.labels.discord;
       document.getElementById("l_reason").innerText = t.labels.reason;
+      document.getElementById("age18_text").innerText = t.labels.age18;
+      document.getElementById("age16_text").innerText = t.labels.age16;
+      document.getElementById("age_note").innerText = t.labels.ageNote;
 
       const platformSel = document.getElementById("platform");
       const currentPlatform = platformSel.value;
@@ -821,6 +906,116 @@ footer{
         tiktokLink.required = true;
       }
     }
+
+    function showNotice(type, message){
+      const notice = document.getElementById("form-notice");
+      notice.className = "notice show " + type;
+      notice.textContent = message;
+    }
+
+    function clearNotice(){
+      const notice = document.getElementById("form-notice");
+      notice.className = "notice";
+      notice.textContent = "";
+    }
+
+    function validateAge(){
+      const age18 = document.getElementById("age_18").checked;
+      const age16 = document.getElementById("age_16").checked;
+      return age18 || age16;
+    }
+
+    document.getElementById("age_18").addEventListener("change", function(){
+      if(this.checked){
+        document.getElementById("age_16").checked = false;
+      }
+    });
+
+    document.getElementById("age_16").addEventListener("change", function(){
+      if(this.checked){
+        document.getElementById("age_18").checked = false;
+      }
+    });
+
+    document.getElementById("application-form").addEventListener("submit", async function(e){
+      e.preventDefault();
+      clearNotice();
+
+      const t = i18n[currentLang];
+      const submitBtn = document.getElementById("btn_submit");
+      const privacyAccepted = document.getElementById("privacy_check").checked;
+      const platform = document.getElementById("platform").value;
+
+      if(!privacyAccepted){
+        showNotice("error", t.errorPrivacy);
+        return;
+      }
+
+      if(!validateAge()){
+        showNotice("error", t.errorAge);
+        return;
+      }
+
+      if(platform === "twitch" || platform === "both"){
+        if(!document.getElementById("twitch_name").value.trim() || !document.getElementById("twitch_link").value.trim()){
+          showNotice("error", t.errorTwitch);
+          return;
+        }
+      }
+
+      if(platform === "tiktok" || platform === "both"){
+        if(!document.getElementById("tiktok_name").value.trim() || !document.getElementById("tiktok_link").value.trim()){
+          showNotice("error", t.errorTikTok);
+          return;
+        }
+      }
+
+      const age18 = document.getElementById("age_18").checked;
+      const age16 = document.getElementById("age_16").checked;
+
+      let ageGroup = null;
+      if(age18) ageGroup = "18+";
+      else if(age16) ageGroup = "16+";
+
+      const payload = {
+        platform: document.getElementById("platform").value,
+        referred_by: document.getElementById("referred_by").value || null,
+        email: document.getElementById("email").value.trim(),
+        discord: document.getElementById("discord").value.trim(),
+        twitch: document.getElementById("twitch_name").value.trim() || null,
+        twitch_link: document.getElementById("twitch_link").value.trim() || null,
+        tiktok: document.getElementById("tiktok_name").value.trim() || null,
+        tiktok_link: document.getElementById("tiktok_link").value.trim() || null,
+        viewer: parseInt(document.getElementById("viewer").value, 10) || 0,
+        streams: parseInt(document.getElementById("streams").value, 10) || 0,
+        category: document.getElementById("category").value,
+        reason: document.getElementById("reason").value.trim(),
+        age_confirm_18: age18,
+        age_confirm_16: age16,
+        age_group: ageGroup
+      };
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = t.submitLoading;
+
+      const { error } = await supabaseClient
+        .from("applications")
+        .insert([payload]);
+
+      submitBtn.disabled = false;
+      submitBtn.textContent = t.submit;
+
+      if(error){
+        showNotice("error", t.errorGeneric + " " + error.message);
+        return;
+      }
+
+      this.reset();
+      document.getElementById("platform").value = "both";
+      applyPlatform();
+      fillReferralSelect();
+      showNotice("success", t.success);
+    });
 
     const savedLang = localStorage.getItem("hrxLang");
     if(savedLang && i18n[savedLang]){

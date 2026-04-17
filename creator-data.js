@@ -9,24 +9,6 @@ const HRX_CREATORS = [
     tiktok: ""
   },
   {
-    name: "ChaosDineee ",
-    since: "04.2026",
-    image: "",
-    badge: "Creator",
-    desc: "Variety Streamerin und Katzenmutti",
-    twitch: "https://www.twitch.tv/chaosdineee",
-    tiktok: "https://www.tiktok.com/@testtest?lang=de-DE"
-    },
-    {
-    name: "kroki",
-    since: "04.2026",
-    image: "",
-    badge: "Creator",
-    desc: "kreative Varietystreamerin",
-    twitch: "https://twitch.tv/kroki/",
-    tiktok: "https://www.tiktok.com/@krokitok_?_r=1&_t=ZN-95YdJtowWvO"
-    },
-    {
     name: "AngelusCorex",
     since: "03.2026",
     image: "",

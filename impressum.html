@@ -1,271 +1,555 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Impressum – HRX CreatorNET</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Impressum – HRX CreatorNET</title>
 
-<style>
-*{ box-sizing:border-box; }
+  <style>
+    :root{
+      --bg:#f7f6f3;
+      --bg-2:#efeeea;
+      --text:#171923;
+      --muted:#8e93a3;
+      --muted-2:#b8b8b8;
+      --violet:#6841b7;
+      --violet-dark:#5932aa;
+      --white:#ffffff;
+      --line:#e7e3dc;
+      --shadow:0 20px 45px rgba(16,18,24,0.10);
+      --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
+      --max:1720px;
+    }
 
-body{
-    margin:0;
-    font-family:Arial, Helvetica, sans-serif;
-    background: radial-gradient(circle at top, #1a1033, #05070f);
-    color:white;
-    line-height:1.6;
-}
+    *{ box-sizing:border-box; }
 
-/* HEADER */
-.header{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    min-height:80px;
-    background:linear-gradient(90deg,#140b2a,#0b0f1e);
-    border-bottom:1px solid rgba(167,123,255,0.2);
-    box-shadow:0 0 20px rgba(122,77,255,0.4);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 24px;
-    z-index:1000;
-}
+    html,body{
+      margin:0;
+      padding:0;
+      min-height:100%;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(560px 320px at 50% 18%, rgba(104,65,183,0.08), transparent 62%),
+        linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+      overflow-x:hidden;
+    }
 
-.header-left{
-    display:flex;
-    align-items:center;
-    gap:28px;
-}
+    body{ min-height:100vh; }
+    a{ color:inherit; text-decoration:none; }
 
-.header img{
-    height:50px;
-}
+    .page{ min-height:100vh; display:flex; flex-direction:column; }
+    .shell{ width:min(calc(100% - 48px), var(--max)); margin:0 auto; }
 
-/* NAVIGATION */
-.main-nav{
-    display:flex;
-    gap:10px;
-}
+    header{
+      padding:18px 0 8px;
+      position:relative;
+      z-index:10;
+    }
 
-.nav-link{
-    padding:8px 14px;
-    border-radius:10px;
-    background:rgba(122,77,255,0.12);
-    border:1px solid rgba(167,123,255,0.25);
-    color:#efeaff;
-    font-size:13px;
-    box-shadow:0 0 12px rgba(122,77,255,0.2);
-    transition:0.2s;
-    cursor:pointer;
-}
+    .header-row{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      align-items:start;
+      gap:20px;
+    }
 
-.nav-link:hover{
-    background:rgba(122,77,255,0.22);
-    transform:scale(1.04);
-}
+    .brand{ display:flex; align-items:flex-start; }
+    .brand img{
+      width:420px;
+      max-width:25vw;
+      min-width:260px;
+      display:block;
+      height:auto;
+    }
 
-/* Sprachbuttons */
-.lang-switch{
-    display:flex;
-    gap:10px;
-}
-.lang-btn{
-    padding:6px 14px;
-    border-radius:10px;
-    background: rgba(122,77,255,0.2);
-    color:white;
-    font-size:13px;
-    transition:0.2s;
-    box-shadow:0 0 10px rgba(122,77,255,0.5);
-    cursor:pointer;
-}
-.lang-btn:hover{
-    background: rgba(167,123,255,0.5);
-    transform:scale(1.05);
-}
+    .nav-wrap{
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      gap:36px;
+      padding-top:30px;
+      flex-wrap:wrap;
+    }
 
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:120px 20px 40px 20px;
-}
+    .nav-link{
+      position:relative;
+      font-size:16px;
+      font-weight:700;
+      color:var(--muted-2);
+      line-height:1;
+      transition:0.18s ease;
+    }
 
-h1{text-align:center;margin-bottom:40px;}
-h2{margin-top:40px;color:#a77bff;}
-a{color:#a77bff;}
+    .nav-link:hover{ color:var(--text); }
+    .nav-link.active{ color:#666666; }
+    .nav-link.active::after{
+      content:"";
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:-9px;
+      height:2px;
+      background:#7a7a7a;
+      border-radius:2px;
+    }
 
-footer{
-    text-align:center;
-    padding:20px;
-    font-size:12px;
-    opacity:0.7;
-}
+    .top-actions{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      padding-top:14px;
+    }
 
-/* Mobile */
-@media (max-width:900px){
-.header{
-    flex-direction:column;
-    align-items:flex-start;
-    padding:12px 14px;
-}
+    .lang-switch{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      padding:5px;
+      border-radius:999px;
+      background:rgba(255,255,255,0.96);
+      box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(10px);
+    }
 
-.header-left{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-}
+    .lang-btn{
+      border:none;
+      background:transparent;
+      color:#707483;
+      font-weight:800;
+      font-size:12px;
+      letter-spacing:0.06em;
+      border-radius:999px;
+      padding:10px 14px;
+      cursor:pointer;
+      transition:0.18s ease;
+    }
 
-.container{
-    padding:160px 20px 40px;
-}
-}
-</style>
+    .lang-btn.active{ background:var(--violet); color:#fff; }
+
+    .login-btn{
+      border:none;
+      background:var(--violet);
+      color:#fff;
+      font-weight:800;
+      font-size:16px;
+      padding:16px 34px;
+      border-radius:999px;
+      box-shadow:0 10px 22px rgba(104,65,183,0.18);
+      transition:0.18s ease;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .login-btn:hover{ background:var(--violet-dark); transform:translateY(-1px); }
+
+    main{ flex:1; padding:28px 0 60px; }
+
+    .hero{ text-align:center; margin-bottom:26px; }
+    .hero h1{
+      margin:0 0 16px;
+      font-size:clamp(42px,4.2vw,68px);
+      line-height:0.96;
+      font-weight:900;
+      letter-spacing:-0.045em;
+    }
+    .hero p{
+      margin:0 auto;
+      max-width:840px;
+      font-size:clamp(17px,1.2vw,22px);
+      line-height:1.5;
+      color:var(--muted);
+    }
+
+    .content-wrap{ max-width:980px; margin:0 auto; }
+    .content-box{
+      background:rgba(255,255,255,0.86);
+      border:1px solid rgba(23,25,35,0.06);
+      border-radius:32px;
+      padding:34px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(12px);
+    }
+
+    .lead{
+      margin:0 0 28px;
+      font-size:16px;
+      line-height:1.65;
+      color:var(--muted);
+    }
+
+    .section{ padding-top:6px; }
+    .section + .section{
+      margin-top:28px;
+      padding-top:28px;
+      border-top:1px solid rgba(23,25,35,0.07);
+    }
+
+    .section h2{
+      margin:0 0 14px;
+      font-size:24px;
+      line-height:1.1;
+      font-weight:900;
+      letter-spacing:-0.03em;
+      color:var(--text);
+    }
+
+    .section p{
+      margin:0 0 14px;
+      font-size:15px;
+      line-height:1.7;
+      color:#333846;
+    }
+
+    .section p:last-child{ margin-bottom:0; }
+
+    .info-card{
+      background:#fff;
+      border:1px solid rgba(23,25,35,0.06);
+      border-radius:22px;
+      padding:20px 22px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .info-card + .info-card{ margin-top:14px; }
+    .info-card strong{
+      display:block;
+      margin-bottom:10px;
+      font-size:16px;
+      color:var(--text);
+    }
+    .info-card p{ margin:0; color:#3a3f4b; }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      margin-top:30px;
+      flex-wrap:wrap;
+    }
+
+    .pill-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      min-height:56px;
+      padding:16px 24px;
+      border-radius:999px;
+      font-size:16px;
+      font-weight:800;
+      transition:0.18s ease;
+      text-decoration:none;
+    }
+
+    .pill-btn.primary{
+      background:var(--violet);
+      color:#fff;
+      box-shadow:0 10px 22px rgba(104,65,183,0.18);
+    }
+
+    .pill-btn.primary:hover{ background:var(--violet-dark); transform:translateY(-1px); }
+
+    .pill-btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid rgba(23,25,35,0.08);
+      box-shadow:var(--shadow-soft);
+    }
+
+    .pill-btn.secondary:hover{ transform:translateY(-1px); }
+
+    footer{ padding:18px 0 28px; }
+    .footer-row{
+      display:flex;
+      justify-content:center;
+      gap:40px;
+      flex-wrap:wrap;
+      color:#d0ccc5;
+      font-weight:700;
+      font-size:13px;
+      border-top:1px solid rgba(123,117,140,0.10);
+      padding-top:14px;
+    }
+
+    .footer-row a:hover{ color:var(--violet); }
+
+    @media (max-width:1180px){
+      .header-row{ grid-template-columns:1fr; gap:16px; }
+      .brand{ justify-content:center; }
+      .nav-wrap{ padding-top:0; }
+      .top-actions{ justify-content:center; padding-top:0; }
+    }
+
+    @media (max-width:760px){
+      .shell{ width:min(calc(100% - 24px), var(--max)); }
+      .brand img{ width:min(280px, 72vw); min-width:auto; }
+      .nav-wrap{ gap:14px 18px; }
+      .nav-link{ font-size:15px; }
+      .login-btn{ padding:14px 24px; font-size:15px; }
+      .hero h1{ font-size:38px; }
+      .hero p{ font-size:17px; }
+      .content-box{ padding:24px 18px; border-radius:24px; }
+      .section h2{ font-size:21px; }
+      .actions{ flex-direction:column; }
+      .pill-btn{ width:100%; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="page">
+    <header>
+      <div class="shell">
+        <div class="header-row">
+          <a class="brand" href="index.html" aria-label="HRX CreatorNET Startseite">
+            <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
+          </a>
 
-<div class="header">
+          <nav class="nav-wrap" aria-label="Hauptnavigation">
+            <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
+            <a href="bewerbung.html" class="nav-link" id="nav_apply">Bewerbung</a>
+            <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
+            <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
+            <a href="#" class="nav-link" id="nav_news">News</a>
+            <a href="#" class="nav-link" id="nav_team">Team</a>
+            <a href="#" class="nav-link" id="nav_playtok">PlayTok</a>
+          </nav>
 
-<div class="header-left">
+          <div class="top-actions">
+            <div class="lang-switch" aria-label="Sprachauswahl">
+              <button type="button" class="lang-btn active" id="langDe" onclick="setLang('de')">DE</button>
+              <button type="button" class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
+            </div>
+            <a href="login.html" class="login-btn" id="loginBtn">Login</a>
+          </div>
+        </div>
+      </div>
+    </header>
 
-<a href="index.html">
-<img src="HRX_Logo_Twitchlila_w4.png" alt="HRX Logo">
-</a>
+    <main>
+      <div class="shell">
+        <section class="hero">
+          <h1 id="title">Impressum</h1>
+          <p id="subtitle">Rechtliche Angaben zum gemeinschaftlich betriebenen Angebot von HRX CreatorNET.</p>
+        </section>
 
-<nav class="main-nav">
-<a href="index.html" class="nav-link" id="nav_home">Startseite</a>
-<a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
-<a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
-<a href="#" class="nav-link" id="nav_intern" onclick="openIntern();return false;">Intern</a>
-</nav>
+        <div class="content-wrap">
+          <div class="content-box">
+            <p class="lead" id="lead">
+              Dieses Angebot wird gemeinschaftlich betrieben. Nachfolgend findest du die rechtlich relevanten Angaben für Deutschland und Österreich.
+            </p>
 
-</div>
+            <section class="section">
+              <h2 id="h2_de">Deutschland – Verantwortlich für Inhalte nach § 5 TMG</h2>
+              <div class="info-card">
+                <strong>Rose Entertain UG (haftungsbeschränkt)</strong>
+                <p id="de_block_1">
+                  Erdinger Str. 72 a<br>
+                  85356 Freising<br>
+                  Deutschland
+                </p>
+              </div>
+              <div class="info-card">
+                <p id="de_block_2">
+                  Telefon: +49 (0) 173 1725613<br>
+                  E-Mail: info(at)rose-entertain.de<br>
+                  Web: rose-entertain.de
+                </p>
+              </div>
+              <div class="info-card">
+                <p id="de_block_3">
+                  Registergericht: Amtsgericht München<br>
+                  HRB 293673<br>
+                  Geschäftsführung: Matthias Daniel Mayer<br>
+                  USt-IDNr.: DE3699074778
+                </p>
+              </div>
+              <div class="info-card">
+                <p id="de_block_4">
+                  Redaktionell verantwortlich:<br>
+                  Matthias Daniel Mayer, Erdinger Str. 72 a, 85356 Freising
+                </p>
+              </div>
+            </section>
 
-<div class="lang-switch">
-<span class="lang-btn" onclick="setLang('de')">DE</span>
-<span class="lang-btn" onclick="setLang('en')">EN</span>
-</div>
+            <section class="section">
+              <h2 id="h2_at">Österreich – Verantwortlich nach ECG / MedienG</h2>
+              <div class="info-card">
+                <strong>Harald Göbl</strong>
+                <p id="at_block_1">
+                  Zinsenwang 27<br>
+                  3325 Ferschnitz<br>
+                  Österreich
+                </p>
+              </div>
+              <div class="info-card">
+                <p id="at_block_2">
+                  E-Mail: harry(at)haraldgoebl.com<br>
+                  Telefon: +43 660 6467667
+                </p>
+              </div>
+              <div class="info-card">
+                <p id="at_block_3">
+                  Unternehmensgegenstand: Streaming / Online-Content-Erstellung<br>
+                  Grundlegende Richtung des Mediums: Unterhaltung und Livestreaming-Inhalte
+                </p>
+              </div>
+            </section>
 
-</div>
+            <section class="section">
+              <h2 id="h2_disclaimer">Haftungsausschluss</h2>
+              <p id="disclaimer_1">
+                Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.
+              </p>
+              <p id="disclaimer_2">
+                Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
+              </p>
+            </section>
 
+            <section class="section">
+              <h2 id="h2_copyright">Urheberrecht</h2>
+              <p id="copyright_1">
+                Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Medieninhaber ist Rose Entertain UG (haftungsbeschränkt), Urheber ist Matthias Daniel Mayer. Beiträge Dritter sind als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
+              </p>
+            </section>
 
-<div class="container" id="content">
+            <div class="actions">
+              <a href="index.html" class="pill-btn secondary" id="backBtn">Zur Startseite</a>
+              <a href="datenschutz.html" class="pill-btn primary" id="privacyBtn">Datenschutz</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
 
-<h1>Impressum – HRX CreatorNET</h1>
+    <footer>
+      <div class="shell">
+        <div class="footer-row">
+          <a href="impressum.html" id="footer_imprint">Impressum</a>
+          <a href="datenschutz.html" id="footer_privacy">Datenschutz</a>
+        </div>
+      </div>
+    </footer>
+  </div>
 
-<p>Dieses Angebot wird gemeinschaftlich betrieben durch:</p>
+  <script>
+    const i18n = {
+      de: {
+        pageTitle: "Impressum – HRX CreatorNET",
+        nav: {
+          home: "Startseite",
+          apply: "Bewerbung",
+          more: "Mehr erfahren",
+          talents: "Talente",
+          news: "News",
+          team: "Team",
+          playtok: "PlayTok"
+        },
+        login: "Login",
+        title: "Impressum",
+        subtitle: "Rechtliche Angaben zum gemeinschaftlich betriebenen Angebot von HRX CreatorNET.",
+        lead: "Dieses Angebot wird gemeinschaftlich betrieben. Nachfolgend findest du die rechtlich relevanten Angaben für Deutschland und Österreich.",
+        h2de: "Deutschland – Verantwortlich für Inhalte nach § 5 TMG",
+        h2at: "Österreich – Verantwortlich nach ECG / MedienG",
+        h2Disclaimer: "Haftungsausschluss",
+        h2Copyright: "Urheberrecht",
+        de1: "Erdinger Str. 72 a<br>85356 Freising<br>Deutschland",
+        de2: "Telefon: +49 (0) 173 1725613<br>E-Mail: info(at)rose-entertain.de<br>Web: rose-entertain.de",
+        de3: "Registergericht: Amtsgericht München<br>HRB 293673<br>Geschäftsführung: Matthias Daniel Mayer<br>USt-IDNr.: DE3699074778",
+        de4: "Redaktionell verantwortlich:<br>Matthias Daniel Mayer, Erdinger Str. 72 a, 85356 Freising",
+        at1: "Zinsenwang 27<br>3325 Ferschnitz<br>Österreich",
+        at2: "E-Mail: harry(at)haraldgoebl.com<br>Telefon: +43 660 6467667",
+        at3: "Unternehmensgegenstand: Streaming / Online-Content-Erstellung<br>Grundlegende Richtung des Mediums: Unterhaltung und Livestreaming-Inhalte",
+        disclaimer1: "Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen. Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.",
+        disclaimer2: "Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.",
+        copyright1: "Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Medieninhaber ist Rose Entertain UG (haftungsbeschränkt), Urheber ist Matthias Daniel Mayer. Beiträge Dritter sind als solche gekennzeichnet. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.",
+        back: "Zur Startseite",
+        privacy: "Datenschutz",
+        footerImprint: "Impressum",
+        footerPrivacy: "Datenschutz"
+      },
+      en: {
+        pageTitle: "Legal Notice – HRX CreatorNET",
+        nav: {
+          home: "Home",
+          apply: "Apply",
+          more: "Learn more",
+          talents: "Talents",
+          news: "News",
+          team: "Team",
+          playtok: "PlayTok"
+        },
+        login: "Login",
+        title: "Legal Notice",
+        subtitle: "Legal information for the jointly operated HRX CreatorNET offer.",
+        lead: "This offer is operated jointly. Below you will find the legally relevant information for Germany and Austria.",
+        h2de: "Germany – Responsible for content pursuant to Section 5 TMG",
+        h2at: "Austria – Responsible pursuant to ECG / MedienG",
+        h2Disclaimer: "Disclaimer",
+        h2Copyright: "Copyright",
+        de1: "Erdinger Str. 72 a<br>85356 Freising<br>Germany",
+        de2: "Phone: +49 (0) 173 1725613<br>Email: info(at)rose-entertain.de<br>Web: rose-entertain.de",
+        de3: "Register court: Munich Local Court<br>HRB 293673<br>Managing Director: Matthias Daniel Mayer<br>VAT ID: DE3699074778",
+        de4: "Editorially responsible:<br>Matthias Daniel Mayer, Erdinger Str. 72 a, 85356 Freising",
+        at1: "Zinsenwang 27<br>3325 Ferschnitz<br>Austria",
+        at2: "Email: harry(at)haraldgoebl.com<br>Phone: +43 660 6467667",
+        at3: "Business purpose: Streaming / online content creation<br>Fundamental direction of the medium: entertainment and livestream content",
+        disclaimer1: "The contents of our pages were created with the greatest care. However, we cannot guarantee the accuracy, completeness or timeliness of the content. As a service provider, we are responsible for our own content on these pages in accordance with Section 7 (1) TMG and the general laws.",
+        disclaimer2: "Our offer contains links to external third-party websites over whose content we have no influence. Therefore, we cannot assume any liability for this external content. The respective provider or operator of the linked pages is always responsible for their content.",
+        copyright1: "The content and works created by the site operators on these pages are subject to German copyright law. The media owner is Rose Entertain UG (haftungsbeschränkt), the author is Matthias Daniel Mayer. Third-party contributions are marked as such. Reproduction, editing, distribution and any kind of use outside the limits of copyright law require the written consent of the respective author or creator.",
+        back: "Back to homepage",
+        privacy: "Privacy",
+        footerImprint: "Legal notice",
+        footerPrivacy: "Privacy"
+      }
+    };
 
-<h2>🇩🇪 Deutschland – Verantwortlich für Inhalte nach §5 TMG</h2>
+    function setLang(lang){
+      const t = i18n[lang];
+      document.documentElement.lang = lang;
+      document.title = t.pageTitle;
 
-<p>
-<b>Rose Entertain UG (haftungsbeschränkt)</b><br>
-Erdinger Str. 72 a<br>
-85356 Freising<br>
-Deutschland
-</p>
+      document.getElementById("nav_home").innerText = t.nav.home;
+      document.getElementById("nav_apply").innerText = t.nav.apply;
+      document.getElementById("nav_more").innerText = t.nav.more;
+      document.getElementById("nav_talents").innerText = t.nav.talents;
+      document.getElementById("nav_news").innerText = t.nav.news;
+      document.getElementById("nav_team").innerText = t.nav.team;
+      document.getElementById("nav_playtok").innerText = t.nav.playtok;
+      document.getElementById("loginBtn").innerText = t.login;
 
-<p>
-Telefon: +49 (0) 173 1725613<br>
-E-Mail: info(at)rose-entertain.de<br>
-Web: https://rose-entertain.de/
-</p>
+      document.getElementById("title").innerText = t.title;
+      document.getElementById("subtitle").innerText = t.subtitle;
+      document.getElementById("lead").innerText = t.lead;
 
-<p>
-Registergericht: Amtsgericht München<br>
-HRB 293673<br>
-Geschäftsführung: Matthias Daniel Mayer<br>
-USt-IDNr.: DE3699074778
-</p>
+      document.getElementById("h2_de").innerText = t.h2de;
+      document.getElementById("h2_at").innerText = t.h2at;
+      document.getElementById("h2_disclaimer").innerText = t.h2Disclaimer;
+      document.getElementById("h2_copyright").innerText = t.h2Copyright;
 
-<p>
-Redaktionell verantwortlich:<br>
-Matthias Daniel Mayer, Erdinger Str. 72 a, 85356 Freising
-</p>
+      document.getElementById("de_block_1").innerHTML = t.de1;
+      document.getElementById("de_block_2").innerHTML = t.de2;
+      document.getElementById("de_block_3").innerHTML = t.de3;
+      document.getElementById("de_block_4").innerHTML = t.de4;
 
-<h2>🇦🇹 Österreich – Verantwortlich nach ECG / MedienG</h2>
+      document.getElementById("at_block_1").innerHTML = t.at1;
+      document.getElementById("at_block_2").innerHTML = t.at2;
+      document.getElementById("at_block_3").innerHTML = t.at3;
 
-<p>
-<b>Harald Göbl</b><br>
-Zinsenwang 27<br>
-3325 Ferschnitz<br>
-Österreich
-</p>
+      document.getElementById("disclaimer_1").innerText = t.disclaimer1;
+      document.getElementById("disclaimer_2").innerText = t.disclaimer2;
+      document.getElementById("copyright_1").innerText = t.copyright1;
 
-<p>
-E-Mail: harry(at)haraldgoebl.com<br>
-Telefon: +43 660 6467667
-</p>
+      document.getElementById("backBtn").innerText = t.back;
+      document.getElementById("privacyBtn").innerText = t.privacy;
+      document.getElementById("footer_imprint").innerText = t.footerImprint;
+      document.getElementById("footer_privacy").innerText = t.footerPrivacy;
 
-<p>
-Unternehmensgegenstand: Streaming / Online-Content-Erstellung<br>
-Grundlegende Richtung des Mediums: Unterhaltung und Livestreaming-Inhalte
-</p>
+      document.getElementById("langDe").classList.toggle("active", lang === "de");
+      document.getElementById("langEn").classList.toggle("active", lang === "en");
+    }
 
-<h2>Haftungsausschluss</h2>
-
-<p>
-Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit,
-Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.
-Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten
-nach den allgemeinen Gesetzen verantwortlich.
-</p>
-
-<p>
-Unser Angebot enthält Links zu externen Webseiten Dritter, auf deren Inhalte wir keinen
-Einfluss haben. Deshalb können wir für diese fremden Inhalte auch keine Gewähr übernehmen.
-Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.
-</p>
-
-<h2>Urheberrecht</h2>
-
-<p>
-Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem
-deutschen Urheberrecht, Medieninhaber ist Rose Entertain UG (haftungsbeschränkt), Urheber ist Matthias Daniel Mayer. Beiträge Dritter sind als solche gekennzeichnet.
-Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen
-des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors bzw. Erstellers.
-</p>
-
-</div>
-
-<footer>
-<a href="index.html" id="backlink">Zur Startseite</a>
-</footer>
-
-<script>
-
-function openIntern(){
-const isLoggedIn = localStorage.getItem("hrx_login");
-if(isLoggedIn==="true"){
-window.location.href="intern.html";
-}else{
-window.location.href="login.html";
-}
-}
-
-const htmlDE=document.getElementById("content").innerHTML;
-
-const htmlEN=`...`; /* dein vorhandener EN Text bleibt */
-
-function setLang(lang){
-const content=document.getElementById("content");
-const backlink=document.getElementById("backlink");
-
-if(lang==="en"){
-document.documentElement.lang="en";
-document.title="Legal Notice – HRX CreatorNET";
-content.innerHTML=htmlEN;
-backlink.textContent="Back to homepage";
-}else{
-document.documentElement.lang="de";
-document.title="Impressum – HRX CreatorNET";
-content.innerHTML=htmlDE;
-backlink.textContent="Zur Startseite";
-}
-}
-
-</script>
-
+    setLang("de");
+  </script>
 </body>
 </html>
