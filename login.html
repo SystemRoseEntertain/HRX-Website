@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HRX CreatorNET – Login</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -25,9 +24,7 @@
     --danger:#b42318;
   }
 
-  *{
-    box-sizing:border-box;
-  }
+  *{ box-sizing:border-box; }
 
   html,body{
     margin:0;
@@ -41,14 +38,9 @@
     overflow-x:hidden;
   }
 
-  body{
-    min-height:100vh;
-  }
+  body{ min-height:100vh; }
 
-  a{
-    color:inherit;
-    text-decoration:none;
-  }
+  a{ color:inherit; text-decoration:none; }
 
   img{
     display:block;
@@ -109,13 +101,9 @@
     transition:0.18s ease;
   }
 
-  .nav-link:hover{
-    color:var(--text);
-  }
+  .nav-link:hover{ color:var(--text); }
 
-  .nav-link.active{
-    color:#666666;
-  }
+  .nav-link.active{ color:#666666; }
 
   .nav-link.active::after{
     content:"";
@@ -201,9 +189,7 @@
     gap:48px;
   }
 
-  .login-wrap{
-    width:100%;
-  }
+  .login-wrap{ width:100%; }
 
   .login-card{
     background:rgba(255,255,255,0.86);
@@ -309,11 +295,11 @@
     font-size:14px;
     line-height:1.5;
     font-weight:700;
+    white-space:pre-wrap;
+    word-break:break-word;
   }
 
-  .message.show{
-    display:block;
-  }
+  .message.show{ display:block; }
 
   .message.error{
     background:rgba(180,35,24,0.08);
@@ -376,9 +362,7 @@
     padding-top:14px;
   }
 
-  .footer-row a:hover{
-    color:var(--violet);
-  }
+  .footer-row a:hover{ color:var(--violet); }
 
   @media (max-width:1180px){
     .header-row{
@@ -386,13 +370,9 @@
       gap:16px;
     }
 
-    .brand{
-      justify-content:center;
-    }
+    .brand{ justify-content:center; }
 
-    .nav-wrap{
-      padding-top:0;
-    }
+    .nav-wrap{ padding-top:0; }
 
     .top-actions{
       justify-content:center;
@@ -406,9 +386,7 @@
       margin:0 auto;
     }
 
-    .logo-side{
-      display:none;
-    }
+    .logo-side{ display:none; }
   }
 
   @media (max-width:760px){
@@ -421,13 +399,9 @@
       min-width:auto;
     }
 
-    .nav-wrap{
-      gap:14px 18px;
-    }
+    .nav-wrap{ gap:14px 18px; }
 
-    .nav-link{
-      font-size:15px;
-    }
+    .nav-link{ font-size:15px; }
 
     .login-top-btn{
       padding:14px 24px;
@@ -439,9 +413,7 @@
       border-radius:24px;
     }
 
-    h1{
-      font-size:38px;
-    }
+    h1{ font-size:38px; }
   }
 </style>
 </head>
@@ -722,3 +694,4 @@
 
 </body>
 </html>
+bugt immer noch. also filtert das ding nicht richtig frag ich mich, weil wenn ich in der policy einfach true setzte dann findet er ja den owner... denkt das ding etwa ich bin der public user? falls ja muss das ding erstmal eingeloggt sein da muss vllt dazwischen ne pause rein ... fuck this also ist hier ein bug? 
