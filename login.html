@@ -8,666 +8,210 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-  :root{
-    --bg:#f7f6f3;
-    --bg-2:#efeeea;
-    --text:#171923;
-    --muted:#8e93a3;
-    --muted-2:#b8b8b8;
-    --violet:#6841b7;
-    --violet-dark:#5932aa;
-    --white:#ffffff;
-    --line:#e7e3dc;
-    --shadow:0 20px 45px rgba(16,18,24,0.10);
-    --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
-    --max:1720px;
-  }
+:root{
+  --bg:#f7f6f3;
+  --bg-2:#efeeea;
+  --text:#171923;
+  --muted:#8e93a3;
+  --violet:#6841b7;
+  --violet-dark:#5932aa;
+  --shadow:0 20px 45px rgba(16,18,24,0.10);
+  --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
+}
 
-  *{
-    box-sizing:border-box;
-  }
+*{box-sizing:border-box;}
 
-  html,body{
-    margin:0;
-    padding:0;
-    min-height:100%;
-    font-family:Arial, Helvetica, sans-serif;
-    color:var(--text);
-    background:
-      radial-gradient(560px 320px at 50% 18%, rgba(104,65,183,0.08), transparent 62%),
-      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
-    overflow-x:hidden;
-  }
+body{
+  margin:0;
+  font-family:Arial;
+  background:
+    radial-gradient(600px 300px at 60% 20%, rgba(104,65,183,0.08), transparent),
+    linear-gradient(180deg, var(--bg), var(--bg-2));
+}
 
-  body{
-    min-height:100vh;
-  }
+/* Layout */
+.wrapper{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:80px;
+  padding:40px;
+}
 
-  a{
-    color:inherit;
-    text-decoration:none;
-  }
+/* LOGIN CARD */
+.card{
+  width:420px;
+  background:rgba(255,255,255,0.85);
+  padding:30px;
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(10px);
+}
 
-  img{
-    display:block;
-    max-width:100%;
-    height:auto;
-  }
+.card h1{
+  text-align:center;
+  margin:0 0 10px;
+}
 
-  .page{
-    min-height:100vh;
-    display:flex;
+.card p{
+  text-align:center;
+  color:var(--muted);
+}
+
+/* Inputs */
+.field{
+  margin-top:18px;
+}
+
+input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid #ddd;
+}
+
+/* Button */
+button{
+  margin-top:20px;
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:999px;
+  background:var(--violet);
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+button:hover{
+  background:var(--violet-dark);
+}
+
+/* Message */
+.msg{
+  margin-top:15px;
+  padding:12px;
+  border-radius:12px;
+  display:none;
+}
+
+.msg.error{
+  background:#ffe5e5;
+  color:#b42318;
+}
+
+.msg.success{
+  background:#e6fff1;
+  color:#0f7b4d;
+}
+
+/* LOGO RIGHT */
+.logo-side{
+  max-width:500px;
+  opacity:0.08;
+}
+
+.logo-side img{
+  width:100%;
+}
+
+/* Mobile */
+@media(max-width:900px){
+  .wrapper{
     flex-direction:column;
   }
-
-  .shell{
-    width:min(calc(100% - 48px), var(--max));
-    margin:0 auto;
-  }
-
-  header{
-    padding:18px 0 8px;
-    position:relative;
-    z-index:10;
-  }
-
-  .header-row{
-    display:grid;
-    grid-template-columns:auto 1fr auto;
-    align-items:start;
-    gap:20px;
-  }
-
-  .brand{
-    display:flex;
-    align-items:flex-start;
-  }
-
-  .brand img{
-    width:420px;
-    max-width:25vw;
-    min-width:260px;
-  }
-
-  .nav-wrap{
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:36px;
-    padding-top:30px;
-    flex-wrap:wrap;
-  }
-
-  .nav-link{
-    position:relative;
-    font-size:16px;
-    font-weight:700;
-    color:var(--muted-2);
-    line-height:1;
-    transition:0.18s ease;
-  }
-
-  .nav-link:hover{
-    color:var(--text);
-  }
-
-  .nav-link.active{
-    color:#666666;
-  }
-
-  .nav-link.active::after{
-    content:"";
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:-9px;
-    height:2px;
-    background:#7a7a7a;
-    border-radius:2px;
-  }
-
-  .top-actions{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding-top:14px;
-  }
-
-  .lang-switch{
-    display:flex;
-    align-items:center;
-    gap:6px;
-    padding:5px;
-    border-radius:999px;
-    background:rgba(255,255,255,0.96);
-    box-shadow:var(--shadow-soft);
-    backdrop-filter:blur(10px);
-  }
-
-  .lang-btn{
-    border:none;
-    background:transparent;
-    color:#707483;
-    font-weight:800;
-    font-size:12px;
-    letter-spacing:0.06em;
-    border-radius:999px;
-    padding:10px 14px;
-    cursor:pointer;
-    transition:0.18s ease;
-  }
-
-  .lang-btn.active{
-    background:var(--violet);
-    color:#fff;
-  }
-
-  .login-top-btn{
-    border:none;
-    background:var(--violet);
-    color:#fff;
-    font-weight:800;
-    font-size:16px;
-    padding:16px 34px;
-    border-radius:999px;
-    box-shadow:0 10px 22px rgba(104,65,183,0.18);
-    transition:0.18s ease;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .login-top-btn:hover{
-    background:var(--violet-dark);
-    transform:translateY(-1px);
-  }
-
-  main{
-    flex:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:32px 0 70px;
-  }
-
-  .login-wrap{
-    width:min(100%, 520px);
-  }
-
-  .login-card{
-    background:rgba(255,255,255,0.86);
-    border:1px solid rgba(23,25,35,0.06);
-    border-radius:32px;
-    padding:34px;
-    box-shadow:var(--shadow);
-    backdrop-filter:blur(12px);
-  }
-
-  .kicker{
-    margin:0 0 10px;
-    font-size:12px;
-    letter-spacing:0.18em;
-    text-transform:uppercase;
-    color:var(--violet);
-    font-weight:900;
-    text-align:center;
-  }
-
-  h1{
-    margin:0 0 14px;
-    font-size:clamp(34px,4vw,52px);
-    line-height:0.95;
-    letter-spacing:-0.045em;
-    text-align:center;
-  }
-
-  .subtext{
-    margin:0 auto 26px;
-    max-width:420px;
-    text-align:center;
-    color:var(--muted);
-    font-size:16px;
-    line-height:1.55;
-  }
-
-  .field{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-bottom:18px;
-  }
-
-  label{
-    display:block;
-    font-weight:800;
-    font-size:14px;
-    color:#2b2f3a;
-  }
-
-  input{
-    width:100%;
-    padding:14px 16px;
-    border-radius:16px;
-    border:1px solid rgba(23,25,35,0.08);
-    background:#fff;
-    color:var(--text);
-    font-size:15px;
-    font-family:inherit;
-    outline:none;
-    transition:border-color .15s ease, box-shadow .15s ease;
-    box-shadow:var(--shadow-soft);
-  }
-
-  input:focus{
-    border-color:rgba(104,65,183,0.45);
-    box-shadow:0 0 0 4px rgba(104,65,183,0.10);
-  }
-
-  .login-btn{
-    width:100%;
-    min-height:56px;
-    padding:16px 22px;
-    background:var(--violet);
-    border:none;
-    border-radius:999px;
-    color:white;
-    font-size:16px;
-    font-weight:800;
-    cursor:pointer;
-    transition:.18s ease;
-    box-shadow:0 10px 22px rgba(104,65,183,0.18);
-    margin-top:8px;
-  }
-
-  .login-btn:hover{
-    background:var(--violet-dark);
-    transform:translateY(-1px);
-  }
-
-  .login-btn:disabled{
-    opacity:0.7;
-    cursor:not-allowed;
-    transform:none;
-  }
-
-  .message{
+  .logo-side{
     display:none;
-    margin-top:18px;
-    padding:14px 16px;
-    border-radius:16px;
-    font-size:14px;
-    line-height:1.5;
-    font-weight:700;
   }
-
-  .message.show{
-    display:block;
-  }
-
-  .message.error{
-    background:rgba(180,35,24,0.08);
-    color:#b42318;
-    border:1px solid rgba(180,35,24,0.18);
-  }
-
-  .message.success{
-    background:rgba(29,127,78,0.08);
-    color:#1d7f4e;
-    border:1px solid rgba(29,127,78,0.18);
-  }
-
-  .footer-note{
-    margin-top:18px;
-    text-align:center;
-    font-size:13px;
-    color:var(--muted);
-    line-height:1.5;
-  }
-
-  footer{
-    padding:18px 0 28px;
-  }
-
-  .footer-row{
-    display:flex;
-    justify-content:center;
-    gap:40px;
-    flex-wrap:wrap;
-    color:#d0ccc5;
-    font-weight:700;
-    font-size:13px;
-    border-top:1px solid rgba(123,117,140,0.10);
-    padding-top:14px;
-  }
-
-  .footer-row a:hover{
-    color:var(--violet);
-  }
-
-  @media (max-width:1180px){
-    .header-row{
-      grid-template-columns:1fr;
-      gap:16px;
-    }
-
-    .brand{
-      justify-content:center;
-    }
-
-    .nav-wrap{
-      padding-top:0;
-    }
-
-    .top-actions{
-      justify-content:center;
-      padding-top:0;
-    }
-  }
-
-  @media (max-width:760px){
-    .shell{
-      width:min(calc(100% - 24px), var(--max));
-    }
-
-    .brand img{
-      width:min(280px, 72vw);
-      min-width:auto;
-    }
-
-    .nav-wrap{
-      gap:14px 18px;
-    }
-
-    .nav-link{
-      font-size:15px;
-    }
-
-    .login-top-btn{
-      padding:14px 24px;
-      font-size:15px;
-    }
-
-    .login-card{
-      padding:24px 18px;
-      border-radius:24px;
-    }
-
-    h1{
-      font-size:38px;
-    }
-  }
+}
 </style>
 </head>
 
 <body>
-<div class="page">
-  <header>
-    <div class="shell">
-      <div class="header-row">
-        <a class="brand" href="index.html" aria-label="HRX CreatorNET Startseite">
-          <img src="HRX_Logo_Twitchlila_w4.png" alt="HRX CreatorNET Logo">
-        </a>
 
-        <nav class="nav-wrap" aria-label="Hauptnavigation">
-          <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
-          <a href="bewerbung.html" class="nav-link" id="nav_apply">Bewerbung</a>
-          <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
-          <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
-          <a href="news.html" class="nav-link" id="nav_news">News</a>
-          <a href="team.html" class="nav-link" id="nav_team">Team</a>
-          <a href="playtok.html" class="nav-link" id="nav_playtok">PlayTok</a>
-        </nav>
+<div class="wrapper">
 
-        <div class="top-actions">
-          <div class="lang-switch" aria-label="Sprachauswahl">
-            <button type="button" class="lang-btn active" id="langDe" onclick="setLang('de')">DE</button>
-            <button type="button" class="lang-btn" id="langEn" onclick="setLang('en')">EN</button>
-          </div>
-          <a href="login.html" class="login-top-btn active-login" id="topLoginBtn">Login</a>
-        </div>
+  <!-- LOGIN -->
+  <div class="card">
+    <h1>Login</h1>
+    <p>HRX CreatorNET Zugang</p>
+
+    <form id="login-form">
+      <div class="field">
+        <input type="email" id="email" placeholder="E-Mail" required>
       </div>
-    </div>
-  </header>
 
-  <main>
-    <div class="shell">
-      <div class="login-wrap">
-        <div class="login-card">
-          <p class="kicker" id="kicker">Interner Bereich</p>
-          <h1 id="title">Login</h1>
-          <p class="subtext" id="subtext">
-            Melde dich an, um auf HRX CreatorNET zuzugreifen.
-          </p>
-
-          <form id="login-form" novalidate>
-            <div class="field">
-              <label for="email" id="label_email">E-Mail</label>
-              <input type="email" id="email" autocomplete="username" required>
-            </div>
-
-            <div class="field">
-              <label for="password" id="label_password">Passwort</label>
-              <input type="password" id="password" autocomplete="current-password" required>
-            </div>
-
-            <button type="submit" class="login-btn" id="btn_login">Einloggen</button>
-          </form>
-
-          <div class="message" id="message"></div>
-
-          <div class="footer-note" id="footer_note">
-            Accounts werden nach Bewerbung und Freigabe durch HRX an Creator übermittelt - Danke!
-          </div>
-        </div>
+      <div class="field">
+        <input type="password" id="password" placeholder="Passwort" required>
       </div>
-    </div>
-  </main>
 
-  <footer>
-    <div class="shell">
-      <div class="footer-row">
-        <a href="impressum.html" id="f_imprint">Impressum</a>
-        <a href="datenschutz.html" id="f_privacy">Datenschutz</a>
-      </div>
-    </div>
-  </footer>
+      <button type="submit">Einloggen</button>
+    </form>
+
+    <div id="msg" class="msg"></div>
+  </div>
+
+  <!-- LOGO RIGHT -->
+  <div class="logo-side">
+    <img src="HRX_Logo_Twitchlila_w4.png">
+  </div>
+
 </div>
 
 <script>
-  const SUPABASE_URL = "https://payxkjbgdrbrmwqmczhz.supabase.co";
-  const SUPABASE_ANON_KEY = "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa";
-  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const supabase = window.supabase.createClient(
+  "https://payxkjbgdrbrmwqmczhz.supabase.co",
+  "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa"
+);
 
-  const i18n = {
-    de: {
-      titlePage: "HRX CreatorNET – Login",
-      nav: {
-        home: "Startseite",
-        apply: "Bewerbung",
-        more: "Mehr erfahren",
-        talents: "Talente",
-        news: "News",
-        team: "Team",
-        playtok: "PlayTok"
-      },
-      topLogin: "Login",
-      kicker: "Interner Bereich",
-      title: "Login",
-      subtext: "Melde dich an, um auf HRX CreatorNET zuzugreifen.",
-      email: "E-Mail",
-      password: "Passwort",
-      login: "Einloggen",
-      footerNote: "Accounts werden nach Bewerbung und Freigabe durch HRX an Creator übermittelt - Danke!",
-      success: "Login erfolgreich – du wirst weitergeleitet.",
-      errorEmpty: "Bitte E-Mail und Passwort eingeben.",
-      errorAuth: "Login fehlgeschlagen. Bitte prüfe deine Daten.",
-      errorProfile: "Dein Profil konnte nicht geladen werden.",
-      errorRole: "Deine Rolle ist nicht korrekt hinterlegt.",
-      footerImprint: "Impressum",
-      footerPrivacy: "Datenschutz"
-    },
-    en: {
-      titlePage: "HRX CreatorNET – Login",
-      nav: {
-        home: "Home",
-        apply: "Apply",
-        more: "Learn more",
-        talents: "Talents",
-        news: "News",
-        team: "Team",
-        playtok: "PlayTok"
-      },
-      topLogin: "Login",
-      kicker: "Internal area",
-      title: "Login",
-      subtext: "Sign in to the HRX CreatorNET.",
-      email: "Email",
-      password: "Password",
-      login: "Log in",
-      footerNote: "Accounts will be forwarded to creators after application and approval by HRX - thank you!",
-      success: "Login successful – redirecting.",
-      errorEmpty: "Please enter email and password.",
-      errorAuth: "Login failed. Please check your credentials.",
-      errorProfile: "Your profile could not be loaded.",
-      errorRole: "Your role is not configured correctly.",
-      footerImprint: "Legal notice",
-      footerPrivacy: "Privacy"
-    }
-  };
+const msg = document.getElementById("msg");
 
-  let currentLang = localStorage.getItem("hrxLang") || "de";
+function show(type, text){
+  msg.className = "msg " + type;
+  msg.style.display = "block";
+  msg.innerText = text;
+}
 
-  function setLang(lang){
-    currentLang = lang;
-    const t = i18n[lang];
+document.getElementById("login-form").addEventListener("submit", async (e)=>{
+  e.preventDefault();
 
-    document.documentElement.lang = lang;
-    document.title = t.titlePage;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    document.getElementById("nav_home").innerText = t.nav.home;
-    document.getElementById("nav_apply").innerText = t.nav.apply;
-    document.getElementById("nav_more").innerText = t.nav.more;
-    document.getElementById("nav_talents").innerText = t.nav.talents;
-    document.getElementById("nav_news").innerText = t.nav.news;
-    document.getElementById("nav_team").innerText = t.nav.team;
-    document.getElementById("nav_playtok").innerText = t.nav.playtok;
+  msg.style.display = "none";
 
-    document.getElementById("topLoginBtn").innerText = t.topLogin;
-    document.getElementById("kicker").innerText = t.kicker;
-    document.getElementById("title").innerText = t.title;
-    document.getElementById("subtext").innerText = t.subtext;
-    document.getElementById("label_email").innerText = t.email;
-    document.getElementById("label_password").innerText = t.password;
-    document.getElementById("btn_login").innerText = t.login;
-    document.getElementById("footer_note").innerText = t.footerNote;
-    document.getElementById("f_imprint").innerText = t.footerImprint;
-    document.getElementById("f_privacy").innerText = t.footerPrivacy;
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
 
-    document.getElementById("langDe").classList.toggle("active", lang === "de");
-    document.getElementById("langEn").classList.toggle("active", lang === "en");
-
-    localStorage.setItem("hrxLang", lang);
+  if(error){
+    show("error", "Login fehlgeschlagen: " + error.message);
+    return;
   }
 
-  function showMessage(type, text){
-    const box = document.getElementById("message");
-    box.className = "message show " + type;
-    box.textContent = text;
+  const { data: userData } = await supabase.auth.getUser();
+
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", userData.user.id)
+    .maybeSingle(); // wichtig!
+
+  if(!profile){
+    show("error", "Profil nicht gefunden");
+    return;
   }
 
-  function clearMessage(){
-    const box = document.getElementById("message");
-    box.className = "message";
-    box.textContent = "";
+  show("success", "Login erfolgreich");
+
+  if(profile.role === "owner" || profile.role === "admin"){
+    window.location.href = "admin_dashboard.html";
+  } else {
+    window.location.href = "creator_dashboard.html";
   }
-
-  async function redirectByRole(){
-    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
-
-    if (userError || !userData.user) {
-      return;
-    }
-
-    const { data: profile, error: profileError } = await supabaseClient
-      .from("profiles")
-      .select("role")
-      .eq("id", userData.user.id)
-      .single();
-
-    if (profileError || !profile) {
-      return;
-    }
-
-    if (profile.role === "owner" || profile.role === "admin") {
-      window.location.href = "admin_dashboard.html";
-    } else {
-      window.location.href = "creator_dashboard.html";
-    }
-  }
-
-  async function handleLogin(event){
-    event.preventDefault();
-    clearMessage();
-
-    const t = i18n[currentLang];
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const button = document.getElementById("btn_login");
-
-    if(!email || !password){
-      showMessage("error", t.errorEmpty);
-      return;
-    }
-
-    button.disabled = true;
-
-    const { error } = await supabaseClient.auth.signInWithPassword({
-      email,
-      password
-    });
-
-    if(error){
-      button.disabled = false;
-      showMessage("error", t.errorAuth + " " + error.message);
-      return;
-    }
-
-    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
-
-    if (userError || !userData.user) {
-      button.disabled = false;
-      showMessage("error", t.errorProfile);
-      return;
-    }
-
-    const { data: profile, error: profileError } = await supabaseClient
-      .from("profiles")
-      .select("role")
-      .eq("id", userData.user.id)
-      .single();
-
-    if (profileError || !profile) {
-      button.disabled = false;
-      showMessage("error", t.errorProfile);
-      return;
-    }
-
-    showMessage("success", t.success);
-
-    if (profile.role === "owner" || profile.role === "admin") {
-      window.location.href = "admin_dashboard.html";
-    } else if (profile.role === "creator") {
-      window.location.href = "creator_dashboard.html";
-    } else {
-      button.disabled = false;
-      showMessage("error", t.errorRole);
-    }
-  }
-
-  document.getElementById("login-form").addEventListener("submit", handleLogin);
-
-  setLang(currentLang);
-  redirectByRole();
+});
 </script>
 
 </body>
