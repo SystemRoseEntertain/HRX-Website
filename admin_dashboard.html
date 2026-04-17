@@ -106,24 +106,7 @@
     transition:0.18s ease;
   }
 
-  .nav-link:hover{
-    color:var(--text);
-  }
-
-  .nav-link.active{
-    color:#666666;
-  }
-
-  .nav-link.active::after{
-    content:"";
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:-9px;
-    height:2px;
-    background:#7a7a7a;
-    border-radius:2px;
-  }
+  .nav-link:hover{ color:var(--text); }
 
   .top-actions{
     display:flex;
@@ -415,10 +398,6 @@
     box-shadow:var(--shadow-soft);
   }
 
-  .action-btn:hover{
-    transform:translateY(-1px);
-  }
-
   .empty-state{
     background:rgba(255,255,255,0.86);
     border:1px solid rgba(23,25,35,0.06);
@@ -445,36 +424,20 @@
     padding-top:14px;
   }
 
-  .footer-row a:hover{
-    color:var(--violet);
-  }
-
   @media (max-width:1180px){
     .header-row{
       grid-template-columns:1fr;
       gap:16px;
     }
 
-    .brand{
-      justify-content:center;
-    }
-
-    .nav-wrap{
-      padding-top:0;
-    }
-
+    .brand{ justify-content:center; }
+    .nav-wrap{ padding-top:0; }
     .top-actions{
       justify-content:center;
       padding-top:0;
     }
-
-    .stats{
-      grid-template-columns:repeat(2, minmax(0,1fr));
-    }
-
-    .app-grid{
-      grid-template-columns:repeat(2, minmax(0,1fr));
-    }
+    .stats{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .app-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
   }
 
   @media (max-width:760px){
@@ -487,21 +450,10 @@
       min-width:auto;
     }
 
-    .nav-wrap{
-      gap:14px 18px;
-    }
-
-    .nav-link{
-      font-size:15px;
-    }
-
-    .stats{
-      grid-template-columns:1fr;
-    }
-
-    .app-grid{
-      grid-template-columns:1fr;
-    }
+    .nav-wrap{ gap:14px 18px; }
+    .nav-link{ font-size:15px; }
+    .stats{ grid-template-columns:1fr; }
+    .app-grid{ grid-template-columns:1fr; }
 
     .app-card{
       padding:18px;
@@ -521,13 +473,13 @@
         </a>
 
         <nav class="nav-wrap" aria-label="Hauptnavigation">
-          <a href="index.html" class="nav-link" id="nav_home">Startseite</a>
-          <a href="bewerbung.html" class="nav-link" id="nav_apply">Bewerbung</a>
-          <a href="mehr_erfahren.html" class="nav-link" id="nav_more">Mehr erfahren</a>
-          <a href="talente.html" class="nav-link" id="nav_talents">Talente</a>
-          <a href="news.html" class="nav-link" id="nav_news">News</a>
-          <a href="team.html" class="nav-link" id="nav_team">Team</a>
-          <a href="playtok.html" class="nav-link" id="nav_playtok">PlayTok</a>
+          <a href="index.html" class="nav-link">Startseite</a>
+          <a href="bewerbung.html" class="nav-link">Bewerbung</a>
+          <a href="mehr_erfahren.html" class="nav-link">Mehr erfahren</a>
+          <a href="talente.html" class="nav-link">Talente</a>
+          <a href="news.html" class="nav-link">News</a>
+          <a href="team.html" class="nav-link">Team</a>
+          <a href="playtok.html" class="nav-link">PlayTok</a>
         </nav>
 
         <div class="top-actions">
@@ -603,6 +555,11 @@
   let allApplications = [];
   let activeFilter = "all";
 
+  function appendDebug(text){
+    debugBox.textContent += "\n" + text;
+    console.log(text);
+  }
+
   function setDebug(text){
     debugBox.textContent = text;
     console.log(text);
@@ -671,57 +628,15 @@
         </div>
 
         <div class="app-grid">
-          <div class="meta">
-            <div class="meta-label">E-Mail</div>
-            <div class="meta-value">${escapeHtml(app.email || "-")}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">Discord</div>
-            <div class="meta-value">${escapeHtml(app.discord || "-")}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">Plattform</div>
-            <div class="meta-value">${escapeHtml(app.platform || "-")}</div>
-          </div>
-
-          <div class="meta">
-            <div class="meta-label">Twitch</div>
-            <div class="meta-value">${escapeHtml(app.twitch || "-")}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">TikTok</div>
-            <div class="meta-value">${escapeHtml(app.tiktok || "-")}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">Kategorie</div>
-            <div class="meta-value">${escapeHtml(app.category || "-")}</div>
-          </div>
-
-          <div class="meta">
-            <div class="meta-label">Viewer</div>
-            <div class="meta-value">${escapeHtml(app.viewer ?? "-")}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">Streams/Woche</div>
-            <div class="meta-value">${escapeHtml(app.streams ?? "-")}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">Alter</div>
-            <div class="meta-value">${escapeHtml(app.age_group || "-")}</div>
-          </div>
-
-          <div class="meta">
-            <div class="meta-label">Twitch-Link</div>
-            <div class="meta-value">${app.twitch_link ? `<a href="${escapeHtml(app.twitch_link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(app.twitch_link)}</a>` : "-"}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">TikTok-Link</div>
-            <div class="meta-value">${app.tiktok_link ? `<a href="${escapeHtml(app.tiktok_link)}" target="_blank" rel="noopener noreferrer">${escapeHtml(app.tiktok_link)}</a>` : "-"}</div>
-          </div>
-          <div class="meta">
-            <div class="meta-label">Empfohlen von</div>
-            <div class="meta-value">${escapeHtml(app.referred_by || "-")}</div>
-          </div>
+          <div class="meta"><div class="meta-label">E-Mail</div><div class="meta-value">${escapeHtml(app.email || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Discord</div><div class="meta-value">${escapeHtml(app.discord || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Plattform</div><div class="meta-value">${escapeHtml(app.platform || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Twitch</div><div class="meta-value">${escapeHtml(app.twitch || "-")}</div></div>
+          <div class="meta"><div class="meta-label">TikTok</div><div class="meta-value">${escapeHtml(app.tiktok || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">${escapeHtml(app.category || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">${escapeHtml(app.viewer ?? "-")}</div></div>
+          <div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">${escapeHtml(app.streams ?? "-")}</div></div>
+          <div class="meta"><div class="meta-label">Alter</div><div class="meta-value">${escapeHtml(app.age_group || "-")}</div></div>
         </div>
 
         <div class="reason-box">
@@ -739,10 +654,15 @@
   }
 
   async function ensureAdminAccess(){
+    appendDebug("1) ensureAdminAccess gestartet");
+
     const { data: authData, error: authError } = await supabase.auth.getUser();
-    setDebug("AUTH USER:\n" + JSON.stringify(authData, null, 2) + "\n\nAUTH ERROR:\n" + JSON.stringify(authError, null, 2));
+    appendDebug("2) authData erhalten");
+    appendDebug("AUTH USER: " + JSON.stringify(authData));
+    appendDebug("AUTH ERROR: " + JSON.stringify(authError));
 
     if(authError || !authData.user){
+      appendDebug("3) Kein User -> redirect login");
       window.location.href = "login.html";
       return false;
     }
@@ -753,11 +673,9 @@
       .eq("id", authData.user.id)
       .maybeSingle();
 
-    setDebug(
-      "AUTH USER:\n" + JSON.stringify(authData, null, 2) +
-      "\n\nPROFILE:\n" + JSON.stringify(profile, null, 2) +
-      "\n\nPROFILE ERROR:\n" + JSON.stringify(profileError, null, 2)
-    );
+    appendDebug("4) profiles geladen");
+    appendDebug("PROFILE: " + JSON.stringify(profile));
+    appendDebug("PROFILE ERROR: " + JSON.stringify(profileError));
 
     if(profileError){
       showMessage("error", "Profil-Fehler: " + profileError.message);
@@ -766,19 +684,21 @@
 
     if(!profile || (profile.role !== "owner" && profile.role !== "admin")){
       showMessage("error", "Kein Zugriff auf das Admin Dashboard.");
-      setTimeout(() => {
-        window.location.href = "login.html";
-      }, 1200);
       return false;
     }
 
+    appendDebug("5) Admin Zugriff ok");
     return true;
   }
 
   async function loadApplications(){
     clearMessage();
+    setDebug("Debug startet …");
+    appendDebug("loadApplications() gestartet");
 
     const accessOk = await ensureAdminAccess();
+    appendDebug("accessOk = " + accessOk);
+
     if(!accessOk) return;
 
     const { data, error } = await supabase
@@ -786,11 +706,8 @@
       .select("*")
       .order("created_at", { ascending: false });
 
-    setDebug(
-      debugBox.textContent +
-      "\n\nAPPLICATIONS DATA:\n" + JSON.stringify(data, null, 2) +
-      "\n\nAPPLICATIONS ERROR:\n" + JSON.stringify(error, null, 2)
-    );
+    appendDebug("APPLICATIONS DATA: " + JSON.stringify(data));
+    appendDebug("APPLICATIONS ERROR: " + JSON.stringify(error));
 
     if(error){
       showMessage("error", "Applications-Fehler: " + error.message);
@@ -804,6 +721,8 @@
     }
 
     allApplications = Array.isArray(data) ? data : [];
+    appendDebug("Anzahl Bewerbungen: " + allApplications.length);
+
     showMessage("success", "Geladene Bewerbungen: " + allApplications.length);
     updateStats(allApplications);
     renderApplications();
@@ -842,7 +761,18 @@
     });
   });
 
-  loadApplications();
+  window.addEventListener("error", (event) => {
+    appendDebug("GLOBAL ERROR: " + event.message);
+  });
+
+  window.addEventListener("unhandledrejection", (event) => {
+    appendDebug("PROMISE ERROR: " + JSON.stringify(event.reason));
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    appendDebug("DOMContentLoaded");
+    loadApplications();
+  });
 </script>
 </body>
 </html>
