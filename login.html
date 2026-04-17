@@ -371,7 +371,6 @@
     }
 
     .brand{ justify-content:center; }
-
     .nav-wrap{ padding-top:0; }
 
     .top-actions{
@@ -400,7 +399,6 @@
     }
 
     .nav-wrap{ gap:14px 18px; }
-
     .nav-link{ font-size:15px; }
 
     .login-top-btn{
@@ -642,7 +640,7 @@
 
     button.disabled = true;
 
-    const { error } = await supabaseClient.auth.signInWithPassword({
+    const { data: signInData, error } = await supabaseClient.auth.signInWithPassword({
       email,
       password
     });
@@ -653,23 +651,29 @@
       return;
     }
 
-    const { data: userData, error: userError } = await supabaseClient.auth.getUser();
-
-    if (userError || !userData.user) {
+    if (!signInData || !signInData.user) {
       button.disabled = false;
-      showMessage("error", t.errorProfile);
+      showMessage("error", "Login ok, aber kein User in signInData zurückgegeben.");
       return;
     }
 
-    const { data: profile } = await supabaseClient
+    const userId = signInData.user.id;
+
+    const { data: profile, error: profileError } = await supabaseClient
       .from("profiles")
       .select("role")
-      .eq("id", userData.user.id)
+      .eq("id", userId)
       .maybeSingle();
+
+    if (profileError) {
+      button.disabled = false;
+      showMessage("error", "Profiles-Fehler: " + profileError.message + " | code: " + (profileError.code || "n/a"));
+      return;
+    }
 
     if (!profile) {
       button.disabled = false;
-      showMessage("error", t.errorProfile);
+      showMessage("error", "Kein Profil gefunden für User-ID: " + userId);
       return;
     }
 
@@ -681,7 +685,7 @@
       window.location.href = "creator_dashboard.html";
     } else {
       button.disabled = false;
-      showMessage("error", t.errorRole);
+      showMessage("error", t.errorRole + " Aktuelle Rolle: " + profile.role);
     }
   }
 
@@ -693,4 +697,3 @@
 
 </body>
 </html>
-also liegt es am js. du hast gesagt maybe single dann findet er nix und vorhin mit true ging es. also ist in irgendeiner js funktion oder reihenfolge ein bug drin. prüf das mal. du redest dich da dauernd raus 😅
