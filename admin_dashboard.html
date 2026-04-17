@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HRX Admin Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body {
+  margin:0;
+  font-family: Arial;
+  background:#111;
+  color:#fff;
+}
+
+.container {
+  max-width:1200px;
+  margin:auto;
+  padding:40px;
+}
+
+h1 {
+  margin-bottom:30px;
+}
+
+.card {
+  background:#1c1c1c;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:16px;
+}
+
+.row {
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.btn {
+  padding:10px 16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.approve {
+  background:#1d7f4e;
+  color:white;
+}
+
+.reject {
+  background:#b42318;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Admin Dashboard</h1>
+  <div id="applications"></div>
+</div>
+
+<script>
+const supabase = window.supabase.createClient(
+  "https://payxkjbgdrbrmwqmczhz.supabase.co",
+  "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa"
+);
+
+async function checkAccess() {
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+
+  const { data } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", user.id)
+    .single();
+
+  if (!data || (data.role !== "admin" && data.role !== "owner")) {
+    alert("Kein Zugriff");
+    window.location.href = "login.html";
+    return;
+  }
+
+  loadApplications();
+}
+
+async function loadApplications() {
+  const { data } = await supabase
+    .from("applications")
+    .select("*")
+    .order("created_at", { ascending:false });
+
+  const container = document.getElementById("applications");
+  container.innerHTML = "";
+
+  data.forEach(app => {
+    const el = document.createElement("div");
+    el.className = "card";
+
+    el.innerHTML = `
+      <div class="row">
+        <div>
+          <b>${app.twitch || app.tiktok || "User"}</b><br>
+          ${app.email}<br>
+          ${app.platform} | ${app.viewer} Viewer
+        </div>
+        <div>
+          Status: ${app.status}
+        </div>
+      </div>
+
+      <div style="margin-top:10px;">
+        ${app.reason}
+      </div>
+
+      <div style="margin-top:15px;">
+        <button class="btn approve" onclick="updateStatus('${app.id}','approved')">Approve</button>
+        <button class="btn reject" onclick="updateStatus('${app.id}','rejected')">Reject</button>
+      </div>
+    `;
+
+    container.appendChild(el);
+  });
+}
+
+async function updateStatus(id, status) {
+  await supabase
+    .from("applications")
+    .update({ status })
+    .eq("id", id);
+
+  loadApplications();
+}
+
+checkAccess();
+</script>
+
+</body>
+</html>
