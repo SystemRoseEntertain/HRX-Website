@@ -23,6 +23,9 @@
     --success:#1d7f4e;
     --danger:#b42318;
     --warning:#b7791f;
+    --dark:#111827;
+    --dark-2:#0f172a;
+    --debug:#d1fae5;
   }
 
   *{ box-sizing:border-box; }
@@ -193,6 +196,22 @@
     border:1px solid rgba(29,127,78,0.18);
   }
 
+  .debug-box{
+    display:block;
+    margin-bottom:18px;
+    padding:14px 16px;
+    border-radius:16px;
+    background:var(--dark);
+    color:var(--debug);
+    font-family:Consolas, Monaco, monospace;
+    font-size:13px;
+    line-height:1.55;
+    white-space:pre-wrap;
+    word-break:break-word;
+    box-shadow:var(--shadow-soft);
+    border:1px solid rgba(255,255,255,0.06);
+  }
+
   .stats{
     display:grid;
     grid-template-columns:repeat(4, minmax(0,1fr));
@@ -280,7 +299,7 @@
   .app-sub{
     color:var(--muted);
     font-size:14px;
-    line-height:1.5;
+    line-height:1.55;
   }
 
   .badge{
@@ -335,8 +354,17 @@
 
   .meta-value{
     font-size:14px;
-    line-height:1.45;
+    line-height:1.5;
     word-break:break-word;
+  }
+
+  .meta-value a{
+    color:var(--violet);
+    text-decoration:none;
+  }
+
+  .meta-value a:hover{
+    text-decoration:underline;
   }
 
   .reason-box{
@@ -468,7 +496,7 @@
 
         <nav class="nav-wrap" aria-label="Hauptnavigation">
           <a href="index.html" class="nav-link">Startseite</a>
-          <a href="bewerbung.html" class="nav-link">Bewerbung</a>
+          <a href="bewerbung_backend.html" class="nav-link">Bewerbung</a>
           <a href="mehr_erfahren.html" class="nav-link">Mehr erfahren</a>
           <a href="talente.html" class="nav-link">Talente</a>
           <a href="news.html" class="nav-link">News</a>
@@ -489,7 +517,7 @@
       <div class="dashboard-head">
         <div>
           <h1>Admin Dashboard</h1>
-          <p>Verwalte Bewerbungen, prüfe Creator-Profile und entscheide über Aufnahme oder Ablehnung.</p>
+          <p>Verwalte Bewerbungen, prüfe Creator-Daten und entscheide über Aufnahme oder Ablehnung.</p>
         </div>
       </div>
 
@@ -544,6 +572,7 @@
   const applicationsEl = document.getElementById("applications");
   const messageEl = document.getElementById("message");
   const filterButtons = [...document.querySelectorAll(".filter-btn")];
+
   let allApplications = [];
   let activeFilter = "all";
   let supabase = null;
@@ -573,21 +602,43 @@
       .replace(/'/g, "&#039;");
   }
 
+  function normalizeStatus(status){
+    if(status === "approved" || status === "rejected" || status === "pending") return status;
+    return "pending";
+  }
+
+  function formatDate(value){
+    if(!value) return "-";
+    const d = new Date(value);
+    if(Number.isNaN(d.getTime())) return "-";
+    return d.toLocaleString("de-DE");
+  }
+
+  function boolText(value){
+    return value ? "Ja" : "Nein";
+  }
+
+  function linkOrDash(url){
+    if(!url) return "-";
+    const safeUrl = escapeHtml(url);
+    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${safeUrl}</a>`;
+  }
+
   function statusBadge(status){
-    const safe = escapeHtml(status || "pending");
+    const safe = normalizeStatus(status);
     return `<span class="badge ${safe}">${safe}</span>`;
   }
 
   function updateStats(items){
     document.getElementById("statTotal").textContent = items.length;
-    document.getElementById("statPending").textContent = items.filter(x => x.status === "pending").length;
-    document.getElementById("statApproved").textContent = items.filter(x => x.status === "approved").length;
-    document.getElementById("statRejected").textContent = items.filter(x => x.status === "rejected").length;
+    document.getElementById("statPending").textContent = items.filter(x => normalizeStatus(x.status) === "pending").length;
+    document.getElementById("statApproved").textContent = items.filter(x => normalizeStatus(x.status) === "approved").length;
+    document.getElementById("statRejected").textContent = items.filter(x => normalizeStatus(x.status) === "rejected").length;
   }
 
   function filteredItems(){
     if(activeFilter === "all") return allApplications;
-    return allApplications.filter(item => item.status === activeFilter);
+    return allApplications.filter(item => normalizeStatus(item.status) === activeFilter);
   }
 
   function renderApplications(){
@@ -609,7 +660,9 @@
           <div>
             <h2 class="app-title">${escapeHtml(app.twitch || app.tiktok || app.email || "Bewerbung")}</h2>
             <div class="app-sub">
-              Eingegangen: ${app.created_at ? new Date(app.created_at).toLocaleString("de-DE") : "-"}
+              Eingegangen: ${formatDate(app.created_at)}<br>
+              Aktualisiert: ${formatDate(app.updated_at)}<br>
+              Empfohlen von: ${escapeHtml(app.referred_by || "-")}
             </div>
           </div>
           <div>${statusBadge(app.status)}</div>
@@ -619,12 +672,22 @@
           <div class="meta"><div class="meta-label">E-Mail</div><div class="meta-value">${escapeHtml(app.email || "-")}</div></div>
           <div class="meta"><div class="meta-label">Discord</div><div class="meta-value">${escapeHtml(app.discord || "-")}</div></div>
           <div class="meta"><div class="meta-label">Plattform</div><div class="meta-value">${escapeHtml(app.platform || "-")}</div></div>
+
           <div class="meta"><div class="meta-label">Twitch</div><div class="meta-value">${escapeHtml(app.twitch || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Twitch Link</div><div class="meta-value">${linkOrDash(app.twitch_link)}</div></div>
           <div class="meta"><div class="meta-label">TikTok</div><div class="meta-value">${escapeHtml(app.tiktok || "-")}</div></div>
-          <div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">${escapeHtml(app.category || "-")}</div></div>
+
+          <div class="meta"><div class="meta-label">TikTok Link</div><div class="meta-value">${linkOrDash(app.tiktok_link)}</div></div>
           <div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">${escapeHtml(app.viewer ?? "-")}</div></div>
           <div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">${escapeHtml(app.streams ?? "-")}</div></div>
-          <div class="meta"><div class="meta-label">Alter</div><div class="meta-value">${escapeHtml(app.age_group || "-")}</div></div>
+
+          <div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">${escapeHtml(app.category || "-")}</div></div>
+          <div class="meta"><div class="meta-label">Altersgruppe</div><div class="meta-value">${escapeHtml(app.age_group || "-")}</div></div>
+          <div class="meta"><div class="meta-label">18+ bestätigt</div><div class="meta-value">${boolText(app.age_confirm_18)}</div></div>
+
+          <div class="meta"><div class="meta-label">16+ bestätigt</div><div class="meta-value">${boolText(app.age_confirm_16)}</div></div>
+          <div class="meta"><div class="meta-label">Status</div><div class="meta-value">${escapeHtml(normalizeStatus(app.status))}</div></div>
+          <div class="meta"><div class="meta-label">Bewerbungs-ID</div><div class="meta-value">${escapeHtml(app.id || "-")}</div></div>
         </div>
 
         <div class="reason-box">
@@ -658,6 +721,8 @@
 
     const { data: authData, error: authError } = await supabase.auth.getUser();
     appendDebug("2) Auth geladen");
+    appendDebug("USER ID: " + (authData?.user?.id || "keine"));
+    appendDebug("USER EMAIL: " + (authData?.user?.email || "keine"));
 
     if(authError || !authData.user){
       appendDebug("3) Kein eingeloggter User");
@@ -667,19 +732,22 @@
 
     const { data: profile, error: profileError } = await supabase
       .from("profiles")
-      .select("role")
+      .select("id, email, role")
       .eq("id", authData.user.id)
       .maybeSingle();
 
     appendDebug("4) Profil geladen");
+    appendDebug("PROFILE RESULT: " + JSON.stringify(profile));
 
     if(profileError){
       showMessage("error", "Profil-Fehler: " + profileError.message);
+      appendDebug("PROFILE ERROR: " + profileError.message);
       return false;
     }
 
     if(!profile || (profile.role !== "owner" && profile.role !== "admin")){
       showMessage("error", "Kein Zugriff auf das Admin Dashboard.");
+      appendDebug("5) Zugriff verweigert");
       return false;
     }
 
@@ -696,12 +764,11 @@
 
     const { data, error } = await supabase
       .from("applications")
-      .select("*")
-      .order("created_at", { ascending: false });
+      .select("*");
 
     if(error){
       showMessage("error", "Applications-Fehler: " + error.message);
-      appendDebug("Applications Fehler: " + error.message);
+      appendDebug("APPLICATIONS ERROR: " + error.message);
       applicationsEl.innerHTML = `
         <div class="empty-state">
           <h3>Laden fehlgeschlagen</h3>
@@ -712,7 +779,15 @@
     }
 
     allApplications = Array.isArray(data) ? data : [];
+
+    allApplications.sort((a, b) => {
+      const aTime = a.created_at ? new Date(a.created_at).getTime() : 0;
+      const bTime = b.created_at ? new Date(b.created_at).getTime() : 0;
+      return bTime - aTime;
+    });
+
     appendDebug("7) Bewerbungen geladen: " + allApplications.length);
+    appendDebug("APPLICATIONS RAW: " + JSON.stringify(allApplications, null, 2));
 
     showMessage("success", "Geladene Bewerbungen: " + allApplications.length);
     updateStats(allApplications);
@@ -723,19 +798,26 @@
     clearMessage();
     if(button) button.disabled = true;
 
+    appendDebug("8) Statusupdate startet: " + id + " -> " + status);
+
     const { error } = await supabase
       .from("applications")
-      .update({ status })
+      .update({
+        status: status,
+        updated_at: new Date().toISOString()
+      })
       .eq("id", id);
 
     if(button) button.disabled = false;
 
     if(error){
       showMessage("error", "Status-Update fehlgeschlagen: " + error.message);
+      appendDebug("STATUS UPDATE ERROR: " + error.message);
       return;
     }
 
     showMessage("success", "Status erfolgreich auf \"" + status + "\" gesetzt.");
+    appendDebug("9) Statusupdate erfolgreich");
     await loadApplications();
   }
 
@@ -743,7 +825,7 @@
     clearMessage();
     if(button) button.disabled = true;
 
-    appendDebug("8) Approve startet für ID: " + id);
+    appendDebug("10) Approve startet für ID: " + id);
 
     const { data: sessionData } = await supabase.auth.getSession();
     const accessToken = sessionData?.session?.access_token;
@@ -751,6 +833,7 @@
     if(!accessToken){
       if(button) button.disabled = false;
       showMessage("error", "Keine Session gefunden.");
+      appendDebug("APPROVE ERROR: Keine Session");
       return;
     }
 
@@ -769,12 +852,12 @@
 
     if(!response.ok){
       showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText));
-      appendDebug("Approve Fehler: " + JSON.stringify(result));
+      appendDebug("APPROVE ERROR: " + JSON.stringify(result));
       return;
     }
 
     showMessage("success", "Bewerbung angenommen und Creator-User angelegt.");
-    appendDebug("9) Approve erfolgreich: " + JSON.stringify(result));
+    appendDebug("11) Approve erfolgreich: " + JSON.stringify(result));
     await loadApplications();
   }
 
