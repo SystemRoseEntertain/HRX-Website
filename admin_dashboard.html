@@ -27,6 +27,8 @@
       --debug-text:#d1fae5;
       --card:#ffffffee;
       --card-soft:#fbfbfb;
+      --twitch:#6441a5;
+      --twitch-dark:#4f3582;
     }
 
     *{ box-sizing:border-box; }
@@ -367,7 +369,7 @@
 
     .app-layout{
       display:grid;
-      grid-template-columns:minmax(0, 1.1fr) minmax(380px, 0.9fr);
+      grid-template-columns:minmax(0, 1.05fr) minmax(380px, 0.95fr);
       gap:18px;
       align-items:start;
     }
@@ -413,7 +415,7 @@
     }
 
     .profile-link.twitch{
-      color:#6441a5;
+      color:var(--twitch);
     }
 
     .mini-grid{
@@ -495,27 +497,67 @@
     .embed-fallback{
       width:100%;
       min-height:360px;
-      border-radius:16px;
-      background:linear-gradient(180deg, #fafafa, #f2f2f2);
-      border:1px solid rgba(23,25,35,0.05);
+      border-radius:18px;
+      background:
+        radial-gradient(220px 160px at 20% 20%, rgba(100,65,165,0.35), transparent 60%),
+        linear-gradient(145deg, #18181d 0%, #101014 100%);
       padding:24px;
       display:flex;
       flex-direction:column;
+      justify-content:space-between;
+      color:#fff;
+      border:1px solid rgba(255,255,255,0.05);
+    }
+
+    .embed-fallback-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .embed-icon{
+      width:42px;
+      height:42px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
       justify-content:center;
-      align-items:flex-start;
-      gap:14px;
+      background:rgba(255,255,255,0.08);
+      color:#fff;
+      flex:0 0 42px;
+    }
+
+    .embed-icon svg{
+      width:22px;
+      height:22px;
+      fill:currentColor;
     }
 
     .embed-fallback h4{
-      margin:0;
+      margin:0 0 6px;
       font-size:22px;
       letter-spacing:-0.03em;
     }
 
     .embed-fallback p{
       margin:0;
-      color:var(--muted);
+      color:rgba(255,255,255,0.75);
       line-height:1.6;
+      max-width:520px;
+    }
+
+    .embed-fallback-cta{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      align-self:flex-start;
+      margin-top:22px;
+      padding:13px 18px;
+      border-radius:999px;
+      background:#fff;
+      color:var(--twitch-dark);
+      font-weight:900;
+      box-shadow:var(--shadow-soft);
     }
 
     .app-actions{
@@ -900,29 +942,48 @@
           '<div class="embed-card">' +
             '<div class="embed-title">Twitch Preview</div>' +
             '<div class="embed-fallback">' +
-              '<h4>Kein Twitch-Link vorhanden</h4>' +
-              '<p>Für diese Bewerbung gibt es aktuell keinen verwertbaren Twitch-Link für eine Einbettung.</p>' +
+              '<div>' +
+                '<div class="embed-fallback-top">' +
+                  '<div class="embed-icon">' + H.twitchIcon() + '</div>' +
+                  '<div>' +
+                    '<h4>Kein Twitch-Link vorhanden</h4>' +
+                    '<p>Für diese Bewerbung gibt es aktuell keinen verwendbaren Twitch-Link.</p>' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
             '</div>' +
           '</div>';
       }
 
-      var src = '';
+      if(twitch.type === "video"){
+        var src = 'https://player.twitch.tv/?video=' + encodeURIComponent(twitch.id) + '&parent=' + encodeURIComponent(S.TWITCH_PARENT);
 
-      if(twitch.type === 'video'){
-        src = 'https://player.twitch.tv/?video=' + encodeURIComponent(twitch.id) + '&parent=' + encodeURIComponent(S.TWITCH_PARENT);
-      } else {
-        src = 'https://player.twitch.tv/?channel=' + encodeURIComponent(twitch.id) + '&parent=' + encodeURIComponent(S.TWITCH_PARENT);
+        return '' +
+          '<div class="embed-card">' +
+            '<div class="embed-title">Twitch Preview</div>' +
+            '<div class="embed-stage">' +
+              '<iframe src="' + src + '" allowfullscreen="true" scrolling="no"></iframe>' +
+            '</div>' +
+          '</div>';
       }
 
       return '' +
         '<div class="embed-card">' +
           '<div class="embed-title">Twitch Preview</div>' +
-          '<div class="embed-stage">' +
-            '<iframe ' +
-              'src="' + src + '" ' +
-              'allowfullscreen="true" ' +
-              'scrolling="no">' +
-            '</iframe>' +
+          '<div class="embed-fallback">' +
+            '<div>' +
+              '<div class="embed-fallback-top">' +
+                '<div class="embed-icon">' + H.twitchIcon() + '</div>' +
+                '<div>' +
+                  '<h4>' + H.escapeHtml(app.twitch || "Twitch Kanal") + '</h4>' +
+                  '<p>Für Kanal-Links zeigen wir hier bewusst keinen hässlichen Offline-Twitch-Screen. Stattdessen kannst du den Kanal direkt sauber öffnen.</p>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+            '<a class="embed-fallback-cta" href="' + H.escapeHtml(twitch.profileUrl) + '" target="_blank" rel="noopener noreferrer">' +
+              H.twitchIcon() +
+              '<span>Kanal auf Twitch öffnen</span>' +
+            '</a>' +
           '</div>' +
         '</div>';
     }
