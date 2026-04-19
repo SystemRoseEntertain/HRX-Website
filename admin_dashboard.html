@@ -543,17 +543,13 @@
 </div>
 
 <script>
-  const supabase = window.supabase.createClient(
-    "https://payxkjbgdrbrmwqmczhz.supabase.co",
-    "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa"
-  );
-
+  const debugBox = document.getElementById("debugBox");
   const applicationsEl = document.getElementById("applications");
   const messageEl = document.getElementById("message");
-  const debugBox = document.getElementById("debugBox");
   const filterButtons = [...document.querySelectorAll(".filter-btn")];
   let allApplications = [];
   let activeFilter = "all";
+  let supabase = null;
 
   function appendDebug(text){
     debugBox.textContent += "\n" + text;
@@ -745,22 +741,6 @@
     await loadApplications();
   }
 
-  document.getElementById("reloadBtn").addEventListener("click", loadApplications);
-
-  document.getElementById("logoutBtn").addEventListener("click", async () => {
-    await supabase.auth.signOut();
-    window.location.href = "login.html";
-  });
-
-  filterButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      filterButtons.forEach(x => x.classList.remove("active"));
-      btn.classList.add("active");
-      activeFilter = btn.dataset.filter;
-      renderApplications();
-    });
-  });
-
   window.addEventListener("error", (event) => {
     appendDebug("GLOBAL ERROR: " + event.message);
   });
@@ -771,6 +751,41 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     appendDebug("DOMContentLoaded");
+
+    if(!window.supabase){
+      appendDebug("FEHLER: window.supabase ist undefined");
+      showMessage("error", "Supabase CDN wurde nicht geladen.");
+      return;
+    }
+
+    try{
+      supabase = window.supabase.createClient(
+        "https://payxkjbgdrbrmwqmczhz.supabase.co",
+        "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa"
+      );
+      appendDebug("Supabase Client erstellt");
+    }catch(err){
+      appendDebug("createClient FEHLER: " + err.message);
+      showMessage("error", "Supabase konnte nicht initialisiert werden: " + err.message);
+      return;
+    }
+
+    document.getElementById("reloadBtn").addEventListener("click", loadApplications);
+
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      window.location.href = "login.html";
+    });
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(x => x.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        renderApplications();
+      });
+    });
+
     loadApplications();
   });
 </script>
