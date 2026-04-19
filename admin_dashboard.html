@@ -21,10 +21,12 @@
       --shadow-soft:0 12px 28px rgba(16,18,24,0.07);
       --max:1720px;
       --success:#1d7f4e;
-      --danger:#b42318;
+      --danger:#c0352b;
       --warning:#b7791f;
       --debug-bg:#081633;
       --debug-text:#d1fae5;
+      --card:#ffffffee;
+      --card-soft:#fbfbfb;
     }
 
     *{ box-sizing:border-box; }
@@ -184,21 +186,45 @@
     .message.show{ display:block; }
 
     .message.error{
-      background:rgba(180,35,24,0.08);
+      background:rgba(192,53,43,0.08);
       color:var(--danger);
-      border:1px solid rgba(180,35,24,0.18);
+      border:1px solid rgba(192,53,43,0.16);
     }
 
     .message.success{
       background:rgba(29,127,78,0.08);
       color:var(--success);
-      border:1px solid rgba(29,127,78,0.18);
+      border:1px solid rgba(29,127,78,0.16);
+    }
+
+    .debug-toggle-row{
+      display:flex;
+      justify-content:flex-end;
+      margin-bottom:12px;
+    }
+
+    .debug-toggle{
+      border:none;
+      background:transparent;
+      color:var(--muted);
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+      padding:6px 10px;
+      border-radius:999px;
+      transition:.18s ease;
+    }
+
+    .debug-toggle:hover{
+      background:rgba(255,255,255,0.7);
+      color:var(--text);
     }
 
     .debug-box{
+      display:none;
       margin-bottom:18px;
       padding:14px 16px;
-      border-radius:16px;
+      border-radius:18px;
       background:var(--debug-bg);
       color:var(--debug-text);
       font-family:Consolas, Monaco, monospace;
@@ -209,39 +235,46 @@
       box-shadow:var(--shadow-soft);
     }
 
+    .debug-box.show{
+      display:block;
+    }
+
     .stats{
       display:grid;
       grid-template-columns:repeat(4, minmax(0,1fr));
-      gap:16px;
-      margin-bottom:22px;
+      gap:18px;
+      margin-bottom:24px;
     }
 
     .stat-card{
-      background:rgba(255,255,255,0.86);
-      border:1px solid rgba(23,25,35,0.06);
-      border-radius:24px;
-      padding:20px;
+      background:rgba(255,255,255,0.9);
+      border:1px solid rgba(23,25,35,0.05);
+      border-radius:26px;
+      padding:24px 22px;
       box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(10px);
     }
 
     .stat-label{
       color:var(--muted);
       font-size:13px;
-      font-weight:700;
-      margin-bottom:8px;
+      font-weight:800;
+      margin-bottom:10px;
+      letter-spacing:.01em;
     }
 
     .stat-value{
-      font-size:34px;
+      font-size:36px;
       font-weight:900;
       letter-spacing:-0.04em;
+      line-height:1;
     }
 
     .toolbar{
       display:flex;
       gap:12px;
       flex-wrap:wrap;
-      margin-bottom:18px;
+      margin-bottom:22px;
     }
 
     .filter-btn{
@@ -249,12 +282,17 @@
       background:#fff;
       color:var(--text);
       border-radius:999px;
-      padding:12px 18px;
+      padding:13px 20px;
       font-size:14px;
       font-weight:800;
       cursor:pointer;
       border:1px solid rgba(23,25,35,0.08);
       box-shadow:var(--shadow-soft);
+      transition:.18s ease;
+    }
+
+    .filter-btn:hover{
+      transform:translateY(-1px);
     }
 
     .filter-btn.active{
@@ -265,19 +303,29 @@
 
     .applications{
       display:grid;
-      gap:18px;
+      gap:22px;
     }
 
     .app-card{
-      background:rgba(255,255,255,0.88);
-      border:1px solid rgba(23,25,35,0.06);
-      border-radius:28px;
-      padding:24px;
+      background:rgba(255,255,255,0.92);
+      border:1px solid rgba(23,25,35,0.05);
+      border-radius:32px;
+      padding:26px;
       box-shadow:var(--shadow-soft);
+      backdrop-filter:blur(12px);
+    }
+
+    .app-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:20px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
     }
 
     .app-title{
-      margin:0 0 8px;
+      margin:0 0 10px;
       font-size:24px;
       font-weight:900;
       letter-spacing:-0.03em;
@@ -286,45 +334,7 @@
     .app-sub{
       color:var(--muted);
       font-size:14px;
-      line-height:1.5;
-      margin-bottom:16px;
-    }
-
-    .meta-list{
-      display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:14px;
-      margin-bottom:18px;
-    }
-
-    .meta{
-      background:#fff;
-      border:1px solid rgba(23,25,35,0.06);
-      border-radius:18px;
-      padding:14px 15px;
-    }
-
-    .meta-label{
-      font-size:12px;
-      font-weight:900;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.05em;
-      margin-bottom:6px;
-    }
-
-    .meta-value{
-      font-size:14px;
-      line-height:1.45;
-      word-break:break-word;
-    }
-
-    .reason-box{
-      background:#fff;
-      border:1px solid rgba(23,25,35,0.06);
-      border-radius:20px;
-      padding:16px;
-      margin-bottom:18px;
+      line-height:1.65;
     }
 
     .badge{
@@ -335,9 +345,9 @@
       padding:9px 14px;
       font-size:12px;
       font-weight:900;
-      letter-spacing:0.04em;
+      letter-spacing:0.05em;
       text-transform:uppercase;
-      margin-bottom:12px;
+      white-space:nowrap;
     }
 
     .badge.pending{
@@ -351,13 +361,94 @@
     }
 
     .badge.rejected{
-      background:rgba(180,35,24,0.10);
+      background:rgba(192,53,43,0.10);
       color:var(--danger);
+    }
+
+    .meta-list{
+      display:grid;
+      grid-template-columns:repeat(3, minmax(0,1fr));
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .meta{
+      background:var(--card-soft);
+      border:1px solid rgba(23,25,35,0.05);
+      border-radius:18px;
+      padding:14px 16px;
+    }
+
+    .meta-label{
+      font-size:12px;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      margin-bottom:8px;
+    }
+
+    .meta-value{
+      font-size:14px;
+      line-height:1.5;
+      word-break:break-word;
+    }
+
+    .profile-links{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .profile-link{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 16px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid rgba(23,25,35,0.08);
+      box-shadow:var(--shadow-soft);
+      font-size:14px;
+      font-weight:800;
+      transition:.18s ease;
+    }
+
+    .profile-link:hover{
+      transform:translateY(-1px);
+      border-color:rgba(104,65,183,0.25);
+    }
+
+    .profile-link svg{
+      width:18px;
+      height:18px;
+      flex:0 0 18px;
+    }
+
+    .profile-link.twitch{
+      color:#6441a5;
+    }
+
+    .profile-link.tiktok{
+      color:#111111;
+    }
+
+    .reason-box{
+      background:var(--card-soft);
+      border:1px solid rgba(23,25,35,0.05);
+      border-radius:20px;
+      padding:16px 18px;
+      margin-bottom:18px;
+    }
+
+    .reason-box .meta-label{
+      margin-bottom:8px;
     }
 
     .app-actions{
       display:flex;
-      gap:12px;
+      gap:10px;
       flex-wrap:wrap;
     }
 
@@ -368,6 +459,11 @@
       font-size:14px;
       font-weight:900;
       cursor:pointer;
+      transition:.18s ease;
+    }
+
+    .action-btn:hover{
+      transform:translateY(-1px);
     }
 
     .action-btn.approve{
@@ -390,13 +486,14 @@
     .action-btn:disabled{
       opacity:0.6;
       cursor:not-allowed;
+      transform:none;
     }
 
     .empty-state{
-      background:rgba(255,255,255,0.86);
-      border:1px solid rgba(23,25,35,0.06);
+      background:rgba(255,255,255,0.9);
+      border:1px solid rgba(23,25,35,0.05);
       border-radius:28px;
-      padding:34px 24px;
+      padding:38px 24px;
       text-align:center;
       color:var(--muted);
       box-shadow:var(--shadow-soft);
@@ -433,6 +530,10 @@
       .nav-link{ font-size:15px; }
       .stats{ grid-template-columns:1fr; }
       .meta-list{ grid-template-columns:1fr; }
+      .app-card{
+        padding:20px;
+        border-radius:24px;
+      }
     }
   </style>
 </head>
@@ -473,6 +574,11 @@
       </div>
 
       <div class="message" id="message"></div>
+
+      <div class="debug-toggle-row">
+        <button class="debug-toggle" id="debugToggleBtn" type="button">Debug anzeigen</button>
+      </div>
+
       <div class="debug-box" id="debugBox">Dashboard Start…</div>
 
       <section class="stats">
@@ -512,7 +618,8 @@
     SUPABASE_ANON_KEY: "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa",
     supabase: null,
     allApplications: [],
-    activeFilter: "all"
+    activeFilter: "all",
+    debugVisible: false
   };
 </script>
 
@@ -521,6 +628,7 @@
   const applicationsEl = document.getElementById("applications");
   const messageEl = document.getElementById("message");
   const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
+  const debugToggleBtn = document.getElementById("debugToggleBtn");
 
   function log(text){
     debugBox.textContent += "\n" + text;
@@ -564,6 +672,33 @@
     return '<span class="badge ' + s + '">' + s + '</span>';
   }
 
+  function twitchIcon(){
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M4.286 2 2 7.714v10.857h4.571V22l3.429-3.429h3.429L20.857 11.143V2H4.286Zm14.286 8-3.429 3.429h-3.429L8.286 16.857v-3.428H4.857V4.286h13.715V10ZM15.143 6.57h-1.714v5.144h1.714V6.57Zm-4.572 0H8.857v5.144h1.714V6.57Z"/>
+      </svg>
+    `;
+  }
+
+  function tiktokIcon(){
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-1.877v8.452a7.703 7.703 0 1 1-7.703-7.703c.268 0 .533.018.794.052v3.79a3.92 3.92 0 1 0 3.92 3.92V2h3.625a4.8 4.8 0 0 0 3.134 4.557v.129Z"/>
+      </svg>
+    `;
+  }
+
+  function toggleDebug(forceValue){
+    if(typeof forceValue === "boolean"){
+      window.HRX_STATE.debugVisible = forceValue;
+    } else {
+      window.HRX_STATE.debugVisible = !window.HRX_STATE.debugVisible;
+    }
+
+    debugBox.classList.toggle("show", window.HRX_STATE.debugVisible);
+    debugToggleBtn.textContent = window.HRX_STATE.debugVisible ? "Debug ausblenden" : "Debug anzeigen";
+  }
+
   window.HRX_HELPERS = {
     log,
     showMessage,
@@ -573,18 +708,27 @@
     normalizeStatus,
     badge,
     applicationsEl,
-    filterButtons
+    filterButtons,
+    toggleDebug,
+    twitchIcon,
+    tiktokIcon
   };
 
-  log("1) Helper-Script läuft");
+  toggleDebug(false);
+
+  debugToggleBtn.addEventListener("click", function(){
+    toggleDebug();
+  });
 
   window.addEventListener("error", function(event){
     log("WINDOW ERROR: " + event.message);
+    toggleDebug(true);
   });
 
   window.addEventListener("unhandledrejection", function(event){
     var msg = event.reason && event.reason.message ? event.reason.message : (event.reason || "unknown");
     log("PROMISE ERROR: " + msg);
+    toggleDebug(true);
   });
 </script>
 
@@ -613,6 +757,27 @@
       }).length;
     }
 
+    function renderProfileLinks(app){
+      var html = '<div class="profile-links">';
+
+      if(app.twitch_link){
+        html += '<a class="profile-link twitch" href="' + H.escapeHtml(app.twitch_link) + '" target="_blank" rel="noopener noreferrer">';
+        html += H.twitchIcon();
+        html += '<span>Twitch Profil öffnen</span>';
+        html += '</a>';
+      }
+
+      if(app.tiktok_link){
+        html += '<a class="profile-link tiktok" href="' + H.escapeHtml(app.tiktok_link) + '" target="_blank" rel="noopener noreferrer">';
+        html += H.tiktokIcon();
+        html += '<span>TikTok Profil öffnen</span>';
+        html += '</a>';
+      }
+
+      html += '</div>';
+      return html;
+    }
+
     function renderApplications(){
       var items = filteredApplications();
 
@@ -625,9 +790,15 @@
 
       items.forEach(function(app){
         html += '<article class="app-card">';
-        html += '<div class="app-title">' + H.escapeHtml(app.twitch || app.tiktok || app.email || "Bewerbung") + '</div>';
-        html += H.badge(app.status);
+        html += '<div class="app-header">';
+        html += '<div>';
+        html += '<h2 class="app-title">' + H.escapeHtml(app.twitch || app.tiktok || app.email || "Bewerbung") + '</h2>';
         html += '<div class="app-sub">Eingegangen: ' + H.escapeHtml(H.formatDate(app.created_at)) + '<br>Plattform: ' + H.escapeHtml(app.platform || "-") + '<br>Empfohlen von: ' + H.escapeHtml(app.referred_by || "-") + '</div>';
+        html += '</div>';
+        html += '<div>' + H.badge(app.status) + '</div>';
+        html += '</div>';
+
+        html += renderProfileLinks(app);
 
         html += '<div class="meta-list">';
         html += '<div class="meta"><div class="meta-label">E-Mail</div><div class="meta-value">' + H.escapeHtml(app.email || "-") + '</div></div>';
@@ -635,16 +806,12 @@
         html += '<div class="meta"><div class="meta-label">Plattform</div><div class="meta-value">' + H.escapeHtml(app.platform || "-") + '</div></div>';
 
         html += '<div class="meta"><div class="meta-label">Twitch</div><div class="meta-value">' + H.escapeHtml(app.twitch || "-") + '</div></div>';
-        html += '<div class="meta"><div class="meta-label">Twitch Link</div><div class="meta-value">' + H.escapeHtml(app.twitch_link || "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">TikTok</div><div class="meta-value">' + H.escapeHtml(app.tiktok || "-") + '</div></div>';
-
-        html += '<div class="meta"><div class="meta-label">TikTok Link</div><div class="meta-value">' + H.escapeHtml(app.tiktok_link || "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">' + H.escapeHtml(app.viewer != null ? app.viewer : "-") + '</div></div>';
-        html += '<div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">' + H.escapeHtml(app.streams != null ? app.streams : "-") + '</div></div>';
 
+        html += '<div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">' + H.escapeHtml(app.streams != null ? app.streams : "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">' + H.escapeHtml(app.category || "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">Age Group</div><div class="meta-value">' + H.escapeHtml(app.age_group || "-") + '</div></div>';
-        html += '<div class="meta"><div class="meta-label">Status</div><div class="meta-value">' + H.escapeHtml(H.normalizeStatus(app.status)) + '</div></div>';
         html += '</div>';
 
         html += '<div class="reason-box"><div class="meta-label">Warum HRX CreatorNET?</div><div class="meta-value">' + H.escapeHtml(app.reason || "-") + '</div></div>';
@@ -687,6 +854,7 @@
         if(result.error){
           H.log("STATUS ERROR: " + result.error.message);
           H.showMessage("error", "Status-Update fehlgeschlagen: " + result.error.message);
+          H.toggleDebug(true);
           return;
         }
 
@@ -695,6 +863,7 @@
       } catch(err){
         H.log("STATUS CATCH ERROR: " + (err.message || err));
         H.showMessage("error", "Status-Update fehlgeschlagen.");
+        H.toggleDebug(true);
       } finally {
         if(button) button.disabled = false;
       }
@@ -711,6 +880,7 @@
         if(!accessToken){
           H.log("APPROVE ERROR: Keine Session");
           H.showMessage("error", "Keine Session gefunden.");
+          H.toggleDebug(true);
           return;
         }
 
@@ -728,6 +898,7 @@
         if(!response.ok){
           H.log("APPROVE ERROR: " + JSON.stringify(result));
           H.showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText));
+          H.toggleDebug(true);
           return;
         }
 
@@ -737,6 +908,7 @@
       } catch(err){
         H.log("APPROVE CATCH ERROR: " + (err.message || err));
         H.showMessage("error", "Approve fehlgeschlagen.");
+        H.toggleDebug(true);
       } finally {
         if(button) button.disabled = false;
       }
@@ -746,17 +918,18 @@
       H.clearMessage();
 
       try{
-        H.log("2) Dashboard Loader läuft");
+        H.log("Dashboard lädt");
 
         if(!window.supabase){
           H.log("window.supabase fehlt");
           H.showMessage("error", "Supabase CDN wurde nicht geladen.");
+          H.toggleDebug(true);
           return;
         }
 
         if(!S.supabase){
           S.supabase = window.supabase.createClient(S.SUPABASE_URL, S.SUPABASE_ANON_KEY);
-          H.log("3) Supabase Client erstellt");
+          H.log("Supabase Client erstellt");
         }
 
         var authRes = await S.supabase.auth.getUser();
@@ -764,6 +937,7 @@
         if(authRes.error){
           H.log("AUTH ERROR: " + authRes.error.message);
           H.showMessage("error", "Auth-Fehler: " + authRes.error.message);
+          H.toggleDebug(true);
           return;
         }
 
@@ -775,8 +949,7 @@
           return;
         }
 
-        H.log("4) User ID: " + user.id);
-        H.log("5) User Mail: " + (user.email || "-"));
+        H.log("User ID: " + user.id);
 
         var profileRes = await S.supabase
           .from("profiles")
@@ -787,15 +960,16 @@
         if(profileRes.error){
           H.log("PROFILE ERROR: " + profileRes.error.message);
           H.showMessage("error", "Profil-Fehler: " + profileRes.error.message);
+          H.toggleDebug(true);
           return;
         }
 
         var profile = profileRes.data;
-        H.log("6) Profil: " + JSON.stringify(profile));
 
         if(!profile || (profile.role !== "owner" && profile.role !== "admin")){
           H.log("Zugriff verweigert");
           H.showMessage("error", "Kein Zugriff auf das Admin Dashboard.");
+          H.toggleDebug(true);
           return;
         }
 
@@ -806,6 +980,7 @@
         if(appRes.error){
           H.log("APPLICATION ERROR: " + appRes.error.message);
           H.showMessage("error", "Applications-Fehler: " + appRes.error.message);
+          H.toggleDebug(true);
           return;
         }
 
@@ -816,13 +991,12 @@
           return bTime - aTime;
         });
 
-        H.log("7) Applications geladen: " + S.allApplications.length);
-
         updateStats();
         renderApplications();
       } catch(err){
         H.log("CATCH ERROR: " + (err.message || err));
         H.showMessage("error", "Unerwarteter Fehler: " + (err.message || err));
+        H.toggleDebug(true);
       }
     }
 
