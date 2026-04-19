@@ -29,6 +29,7 @@
       --card-soft:#fbfbfb;
       --twitch:#6441a5;
       --twitch-dark:#4f3582;
+      --tiktok:#111111;
     }
 
     *{ box-sizing:border-box; }
@@ -418,6 +419,10 @@
       color:var(--twitch);
     }
 
+    .profile-link.tiktok{
+      color:var(--tiktok);
+    }
+
     .mini-grid{
       display:grid;
       grid-template-columns:repeat(2, minmax(0,1fr));
@@ -805,6 +810,14 @@
     `;
   }
 
+  function tiktokIcon(){
+    return `
+      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
+        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-1.877v8.452a7.703 7.703 0 1 1-7.703-7.703c.268 0 .533.018.794.052v3.79a3.92 3.92 0 1 0 3.92 3.92V2h3.625a4.8 4.8 0 0 0 3.134 4.557v.129Z"/>
+      </svg>
+    `;
+  }
+
   function toggleDebug(forceValue){
     if(typeof forceValue === "boolean"){
       window.HRX_STATE.debugVisible = forceValue;
@@ -875,6 +888,7 @@
     filterButtons,
     toggleDebug,
     twitchIcon,
+    tiktokIcon,
     extractTwitchData
   };
 
@@ -923,13 +937,22 @@
 
     function renderProfileLinks(app){
       var twitch = H.extractTwitchData(app.twitch_link, app.twitch);
-      if(!twitch) return "";
-
       var html = '<div class="profile-links">';
-      html += '<a class="profile-link twitch" href="' + H.escapeHtml(twitch.profileUrl) + '" target="_blank" rel="noopener noreferrer">';
-      html += H.twitchIcon();
-      html += '<span>Twitch Profil öffnen</span>';
-      html += '</a>';
+
+      if(twitch){
+        html += '<a class="profile-link twitch" href="' + H.escapeHtml(twitch.profileUrl) + '" target="_blank" rel="noopener noreferrer">';
+        html += H.twitchIcon();
+        html += '<span>Twitch Profil öffnen</span>';
+        html += '</a>';
+      }
+
+      if(app.tiktok_link){
+        html += '<a class="profile-link tiktok" href="' + H.escapeHtml(app.tiktok_link) + '" target="_blank" rel="noopener noreferrer">';
+        html += H.tiktokIcon();
+        html += '<span>TikTok Profil öffnen</span>';
+        html += '</a>';
+      }
+
       html += '</div>';
       return html;
     }
@@ -976,7 +999,7 @@
                 '<div class="embed-icon">' + H.twitchIcon() + '</div>' +
                 '<div>' +
                   '<h4>' + H.escapeHtml(app.twitch || "Twitch Kanal") + '</h4>' +
-                  '<p>Für Kanal-Links zeigen wir hier bewusst keinen hässlichen Offline-Twitch-Screen. Stattdessen kannst du den Kanal direkt sauber öffnen.</p>' +
+                  '<p>Leider keine VOD des Benutzers oder Live Vorschau vom Benutzer bereitgestellt.</p>' +
                 '</div>' +
               '</div>' +
             '</div>' +
