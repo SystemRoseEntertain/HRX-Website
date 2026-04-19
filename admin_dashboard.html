@@ -365,40 +365,26 @@
       color:var(--danger);
     }
 
-    .meta-list{
+    .app-layout{
       display:grid;
-      grid-template-columns:repeat(3, minmax(0,1fr));
-      gap:14px;
-      margin-bottom:18px;
+      grid-template-columns:minmax(0, 1.1fr) minmax(380px, 0.9fr);
+      gap:18px;
+      align-items:start;
     }
 
-    .meta{
-      background:var(--card-soft);
-      border:1px solid rgba(23,25,35,0.05);
-      border-radius:18px;
-      padding:14px 16px;
+    .left-pane{
+      min-width:0;
     }
 
-    .meta-label{
-      font-size:12px;
-      font-weight:900;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:0.06em;
-      margin-bottom:8px;
-    }
-
-    .meta-value{
-      font-size:14px;
-      line-height:1.5;
-      word-break:break-word;
+    .right-pane{
+      min-width:0;
     }
 
     .profile-links{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      margin-bottom:18px;
+      margin-bottom:16px;
     }
 
     .profile-link{
@@ -430,14 +416,39 @@
       color:#6441a5;
     }
 
-    .profile-link.tiktok{
-      color:#111111;
+    .mini-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .meta{
+      background:var(--card-soft);
+      border:1px solid rgba(23,25,35,0.05);
+      border-radius:16px;
+      padding:12px 14px;
+    }
+
+    .meta-label{
+      font-size:11px;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      margin-bottom:7px;
+    }
+
+    .meta-value{
+      font-size:14px;
+      line-height:1.45;
+      word-break:break-word;
     }
 
     .reason-box{
       background:var(--card-soft);
       border:1px solid rgba(23,25,35,0.05);
-      border-radius:20px;
+      border-radius:18px;
       padding:16px 18px;
       margin-bottom:18px;
     }
@@ -446,10 +457,72 @@
       margin-bottom:8px;
     }
 
+    .embed-card{
+      background:var(--card-soft);
+      border:1px solid rgba(23,25,35,0.05);
+      border-radius:20px;
+      padding:14px;
+      min-height:420px;
+    }
+
+    .embed-title{
+      font-size:13px;
+      font-weight:900;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:0.06em;
+      margin-bottom:12px;
+    }
+
+    .embed-stage{
+      width:100%;
+      min-height:360px;
+      border-radius:16px;
+      overflow:hidden;
+      background:#111;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .embed-stage iframe{
+      width:100%;
+      height:420px;
+      border:0;
+      display:block;
+    }
+
+    .embed-fallback{
+      width:100%;
+      min-height:360px;
+      border-radius:16px;
+      background:linear-gradient(180deg, #fafafa, #f2f2f2);
+      border:1px solid rgba(23,25,35,0.05);
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:flex-start;
+      gap:14px;
+    }
+
+    .embed-fallback h4{
+      margin:0;
+      font-size:22px;
+      letter-spacing:-0.03em;
+    }
+
+    .embed-fallback p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
     .app-actions{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
+      margin-top:18px;
     }
 
     .action-btn{
@@ -499,6 +572,16 @@
       box-shadow:var(--shadow-soft);
     }
 
+    @media (max-width:1300px){
+      .app-layout{
+        grid-template-columns:1fr;
+      }
+
+      .right-pane{
+        order:-1;
+      }
+    }
+
     @media (max-width:1180px){
       .header-row{
         grid-template-columns:1fr;
@@ -513,7 +596,6 @@
       }
 
       .stats{ grid-template-columns:repeat(2, minmax(0,1fr)); }
-      .meta-list{ grid-template-columns:repeat(2, minmax(0,1fr)); }
     }
 
     @media (max-width:760px){
@@ -529,7 +611,7 @@
       .nav-wrap{ gap:14px 18px; }
       .nav-link{ font-size:15px; }
       .stats{ grid-template-columns:1fr; }
-      .meta-list{ grid-template-columns:1fr; }
+      .mini-grid{ grid-template-columns:1fr; }
       .app-card{
         padding:20px;
         border-radius:24px;
@@ -616,6 +698,7 @@
   window.HRX_STATE = {
     SUPABASE_URL: "https://payxkjbgdrbrmwqmczhz.supabase.co",
     SUPABASE_ANON_KEY: "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa",
+    TWITCH_PARENT: "hrx-creator.net",
     supabase: null,
     allApplications: [],
     activeFilter: "all",
@@ -680,14 +763,6 @@
     `;
   }
 
-  function tiktokIcon(){
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor">
-        <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-1.877v8.452a7.703 7.703 0 1 1-7.703-7.703c.268 0 .533.018.794.052v3.79a3.92 3.92 0 1 0 3.92 3.92V2h3.625a4.8 4.8 0 0 0 3.134 4.557v.129Z"/>
-      </svg>
-    `;
-  }
-
   function toggleDebug(forceValue){
     if(typeof forceValue === "boolean"){
       window.HRX_STATE.debugVisible = forceValue;
@@ -697,6 +772,53 @@
 
     debugBox.classList.toggle("show", window.HRX_STATE.debugVisible);
     debugToggleBtn.textContent = window.HRX_STATE.debugVisible ? "Debug ausblenden" : "Debug anzeigen";
+  }
+
+  function extractTwitchData(url, fallbackName){
+    if(!url && !fallbackName){
+      return null;
+    }
+
+    var safeUrl = (url || "").trim();
+    var lower = safeUrl.toLowerCase();
+
+    if(lower.includes("twitch.tv/videos/")){
+      var parts = safeUrl.split("/videos/");
+      if(parts[1]){
+        var videoId = parts[1].split(/[?#&/]/)[0];
+        if(videoId){
+          return {
+            type: "video",
+            id: videoId,
+            profileUrl: safeUrl
+          };
+        }
+      }
+    }
+
+    if(lower.includes("twitch.tv/")){
+      var after = safeUrl.split("twitch.tv/")[1];
+      if(after){
+        var firstPart = after.split(/[?#]/)[0].split("/")[0];
+        if(firstPart && firstPart !== "videos"){
+          return {
+            type: "channel",
+            id: firstPart,
+            profileUrl: "https://www.twitch.tv/" + firstPart
+          };
+        }
+      }
+    }
+
+    if(fallbackName){
+      return {
+        type: "channel",
+        id: fallbackName,
+        profileUrl: "https://www.twitch.tv/" + fallbackName
+      };
+    }
+
+    return null;
   }
 
   window.HRX_HELPERS = {
@@ -711,7 +833,7 @@
     filterButtons,
     toggleDebug,
     twitchIcon,
-    tiktokIcon
+    extractTwitchData
   };
 
   toggleDebug(false);
@@ -758,24 +880,51 @@
     }
 
     function renderProfileLinks(app){
+      var twitch = H.extractTwitchData(app.twitch_link, app.twitch);
+      if(!twitch) return "";
+
       var html = '<div class="profile-links">';
-
-      if(app.twitch_link){
-        html += '<a class="profile-link twitch" href="' + H.escapeHtml(app.twitch_link) + '" target="_blank" rel="noopener noreferrer">';
-        html += H.twitchIcon();
-        html += '<span>Twitch Profil öffnen</span>';
-        html += '</a>';
-      }
-
-      if(app.tiktok_link){
-        html += '<a class="profile-link tiktok" href="' + H.escapeHtml(app.tiktok_link) + '" target="_blank" rel="noopener noreferrer">';
-        html += H.tiktokIcon();
-        html += '<span>TikTok Profil öffnen</span>';
-        html += '</a>';
-      }
-
+      html += '<a class="profile-link twitch" href="' + H.escapeHtml(twitch.profileUrl) + '" target="_blank" rel="noopener noreferrer">';
+      html += H.twitchIcon();
+      html += '<span>Twitch Profil öffnen</span>';
+      html += '</a>';
       html += '</div>';
       return html;
+    }
+
+    function renderTwitchPreview(app){
+      var twitch = H.extractTwitchData(app.twitch_link, app.twitch);
+
+      if(!twitch){
+        return '' +
+          '<div class="embed-card">' +
+            '<div class="embed-title">Twitch Preview</div>' +
+            '<div class="embed-fallback">' +
+              '<h4>Kein Twitch-Link vorhanden</h4>' +
+              '<p>Für diese Bewerbung gibt es aktuell keinen verwertbaren Twitch-Link für eine Einbettung.</p>' +
+            '</div>' +
+          '</div>';
+      }
+
+      var src = '';
+
+      if(twitch.type === 'video'){
+        src = 'https://player.twitch.tv/?video=' + encodeURIComponent(twitch.id) + '&parent=' + encodeURIComponent(S.TWITCH_PARENT);
+      } else {
+        src = 'https://player.twitch.tv/?channel=' + encodeURIComponent(twitch.id) + '&parent=' + encodeURIComponent(S.TWITCH_PARENT);
+      }
+
+      return '' +
+        '<div class="embed-card">' +
+          '<div class="embed-title">Twitch Preview</div>' +
+          '<div class="embed-stage">' +
+            '<iframe ' +
+              'src="' + src + '" ' +
+              'allowfullscreen="true" ' +
+              'scrolling="no">' +
+            '</iframe>' +
+          '</div>' +
+        '</div>';
     }
 
     function renderApplications(){
@@ -798,18 +947,18 @@
         html += '<div>' + H.badge(app.status) + '</div>';
         html += '</div>';
 
+        html += '<div class="app-layout">';
+
+        html += '<div class="left-pane">';
         html += renderProfileLinks(app);
 
-        html += '<div class="meta-list">';
+        html += '<div class="mini-grid">';
         html += '<div class="meta"><div class="meta-label">E-Mail</div><div class="meta-value">' + H.escapeHtml(app.email || "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">Discord</div><div class="meta-value">' + H.escapeHtml(app.discord || "-") + '</div></div>';
-        html += '<div class="meta"><div class="meta-label">Plattform</div><div class="meta-value">' + H.escapeHtml(app.platform || "-") + '</div></div>';
-
         html += '<div class="meta"><div class="meta-label">Twitch</div><div class="meta-value">' + H.escapeHtml(app.twitch || "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">TikTok</div><div class="meta-value">' + H.escapeHtml(app.tiktok || "-") + '</div></div>';
-        html += '<div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">' + H.escapeHtml(app.viewer != null ? app.viewer : "-") + '</div></div>';
-
         html += '<div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">' + H.escapeHtml(app.streams != null ? app.streams : "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">' + H.escapeHtml(app.viewer != null ? app.viewer : "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">' + H.escapeHtml(app.category || "-") + '</div></div>';
         html += '<div class="meta"><div class="meta-label">Age Group</div><div class="meta-value">' + H.escapeHtml(app.age_group || "-") + '</div></div>';
         html += '</div>';
@@ -821,7 +970,13 @@
         html += '<button class="action-btn reject" data-id="' + H.escapeHtml(app.id) + '" data-action="reject">Reject</button>';
         html += '<button class="action-btn neutral" data-id="' + H.escapeHtml(app.id) + '" data-action="pending">Auf Pending setzen</button>';
         html += '</div>';
+        html += '</div>';
 
+        html += '<div class="right-pane">';
+        html += renderTwitchPreview(app);
+        html += '</div>';
+
+        html += '</div>';
         html += '</article>';
       });
 
