@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HRX CreatorNET – Admin Dashboard</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
     :root{
       --bg:#f7f6f3;
@@ -506,314 +507,347 @@
 </div>
 
 <script>
-const SUPABASE_URL = "https://payxkjbgdrbrmwqmczhz.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa";
+  window.HRX_STATE = {
+    SUPABASE_URL: "https://payxkjbgdrbrmwqmczhz.supabase.co",
+    SUPABASE_ANON_KEY: "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa",
+    supabase: null,
+    allApplications: [],
+    activeFilter: "all"
+  };
+</script>
 
-const debugBox = document.getElementById("debugBox");
-const applicationsEl = document.getElementById("applications");
-const messageEl = document.getElementById("message");
-const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
+<script>
+  const debugBox = document.getElementById("debugBox");
+  const applicationsEl = document.getElementById("applications");
+  const messageEl = document.getElementById("message");
+  const filterButtons = Array.from(document.querySelectorAll(".filter-btn"));
 
-let supabase;
-let allApplications = [];
-let activeFilter = "all";
-
-function log(text){
-  debugBox.textContent += "\n" + text;
-  console.log(text);
-}
-
-function showMessage(type, text){
-  messageEl.className = "message show " + type;
-  messageEl.textContent = text;
-}
-
-function clearMessage(){
-  messageEl.className = "message";
-  messageEl.textContent = "";
-}
-
-function escapeHtml(value){
-  if(value === null || value === undefined) return "";
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-function formatDate(value){
-  if(!value) return "-";
-  const d = new Date(value);
-  if(Number.isNaN(d.getTime())) return String(value);
-  return d.toLocaleString("de-DE");
-}
-
-function normalizeStatus(status){
-  if(status === "approved" || status === "rejected" || status === "pending") return status;
-  return "pending";
-}
-
-function badge(status){
-  const s = normalizeStatus(status);
-  return '<span class="badge ' + s + '">' + s + '</span>';
-}
-
-function filteredApplications(){
-  if(activeFilter === "all") return allApplications;
-  return allApplications.filter(app => normalizeStatus(app.status) === activeFilter);
-}
-
-function updateStats(){
-  document.getElementById("statTotal").textContent = allApplications.length;
-  document.getElementById("statPending").textContent = allApplications.filter(app => normalizeStatus(app.status) === "pending").length;
-  document.getElementById("statApproved").textContent = allApplications.filter(app => normalizeStatus(app.status) === "approved").length;
-  document.getElementById("statRejected").textContent = allApplications.filter(app => normalizeStatus(app.status) === "rejected").length;
-}
-
-function renderApplications(){
-  const items = filteredApplications();
-
-  if(!items.length){
-    applicationsEl.innerHTML = '<div class="empty-state"><h3>Keine Bewerbungen in diesem Filter</h3><p>Aktuell gibt es hier nichts anzuzeigen.</p></div>';
-    return;
+  function log(text){
+    debugBox.textContent += "\n" + text;
+    console.log(text);
   }
 
-  let html = "";
+  function showMessage(type, text){
+    messageEl.className = "message show " + type;
+    messageEl.textContent = text;
+  }
 
-  items.forEach(app => {
-    html += '<article class="app-card">';
-    html += '<div class="app-title">' + escapeHtml(app.twitch || app.tiktok || app.email || "Bewerbung") + '</div>';
-    html += badge(app.status);
-    html += '<div class="app-sub">Eingegangen: ' + escapeHtml(formatDate(app.created_at)) + '<br>Plattform: ' + escapeHtml(app.platform || "-") + '<br>Empfohlen von: ' + escapeHtml(app.referred_by || "-") + '</div>';
+  function clearMessage(){
+    messageEl.className = "message";
+    messageEl.textContent = "";
+  }
 
-    html += '<div class="meta-list">';
-    html += '<div class="meta"><div class="meta-label">E-Mail</div><div class="meta-value">' + escapeHtml(app.email || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Discord</div><div class="meta-value">' + escapeHtml(app.discord || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Plattform</div><div class="meta-value">' + escapeHtml(app.platform || "-") + '</div></div>';
+  function escapeHtml(value){
+    if(value === null || value === undefined) return "";
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
-    html += '<div class="meta"><div class="meta-label">Twitch</div><div class="meta-value">' + escapeHtml(app.twitch || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Twitch Link</div><div class="meta-value">' + escapeHtml(app.twitch_link || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">TikTok</div><div class="meta-value">' + escapeHtml(app.tiktok || "-") + '</div></div>';
+  function formatDate(value){
+    if(!value) return "-";
+    var d = new Date(value);
+    if(Number.isNaN(d.getTime())) return String(value);
+    return d.toLocaleString("de-DE");
+  }
 
-    html += '<div class="meta"><div class="meta-label">TikTok Link</div><div class="meta-value">' + escapeHtml(app.tiktok_link || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">' + escapeHtml(app.viewer ?? "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">' + escapeHtml(app.streams ?? "-") + '</div></div>';
+  function normalizeStatus(status){
+    if(status === "approved" || status === "rejected" || status === "pending") return status;
+    return "pending";
+  }
 
-    html += '<div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">' + escapeHtml(app.category || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Age Group</div><div class="meta-value">' + escapeHtml(app.age_group || "-") + '</div></div>';
-    html += '<div class="meta"><div class="meta-label">Status</div><div class="meta-value">' + escapeHtml(normalizeStatus(app.status)) + '</div></div>';
-    html += '</div>';
+  function badge(status){
+    var s = normalizeStatus(status);
+    return '<span class="badge ' + s + '">' + s + '</span>';
+  }
 
-    html += '<div class="reason-box"><div class="meta-label">Warum HRX CreatorNET?</div><div class="meta-value">' + escapeHtml(app.reason || "-") + '</div></div>';
+  window.HRX_HELPERS = {
+    log,
+    showMessage,
+    clearMessage,
+    escapeHtml,
+    formatDate,
+    normalizeStatus,
+    badge,
+    applicationsEl,
+    filterButtons
+  };
 
-    html += '<div class="app-actions">';
-    html += '<button class="action-btn approve" data-id="' + escapeHtml(app.id) + '" data-action="approve">Approve</button>';
-    html += '<button class="action-btn reject" data-id="' + escapeHtml(app.id) + '" data-action="reject">Reject</button>';
-    html += '<button class="action-btn neutral" data-id="' + escapeHtml(app.id) + '" data-action="pending">Auf Pending setzen</button>';
-    html += '</div>';
+  log("1) Helper-Script läuft");
 
-    html += '</article>';
+  window.addEventListener("error", function(event){
+    log("WINDOW ERROR: " + event.message);
   });
 
-  applicationsEl.innerHTML = html;
+  window.addEventListener("unhandledrejection", function(event){
+    var msg = event.reason && event.reason.message ? event.reason.message : (event.reason || "unknown");
+    log("PROMISE ERROR: " + msg);
+  });
+</script>
 
-  applicationsEl.querySelectorAll("button[data-action]").forEach(btn => {
-    btn.addEventListener("click", async function(){
-      const id = this.dataset.id;
-      const action = this.dataset.action;
+<script>
+  (function(){
+    var S = window.HRX_STATE;
+    var H = window.HRX_HELPERS;
 
-      if(action === "approve"){
-        await approveApplication(id, this);
-      } else {
-        await updateStatus(id, action, this);
+    function filteredApplications(){
+      if(S.activeFilter === "all") return S.allApplications;
+      return S.allApplications.filter(function(app){
+        return H.normalizeStatus(app.status) === S.activeFilter;
+      });
+    }
+
+    function updateStats(){
+      document.getElementById("statTotal").textContent = S.allApplications.length;
+      document.getElementById("statPending").textContent = S.allApplications.filter(function(app){
+        return H.normalizeStatus(app.status) === "pending";
+      }).length;
+      document.getElementById("statApproved").textContent = S.allApplications.filter(function(app){
+        return H.normalizeStatus(app.status) === "approved";
+      }).length;
+      document.getElementById("statRejected").textContent = S.allApplications.filter(function(app){
+        return H.normalizeStatus(app.status) === "rejected";
+      }).length;
+    }
+
+    function renderApplications(){
+      var items = filteredApplications();
+
+      if(!items.length){
+        H.applicationsEl.innerHTML = '<div class="empty-state"><h3>Keine Bewerbungen in diesem Filter</h3><p>Aktuell gibt es hier nichts anzuzeigen.</p></div>';
+        return;
       }
+
+      var html = "";
+
+      items.forEach(function(app){
+        html += '<article class="app-card">';
+        html += '<div class="app-title">' + H.escapeHtml(app.twitch || app.tiktok || app.email || "Bewerbung") + '</div>';
+        html += H.badge(app.status);
+        html += '<div class="app-sub">Eingegangen: ' + H.escapeHtml(H.formatDate(app.created_at)) + '<br>Plattform: ' + H.escapeHtml(app.platform || "-") + '<br>Empfohlen von: ' + H.escapeHtml(app.referred_by || "-") + '</div>';
+
+        html += '<div class="meta-list">';
+        html += '<div class="meta"><div class="meta-label">E-Mail</div><div class="meta-value">' + H.escapeHtml(app.email || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Discord</div><div class="meta-value">' + H.escapeHtml(app.discord || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Plattform</div><div class="meta-value">' + H.escapeHtml(app.platform || "-") + '</div></div>';
+
+        html += '<div class="meta"><div class="meta-label">Twitch</div><div class="meta-value">' + H.escapeHtml(app.twitch || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Twitch Link</div><div class="meta-value">' + H.escapeHtml(app.twitch_link || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">TikTok</div><div class="meta-value">' + H.escapeHtml(app.tiktok || "-") + '</div></div>';
+
+        html += '<div class="meta"><div class="meta-label">TikTok Link</div><div class="meta-value">' + H.escapeHtml(app.tiktok_link || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Viewer</div><div class="meta-value">' + H.escapeHtml(app.viewer != null ? app.viewer : "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Streams/Woche</div><div class="meta-value">' + H.escapeHtml(app.streams != null ? app.streams : "-") + '</div></div>';
+
+        html += '<div class="meta"><div class="meta-label">Kategorie</div><div class="meta-value">' + H.escapeHtml(app.category || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Age Group</div><div class="meta-value">' + H.escapeHtml(app.age_group || "-") + '</div></div>';
+        html += '<div class="meta"><div class="meta-label">Status</div><div class="meta-value">' + H.escapeHtml(H.normalizeStatus(app.status)) + '</div></div>';
+        html += '</div>';
+
+        html += '<div class="reason-box"><div class="meta-label">Warum HRX CreatorNET?</div><div class="meta-value">' + H.escapeHtml(app.reason || "-") + '</div></div>';
+
+        html += '<div class="app-actions">';
+        html += '<button class="action-btn approve" data-id="' + H.escapeHtml(app.id) + '" data-action="approve">Approve</button>';
+        html += '<button class="action-btn reject" data-id="' + H.escapeHtml(app.id) + '" data-action="reject">Reject</button>';
+        html += '<button class="action-btn neutral" data-id="' + H.escapeHtml(app.id) + '" data-action="pending">Auf Pending setzen</button>';
+        html += '</div>';
+
+        html += '</article>';
+      });
+
+      H.applicationsEl.innerHTML = html;
+
+      H.applicationsEl.querySelectorAll("button[data-action]").forEach(function(btn){
+        btn.addEventListener("click", async function(){
+          var id = this.dataset.id;
+          var action = this.dataset.action;
+
+          if(action === "approve"){
+            await approveApplication(id, this);
+          } else {
+            await updateStatus(id, action, this);
+          }
+        });
+      });
+    }
+
+    async function updateStatus(id, status, button){
+      H.clearMessage();
+      if(button) button.disabled = true;
+
+      try{
+        var result = await S.supabase
+          .from("applications")
+          .update({ status: status, updated_at: new Date().toISOString() })
+          .eq("id", id);
+
+        if(result.error){
+          H.log("STATUS ERROR: " + result.error.message);
+          H.showMessage("error", "Status-Update fehlgeschlagen: " + result.error.message);
+          return;
+        }
+
+        H.showMessage("success", 'Status erfolgreich auf "' + status + '" gesetzt.');
+        await loadDashboard();
+      } catch(err){
+        H.log("STATUS CATCH ERROR: " + (err.message || err));
+        H.showMessage("error", "Status-Update fehlgeschlagen.");
+      } finally {
+        if(button) button.disabled = false;
+      }
+    }
+
+    async function approveApplication(id, button){
+      H.clearMessage();
+      if(button) button.disabled = true;
+
+      try{
+        var sessionRes = await S.supabase.auth.getSession();
+        var accessToken = sessionRes.data && sessionRes.data.session ? sessionRes.data.session.access_token : null;
+
+        if(!accessToken){
+          H.log("APPROVE ERROR: Keine Session");
+          H.showMessage("error", "Keine Session gefunden.");
+          return;
+        }
+
+        var response = await fetch(S.SUPABASE_URL + "/functions/v1/approve-application", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + accessToken
+          },
+          body: JSON.stringify({ applicationId: id })
+        });
+
+        var result = await response.json().catch(function(){ return {}; });
+
+        if(!response.ok){
+          H.log("APPROVE ERROR: " + JSON.stringify(result));
+          H.showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText));
+          return;
+        }
+
+        H.log("APPROVE OK: " + JSON.stringify(result));
+        H.showMessage("success", "Bewerbung angenommen und Creator-User angelegt.");
+        await loadDashboard();
+      } catch(err){
+        H.log("APPROVE CATCH ERROR: " + (err.message || err));
+        H.showMessage("error", "Approve fehlgeschlagen.");
+      } finally {
+        if(button) button.disabled = false;
+      }
+    }
+
+    async function loadDashboard(){
+      H.clearMessage();
+
+      try{
+        H.log("2) Dashboard Loader läuft");
+
+        if(!window.supabase){
+          H.log("window.supabase fehlt");
+          H.showMessage("error", "Supabase CDN wurde nicht geladen.");
+          return;
+        }
+
+        if(!S.supabase){
+          S.supabase = window.supabase.createClient(S.SUPABASE_URL, S.SUPABASE_ANON_KEY);
+          H.log("3) Supabase Client erstellt");
+        }
+
+        var authRes = await S.supabase.auth.getUser();
+
+        if(authRes.error){
+          H.log("AUTH ERROR: " + authRes.error.message);
+          H.showMessage("error", "Auth-Fehler: " + authRes.error.message);
+          return;
+        }
+
+        var user = authRes.data ? authRes.data.user : null;
+
+        if(!user){
+          H.log("Kein User eingeloggt");
+          window.location.href = "login.html";
+          return;
+        }
+
+        H.log("4) User ID: " + user.id);
+        H.log("5) User Mail: " + (user.email || "-"));
+
+        var profileRes = await S.supabase
+          .from("profiles")
+          .select("id, email, role")
+          .eq("id", user.id)
+          .maybeSingle();
+
+        if(profileRes.error){
+          H.log("PROFILE ERROR: " + profileRes.error.message);
+          H.showMessage("error", "Profil-Fehler: " + profileRes.error.message);
+          return;
+        }
+
+        var profile = profileRes.data;
+        H.log("6) Profil: " + JSON.stringify(profile));
+
+        if(!profile || (profile.role !== "owner" && profile.role !== "admin")){
+          H.log("Zugriff verweigert");
+          H.showMessage("error", "Kein Zugriff auf das Admin Dashboard.");
+          return;
+        }
+
+        var appRes = await S.supabase
+          .from("applications")
+          .select("*");
+
+        if(appRes.error){
+          H.log("APPLICATION ERROR: " + appRes.error.message);
+          H.showMessage("error", "Applications-Fehler: " + appRes.error.message);
+          return;
+        }
+
+        S.allApplications = Array.isArray(appRes.data) ? appRes.data : [];
+        S.allApplications.sort(function(a, b){
+          var aTime = a.created_at ? new Date(a.created_at).getTime() : 0;
+          var bTime = b.created_at ? new Date(b.created_at).getTime() : 0;
+          return bTime - aTime;
+        });
+
+        H.log("7) Applications geladen: " + S.allApplications.length);
+
+        updateStats();
+        renderApplications();
+      } catch(err){
+        H.log("CATCH ERROR: " + (err.message || err));
+        H.showMessage("error", "Unerwarteter Fehler: " + (err.message || err));
+      }
+    }
+
+    document.getElementById("reloadBtn").addEventListener("click", function(){
+      loadDashboard();
     });
-  });
-}
 
-async function updateStatus(id, status, button){
-  clearMessage();
-  if(button) button.disabled = true;
-
-  try{
-    const result = await supabase
-      .from("applications")
-      .update({ status: status, updated_at: new Date().toISOString() })
-      .eq("id", id);
-
-    if(result.error){
-      log("STATUS ERROR: " + result.error.message);
-      showMessage("error", "Status-Update fehlgeschlagen: " + result.error.message);
-      return;
-    }
-
-    showMessage("success", 'Status erfolgreich auf "' + status + '" gesetzt.');
-    await loadDashboard();
-  } catch(err){
-    log("STATUS CATCH ERROR: " + (err.message || err));
-    showMessage("error", "Status-Update fehlgeschlagen.");
-  } finally {
-    if(button) button.disabled = false;
-  }
-}
-
-async function approveApplication(id, button){
-  clearMessage();
-  if(button) button.disabled = true;
-
-  try{
-    const sessionRes = await supabase.auth.getSession();
-    const accessToken = sessionRes.data && sessionRes.data.session ? sessionRes.data.session.access_token : null;
-
-    if(!accessToken){
-      log("APPROVE ERROR: Keine Session");
-      showMessage("error", "Keine Session gefunden.");
-      return;
-    }
-
-    const response = await fetch(SUPABASE_URL + "/functions/v1/approve-application", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + accessToken
-      },
-      body: JSON.stringify({ applicationId: id })
-    });
-
-    const result = await response.json().catch(function(){ return {}; });
-
-    if(!response.ok){
-      log("APPROVE ERROR: " + JSON.stringify(result));
-      showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText));
-      return;
-    }
-
-    log("APPROVE OK: " + JSON.stringify(result));
-    showMessage("success", "Bewerbung angenommen und Creator-User angelegt.");
-    await loadDashboard();
-  } catch(err){
-    log("APPROVE CATCH ERROR: " + (err.message || err));
-    showMessage("error", "Approve fehlgeschlagen.");
-  } finally {
-    if(button) button.disabled = false;
-  }
-}
-
-async function loadDashboard(){
-  clearMessage();
-
-  try{
-    log("1) Script läuft");
-
-    if(!window.supabase){
-      log("window.supabase fehlt");
-      showMessage("error", "Supabase CDN wurde nicht geladen.");
-      return;
-    }
-
-    if(!supabase){
-      supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      log("2) Supabase Client erstellt");
-    }
-
-    const authRes = await supabase.auth.getUser();
-
-    if(authRes.error){
-      log("AUTH ERROR: " + authRes.error.message);
-      showMessage("error", "Auth-Fehler: " + authRes.error.message);
-      return;
-    }
-
-    const user = authRes.data ? authRes.data.user : null;
-
-    if(!user){
-      log("Kein User eingeloggt");
+    document.getElementById("logoutBtn").addEventListener("click", async function(){
+      if(S.supabase){
+        await S.supabase.auth.signOut();
+      }
       window.location.href = "login.html";
-      return;
-    }
-
-    log("3) User ID: " + user.id);
-    log("4) User Mail: " + (user.email || "-"));
-
-    const profileRes = await supabase
-      .from("profiles")
-      .select("id, email, role")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if(profileRes.error){
-      log("PROFILE ERROR: " + profileRes.error.message);
-      showMessage("error", "Profil-Fehler: " + profileRes.error.message);
-      return;
-    }
-
-    const profile = profileRes.data;
-    log("5) Profil: " + JSON.stringify(profile));
-
-    if(!profile || (profile.role !== "owner" && profile.role !== "admin")){
-      log("Zugriff verweigert");
-      showMessage("error", "Kein Zugriff auf das Admin Dashboard.");
-      return;
-    }
-
-    const appRes = await supabase
-      .from("applications")
-      .select("*");
-
-    if(appRes.error){
-      log("APPLICATION ERROR: " + appRes.error.message);
-      showMessage("error", "Applications-Fehler: " + appRes.error.message);
-      return;
-    }
-
-    allApplications = Array.isArray(appRes.data) ? appRes.data : [];
-    allApplications.sort((a, b) => {
-      const aTime = a.created_at ? new Date(a.created_at).getTime() : 0;
-      const bTime = b.created_at ? new Date(b.created_at).getTime() : 0;
-      return bTime - aTime;
     });
 
-    log("6) Applications geladen: " + allApplications.length);
+    H.filterButtons.forEach(function(btn){
+      btn.addEventListener("click", function(){
+        H.filterButtons.forEach(function(x){ x.classList.remove("active"); });
+        btn.classList.add("active");
+        S.activeFilter = btn.dataset.filter;
+        renderApplications();
+      });
+    });
 
-    updateStats();
-    renderApplications();
-  } catch(err){
-    log("CATCH ERROR: " + (err.message || err));
-    showMessage("error", "Unerwarteter Fehler: " + (err.message || err));
-  }
-}
-
-document.getElementById("reloadBtn").addEventListener("click", function(){
-  loadDashboard();
-});
-
-document.getElementById("logoutBtn").addEventListener("click", async function(){
-  if(supabase){
-    await supabase.auth.signOut();
-  }
-  window.location.href = "login.html";
-});
-
-filterButtons.forEach(btn => {
-  btn.addEventListener("click", function(){
-    filterButtons.forEach(x => x.classList.remove("active"));
-    this.classList.add("active");
-    activeFilter = this.dataset.filter;
-    renderApplications();
-  });
-});
-
-window.addEventListener("error", function(event){
-  log("WINDOW ERROR: " + event.message);
-});
-
-window.addEventListener("unhandledrejection", function(event){
-  log("PROMISE ERROR: " + (event.reason && event.reason.message ? event.reason.message : event.reason || "unknown"));
-});
-
-loadDashboard();
+    loadDashboard();
+  })();
 </script>
 </body>
 </html>
