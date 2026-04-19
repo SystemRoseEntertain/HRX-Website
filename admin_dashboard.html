@@ -23,12 +23,9 @@
     --success:#1d7f4e;
     --danger:#b42318;
     --warning:#b7791f;
-    --info:#1d4ed8;
   }
 
-  *{
-    box-sizing:border-box;
-  }
+  *{ box-sizing:border-box; }
 
   html,body{
     margin:0;
@@ -42,9 +39,7 @@
     overflow-x:hidden;
   }
 
-  body{
-    min-height:100vh;
-  }
+  body{ min-height:100vh; }
 
   a{
     color:inherit;
@@ -110,24 +105,7 @@
     transition:0.18s ease;
   }
 
-  .nav-link:hover{
-    color:var(--text);
-  }
-
-  .nav-link.active{
-    color:#666666;
-  }
-
-  .nav-link.active::after{
-    content:"";
-    position:absolute;
-    left:0;
-    right:0;
-    bottom:-9px;
-    height:2px;
-    background:#7a7a7a;
-    border-radius:2px;
-  }
+  .nav-link:hover{ color:var(--text); }
 
   .top-actions{
     display:flex;
@@ -201,9 +179,7 @@
     word-break:break-word;
   }
 
-  .message.show{
-    display:block;
-  }
+  .message.show{ display:block; }
 
   .message.error{
     background:rgba(180,35,24,0.08);
@@ -215,19 +191,6 @@
     background:rgba(29,127,78,0.08);
     color:var(--success);
     border:1px solid rgba(29,127,78,0.18);
-  }
-
-  .debug-box{
-    background:rgba(29,78,216,0.08);
-    color:var(--info);
-    border:1px solid rgba(29,78,216,0.18);
-    border-radius:18px;
-    padding:16px;
-    margin-bottom:18px;
-    font-size:13px;
-    line-height:1.6;
-    white-space:pre-wrap;
-    word-break:break-word;
   }
 
   .stats{
@@ -421,8 +384,9 @@
     box-shadow:var(--shadow-soft);
   }
 
-  .action-btn:hover{
-    transform:translateY(-1px);
+  .action-btn:disabled{
+    opacity:0.6;
+    cursor:not-allowed;
   }
 
   .empty-state{
@@ -461,26 +425,14 @@
       gap:16px;
     }
 
-    .brand{
-      justify-content:center;
-    }
-
-    .nav-wrap{
-      padding-top:0;
-    }
-
+    .brand{ justify-content:center; }
+    .nav-wrap{ padding-top:0; }
     .top-actions{
       justify-content:center;
       padding-top:0;
     }
-
-    .stats{
-      grid-template-columns:repeat(2, minmax(0,1fr));
-    }
-
-    .app-grid{
-      grid-template-columns:repeat(2, minmax(0,1fr));
-    }
+    .stats{ grid-template-columns:repeat(2, minmax(0,1fr)); }
+    .app-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); }
   }
 
   @media (max-width:760px){
@@ -493,22 +445,10 @@
       min-width:auto;
     }
 
-    .nav-wrap{
-      gap:14px 18px;
-    }
-
-    .nav-link{
-      font-size:15px;
-    }
-
-    .stats{
-      grid-template-columns:1fr;
-    }
-
-    .app-grid{
-      grid-template-columns:1fr;
-    }
-
+    .nav-wrap{ gap:14px 18px; }
+    .nav-link{ font-size:15px; }
+    .stats{ grid-template-columns:1fr; }
+    .app-grid{ grid-template-columns:1fr; }
     .app-card{
       padding:18px;
       border-radius:22px;
@@ -693,12 +633,24 @@
         </div>
 
         <div class="app-actions">
-          <button class="action-btn approve" onclick="updateStatus('${app.id}','approved')">Approve</button>
-          <button class="action-btn reject" onclick="updateStatus('${app.id}','rejected')">Reject</button>
-          <button class="action-btn neutral" onclick="updateStatus('${app.id}','pending')">Auf Pending setzen</button>
+          <button class="action-btn approve" data-id="${escapeHtml(app.id)}">Approve</button>
+          <button class="action-btn reject" data-id="${escapeHtml(app.id)}">Reject</button>
+          <button class="action-btn neutral" data-id="${escapeHtml(app.id)}">Auf Pending setzen</button>
         </div>
       </article>
     `).join("");
+
+    applicationsEl.querySelectorAll(".action-btn.approve").forEach(btn => {
+      btn.addEventListener("click", () => approveApplication(btn.dataset.id, btn));
+    });
+
+    applicationsEl.querySelectorAll(".action-btn.reject").forEach(btn => {
+      btn.addEventListener("click", () => updateStatus(btn.dataset.id, "rejected", btn));
+    });
+
+    applicationsEl.querySelectorAll(".action-btn.neutral").forEach(btn => {
+      btn.addEventListener("click", () => updateStatus(btn.dataset.id, "pending", btn));
+    });
   }
 
   async function ensureAdminAccess(){
@@ -706,8 +658,6 @@
 
     const { data: authData, error: authError } = await supabase.auth.getUser();
     appendDebug("2) Auth geladen");
-    appendDebug("AUTH USER: " + JSON.stringify(authData));
-    appendDebug("AUTH ERROR: " + JSON.stringify(authError));
 
     if(authError || !authData.user){
       appendDebug("3) Kein eingeloggter User");
@@ -722,8 +672,6 @@
       .maybeSingle();
 
     appendDebug("4) Profil geladen");
-    appendDebug("PROFILE: " + JSON.stringify(profile));
-    appendDebug("PROFILE ERROR: " + JSON.stringify(profileError));
 
     if(profileError){
       showMessage("error", "Profil-Fehler: " + profileError.message);
@@ -741,11 +689,9 @@
 
   async function loadApplications(){
     clearMessage();
-    appendDebug("6) loadApplications gestartet");
+    appendDebug("6) loadApplications startet");
 
     const accessOk = await ensureAdminAccess();
-    appendDebug("7) accessOk = " + accessOk);
-
     if(!accessOk) return;
 
     const { data, error } = await supabase
@@ -753,12 +699,9 @@
       .select("*")
       .order("created_at", { ascending: false });
 
-    appendDebug("8) Applications Query fertig");
-    appendDebug("APPLICATIONS DATA: " + JSON.stringify(data));
-    appendDebug("APPLICATIONS ERROR: " + JSON.stringify(error));
-
     if(error){
       showMessage("error", "Applications-Fehler: " + error.message);
+      appendDebug("Applications Fehler: " + error.message);
       applicationsEl.innerHTML = `
         <div class="empty-state">
           <h3>Laden fehlgeschlagen</h3>
@@ -769,20 +712,23 @@
     }
 
     allApplications = Array.isArray(data) ? data : [];
-    appendDebug("9) Anzahl Bewerbungen: " + allApplications.length);
+    appendDebug("7) Bewerbungen geladen: " + allApplications.length);
 
     showMessage("success", "Geladene Bewerbungen: " + allApplications.length);
     updateStats(allApplications);
     renderApplications();
   }
 
-  async function updateStatus(id, status){
+  async function updateStatus(id, status, button){
     clearMessage();
+    if(button) button.disabled = true;
 
     const { error } = await supabase
       .from("applications")
       .update({ status })
       .eq("id", id);
+
+    if(button) button.disabled = false;
 
     if(error){
       showMessage("error", "Status-Update fehlgeschlagen: " + error.message);
@@ -793,13 +739,44 @@
     await loadApplications();
   }
 
-  window.addEventListener("error", (event) => {
-    appendDebug("GLOBAL ERROR: " + event.message);
-  });
+  async function approveApplication(id, button){
+    clearMessage();
+    if(button) button.disabled = true;
 
-  window.addEventListener("unhandledrejection", (event) => {
-    appendDebug("PROMISE ERROR: " + JSON.stringify(event.reason));
-  });
+    appendDebug("8) Approve startet für ID: " + id);
+
+    const { data: sessionData } = await supabase.auth.getSession();
+    const accessToken = sessionData?.session?.access_token;
+
+    if(!accessToken){
+      if(button) button.disabled = false;
+      showMessage("error", "Keine Session gefunden.");
+      return;
+    }
+
+    const response = await fetch(SUPABASE_URL + "/functions/v1/approve-application", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + accessToken
+      },
+      body: JSON.stringify({ applicationId: id })
+    });
+
+    const result = await response.json().catch(() => ({}));
+
+    if(button) button.disabled = false;
+
+    if(!response.ok){
+      showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText));
+      appendDebug("Approve Fehler: " + JSON.stringify(result));
+      return;
+    }
+
+    showMessage("success", "Bewerbung angenommen und Creator-User angelegt.");
+    appendDebug("9) Approve erfolgreich: " + JSON.stringify(result));
+    await loadApplications();
+  }
 
   try{
     appendDebug("0) Script gestartet");
