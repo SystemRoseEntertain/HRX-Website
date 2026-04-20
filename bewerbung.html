@@ -710,6 +710,7 @@ footer{
         success: "Danke! Deine Bewerbung wurde gespeichert.",
         errorMissingConfig: "Supabase ist noch nicht konfiguriert. Bitte URL und Anon Key eintragen.",
         errorPrivacy: "Bitte stimme zuerst der Datenschutzerklärung zu.",
+        errorEmail: "Bitte gib eine gültige E-Mail-Adresse an.",
         errorTwitch: "Bitte gib deinen Twitch Namen und Link an.",
         errorTikTok: "Bitte gib deinen TikTok Namen und Link an.",
         errorAge: "Bitte bestätige, dass du mindestens 16 Jahre alt bist.",
@@ -759,6 +760,7 @@ footer{
         success: "Thank you! Your application has been saved.",
         errorMissingConfig: "Supabase is not configured yet. Please set URL and anon key.",
         errorPrivacy: "Please accept the privacy policy first.",
+        errorEmail: "Please enter a valid email address.",
         errorTwitch: "Please provide your Twitch name and link.",
         errorTikTok: "Please provide your TikTok name and link.",
         errorAge: "Please confirm that you are at least 16 years old.",
@@ -945,6 +947,13 @@ footer{
       const submitBtn = document.getElementById("btn_submit");
       const privacyAccepted = document.getElementById("privacy_check").checked;
       const platform = document.getElementById("platform").value;
+      const emailValue = document.getElementById("email").value.trim();
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+
+      if(!emailValue || !emailValid){
+        showNotice("error", t.errorEmail);
+        return;
+      }
 
       if(!privacyAccepted){
         showNotice("error", t.errorPrivacy);
@@ -980,7 +989,7 @@ footer{
       const payload = {
         platform: document.getElementById("platform").value,
         referred_by: document.getElementById("referred_by").value || null,
-        email: document.getElementById("email").value.trim(),
+        email: emailValue,
         discord: document.getElementById("discord").value.trim(),
         twitch: document.getElementById("twitch_name").value.trim() || null,
         twitch_link: document.getElementById("twitch_link").value.trim() || null,
