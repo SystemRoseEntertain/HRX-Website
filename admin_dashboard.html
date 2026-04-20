@@ -746,6 +746,7 @@
     SUPABASE_URL: "https://payxkjbgdrbrmwqmczhz.supabase.co",
     SUPABASE_ANON_KEY: "sb_publishable_s8zB-yR1RpZxFEdA7aBTbQ_i8QJEhXa",
     TWITCH_PARENT: "hrx-creator.net",
+    EDGE_APPROVE_FUNCTION: "dynamic-task",
     supabase: null,
     allApplications: [],
     activeFilter: "all",
@@ -1051,7 +1052,7 @@
 
         html += '<div class="app-actions">';
         html += '<button class="action-btn approve" data-id="' + H.escapeHtml(app.id) + '" data-action="approve">Approve</button>';
-        html += '<button class="action-btn reject" data-id="' + H.escapeHtml(app.id) + '" data-action="reject">Reject</button>';
+        html += '<button class="action-btn reject" data-id="' + H.escapeHtml(app.id) + '" data-action="rejected">Reject</button>';
         html += '<button class="action-btn neutral" data-id="' + H.escapeHtml(app.id) + '" data-action="pending">Auf Pending setzen</button>';
         html += '</div>';
         html += '</div>';
@@ -1123,7 +1124,10 @@
           return;
         }
 
-        var response = await fetch(S.SUPABASE_URL + "/functions/v1/approve-application", {
+        var functionUrl = S.SUPABASE_URL + "/functions/v1/" + S.EDGE_APPROVE_FUNCTION;
+        H.log("APPROVE URL: " + functionUrl);
+
+        var response = await fetch(functionUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -1132,21 +1136,31 @@
           body: JSON.stringify({ applicationId: id })
         });
 
-        var result = await response.json().catch(function(){ return {}; });
+        H.log("APPROVE RESPONSE STATUS: " + response.status);
+
+        var rawText = await response.text();
+        H.log("APPROVE RESPONSE TEXT: " + rawText);
+
+        var result = {};
+        try {
+          result = rawText ? JSON.parse(rawText) : {};
+        } catch(e) {
+          result = { raw: rawText };
+        }
 
         if(!response.ok){
           H.log("APPROVE ERROR: " + JSON.stringify(result));
-          H.showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText));
+          H.showMessage("error", "Approve fehlgeschlagen: " + (result.error || response.statusText || rawText));
           H.toggleDebug(true);
           return;
         }
 
         H.log("APPROVE OK: " + JSON.stringify(result));
-        H.showMessage("success", "Bewerbung angenommen und Creator-User angelegt.");
+                H.showMessage("success", "Bewerbung angenommen und Creator-User angelegt.");
         await loadDashboard();
       } catch(err){
         H.log("APPROVE CATCH ERROR: " + (err.message || err));
-        H.showMessage("error", "Approve fehlgeschlagen.");
+        H.showMessage("error", "Approve fehlgeschlagen: " + (err.message || err));
         H.toggleDebug(true);
       } finally {
         if(button) button.disabled = false;
